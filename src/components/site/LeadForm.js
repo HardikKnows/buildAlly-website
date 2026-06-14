@@ -6,14 +6,27 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 
 // Lead-capture form for Book a Demo / Contact.
-// NOTE: There is no form backend wired yet. On submit it shows a success state
-// and (for now) opens a mailto fallback so leads are never silently lost.
-// PLACEHOLDER: BuildAlly team to connect a forms/email provider or CRM endpoint.
+// Submits to /api/contact, which delivers via Resend to CONTACT_EMAIL.
 
 const baseField =
-  "w-full rounded-xl border border-line bg-white px-4 py-3 text-[15px] text-ink placeholder:text-slate-400 transition-colors focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20";
+  "w-full rounded-xl border bg-white px-4 py-3 text-[15px] text-ink placeholder:text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-brand/20";
 
-function Field({ label, name, type = "text", required, placeholder, autoComplete, half }) {
+function fieldCls(hasError) {
+  return `${baseField} ${
+    hasError ? "border-destructive focus:border-destructive" : "border-line focus:border-brand"
+  }`;
+}
+
+function Field({
+  label,
+  name,
+  type = "text",
+  required,
+  placeholder,
+  autoComplete,
+  half,
+  error,
+}) {
   return (
     <div className={half ? "sm:col-span-1" : "sm:col-span-2"}>
       <label htmlFor={name} className="mb-1.5 block text-sm font-medium text-ink">
@@ -26,37 +39,77 @@ function Field({ label, name, type = "text", required, placeholder, autoComplete
         required={required}
         placeholder={placeholder}
         autoComplete={autoComplete}
-        className={baseField}
+        aria-invalid={error ? "true" : undefined}
+        aria-describedby={error ? `${name}-error` : undefined}
+        className={fieldCls(error)}
       />
+      {error && (
+        <p id={`${name}-error`} className="mt-1.5 text-xs font-medium text-destructive">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
 
 export function LeadForm({ variant = "demo", recipient }) {
-  const [sent, setSent] = useState(false);
+  // status: "idle" | "submitting" | "success" | "error"
+  const [status, setStatus] = useState("idle");
+  const [formError, setFormError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    const fd = new FormData(e.currentTarget);
-    const lines = [];
-    for (const [k, v] of fd.entries()) {
-      if (v) lines.push(`${k}: ${v}`);
+    // Prevent duplicate submissions while a request is in flight.
+    if (status === "submitting") return;
+
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const payload = {
+      variant,
+      intendedInbox: recipient || "",
+      name: fd.get("name") || "",
+      company: fd.get("company") || "",
+      email: fd.get("email") || "",
+      phone: fd.get("phone") || "",
+      sites: fd.get("sites") || "",
+      message: fd.get("message") || "",
+      company_website: fd.get("company_website") || "", // honeypot
+    };
+
+    setStatus("submitting");
+    setFormError("");
+    setFieldErrors({});
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok && data.ok) {
+        setStatus("success");
+        form.reset();
+        return;
+      }
+
+      if (data.errors) setFieldErrors(data.errors);
+      setFormError(
+        data.error ||
+          (data.errors
+            ? "Please fix the highlighted fields and try again."
+            : "Something went wrong. Please try again.")
+      );
+      setStatus("error");
+    } catch {
+      setFormError("Network error. Please check your connection and try again.");
+      setStatus("error");
     }
-    const subject =
-      variant === "demo"
-        ? "Demo request — BuildAlly"
-        : "Contact — BuildAlly";
-    // mailto fallback so a lead is captured even without a backend.
-    if (recipient) {
-      const href = `mailto:${recipient}?subject=${encodeURIComponent(
-        subject
-      )}&body=${encodeURIComponent(lines.join("\n"))}`;
-      window.location.href = href;
-    }
-    setSent(true);
   };
 
-  if (sent) {
+  if (status === "success") {
     return (
       <motion.div
         initial={{ opacity: 0, y: 12 }}
@@ -68,8 +121,8 @@ export function LeadForm({ variant = "demo", recipient }) {
         </span>
         <h3 className="mt-4 font-display text-xl font-bold text-ink">Thanks — we&apos;ve got it.</h3>
         <p className="mx-auto mt-2 max-w-sm text-[15px] text-slate-body">
-          Your email app should have opened with the details. Our team will get
-          back to you shortly. Prefer to start now?
+          Your message is on its way to our team and we&apos;ll get back to you
+          shortly. Prefer to start now?
         </p>
         <Button href="https://app.buildally.in" variant="primary" size="md" className="mt-5">
           Start Free Trial <Icon name="ArrowRight" size={18} />
@@ -78,22 +131,37 @@ export function LeadForm({ variant = "demo", recipient }) {
     );
   }
 
+  const submitting = status === "submitting";
+
   return (
     <form
       onSubmit={onSubmit}
+      noValidate
       className="grid grid-cols-1 gap-4 rounded-2xl border border-line bg-white p-6 sm:grid-cols-2 sm:p-8"
     >
-      <Field label="Full name" name="name" required placeholder="Your name" autoComplete="name" half />
-      <Field label="Company" name="company" required placeholder="Company name" autoComplete="organization" half />
-      <Field label="Work email" name="email" type="email" required placeholder="you@company.com" autoComplete="email" half />
-      <Field label="Phone" name="phone" type="tel" placeholder="+91 90000 00000" autoComplete="tel" half />
+      {/* Honeypot — hidden from users, catches bots. */}
+      <div aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 overflow-hidden">
+        <label htmlFor="company_website">Leave this field empty</label>
+        <input
+          id="company_website"
+          name="company_website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
+      <Field label="Full name" name="name" required placeholder="Your name" autoComplete="name" half error={fieldErrors.name} />
+      <Field label="Company" name="company" required placeholder="Company name" autoComplete="organization" half error={fieldErrors.company} />
+      <Field label="Work email" name="email" type="email" required placeholder="you@company.com" autoComplete="email" half error={fieldErrors.email} />
+      <Field label="Phone" name="phone" type="tel" required placeholder="+91 90000 00000" autoComplete="tel" half error={fieldErrors.phone} />
 
       {variant === "demo" && (
         <div className="sm:col-span-2">
           <label htmlFor="sites" className="mb-1.5 block text-sm font-medium text-ink">
             Active sites / team size
           </label>
-          <select id="sites" name="sites" className={baseField} defaultValue="">
+          <select id="sites" name="sites" className={fieldCls(false)} defaultValue="">
             <option value="" disabled>
               Select a range
             </option>
@@ -107,25 +175,61 @@ export function LeadForm({ variant = "demo", recipient }) {
 
       <div className="sm:col-span-2">
         <label htmlFor="message" className="mb-1.5 block text-sm font-medium text-ink">
-          {variant === "demo" ? "Anything we should know?" : "How can we help?"}
+          {variant === "demo" ? "Anything we should know?" : "How can we help?"}{" "}
+          <span className="text-destructive">*</span>
         </label>
         <textarea
           id="message"
           name="message"
           rows={4}
+          required
+          aria-invalid={fieldErrors.message ? "true" : undefined}
+          aria-describedby={fieldErrors.message ? "message-error" : undefined}
           placeholder={
             variant === "demo"
               ? "Tell us a little about your business…"
               : "Your message…"
           }
-          className={baseField}
+          className={fieldCls(fieldErrors.message)}
         />
+        {fieldErrors.message && (
+          <p id="message-error" className="mt-1.5 text-xs font-medium text-destructive">
+            {fieldErrors.message}
+          </p>
+        )}
       </div>
 
+      {/* Error banner */}
+      {status === "error" && formError && (
+        <div
+          role="alert"
+          className="sm:col-span-2 flex items-start gap-2.5 rounded-xl border border-destructive/30 bg-destructive/5 p-3.5 text-sm text-destructive"
+        >
+          <Icon name="TriangleAlert" size={18} className="mt-0.5 shrink-0" />
+          <span>{formError}</span>
+        </div>
+      )}
+
       <div className="sm:col-span-2">
-        <Button type="submit" variant="primary" size="lg" className="w-full">
-          {variant === "demo" ? "Request my demo" : "Send message"}
-          <Icon name="ArrowRight" size={18} />
+        <Button
+          type="submit"
+          variant="primary"
+          size="lg"
+          className="w-full"
+          disabled={submitting}
+          aria-busy={submitting}
+        >
+          {submitting ? (
+            <>
+              <Icon name="LoaderCircle" size={18} className="animate-spin" />
+              Sending…
+            </>
+          ) : (
+            <>
+              {variant === "demo" ? "Request my demo" : "Send message"}
+              <Icon name="ArrowRight" size={18} />
+            </>
+          )}
         </Button>
         <p className="mt-3 text-center text-xs text-slate-body">
           By submitting, you agree to our{" "}
