@@ -1,26 +1,155 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * BuildAlly Marketing Design System
+ * Brand tokens mirror the product's design tokens so the handoff
+ * from marketing site -> app feels seamless.
+ */
+
+@theme {
+  /* Brand */
+  --color-brand: #2563eb; /* BuildAlly Blue */
+  --color-brand-deep: #1e40af; /* Deep Blue (gradient partner) */
+  --color-brand-50: #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-200: #bfdbfe;
+  --color-brand-300: #93c5fd;
+  --color-brand-400: #60a5fa;
+  --color-brand-500: #2563eb;
+  --color-brand-600: #1d4ed8;
+  --color-brand-700: #1e40af;
+
+  /* Structure */
+  --color-ink: #0f172a; /* Navy / Ink */
+  --color-ink-700: #1e293b;
+  --color-ink-600: #334155;
+
+  /* Neutrals */
+  --color-slate-body: #64748b;
+  --color-line: #e2e8f0;
+  --color-canvas: #f8fafc;
+
+  /* Semantic */
+  --color-success: #16a34a;
+  --color-warning: #d97706;
+  --color-destructive: #dc2626;
+
+  /* Categorical (charts/illustrations only) */
+  --color-cat-blue: #2563eb;
+  --color-cat-violet: #7c3aed;
+  --color-cat-teal: #0d9488;
+  --color-cat-amber: #d97706;
+  --color-cat-pink: #db2777;
+  --color-cat-slate: #64748b;
+
+  /* Typography */
+  --font-display: var(--font-poppins);
+  --font-sans: var(--font-inter);
+
+  /* Radii */
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+
+  /* Animation */
+  --animate-marquee: marquee 40s linear infinite;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+    color: var(--color-ink);
+    letter-spacing: -0.02em;
+  }
+
+  ::selection {
+    background: var(--color-brand-100);
+    color: var(--color-brand-700);
+  }
+
+  /* Visible, on-brand focus ring for accessibility (WCAG AA) */
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+/* ---- Brand utilities ---- */
+
+/* Subtle blueprint-grid motif (used in the app's login) */
+@utility blueprint-grid {
+  background-image:
+    linear-gradient(to right, rgba(37, 99, 235, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(37, 99, 235, 0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+@utility blueprint-grid-dark {
+  background-image:
+    linear-gradient(to right, rgba(96, 165, 250, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(96, 165, 250, 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Gradient text for the "Ally" wordmark / accent words */
+@utility text-gradient-brand {
+  background: linear-gradient(120deg, var(--color-brand) 0%, var(--color-brand-deep) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Primary button gradient */
+@utility bg-gradient-brand {
+  background-image: linear-gradient(120deg, var(--color-brand) 0%, var(--color-brand-deep) 100%);
+}
+
+/* Soft radial glow behind hero visuals */
+@utility hero-glow {
+  background: radial-gradient(
+    60% 50% at 50% 0%,
+    rgba(37, 99, 235, 0.16) 0%,
+    rgba(37, 99, 235, 0) 70%
+  );
+}
+
+/* Respect reduced-motion preferences globally */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
