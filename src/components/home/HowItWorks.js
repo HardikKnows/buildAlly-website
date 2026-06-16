@@ -1,6 +1,6 @@
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { RevealGroup, RevealItem } from "@/components/ui/Reveal";
-import { HOW_IT_WORKS } from "@/lib/content";
+import { HOW_IT_WORKS, REPLACES } from "@/lib/content";
 import { Icon } from "@/components/ui/Icon";
 
 export function HowItWorks() {
@@ -38,6 +38,38 @@ export function HowItWorks() {
           </RevealItem>
         ))}
       </RevealGroup>
+
+      {/* Before -> after replacement narrative */}
+      <div className="mt-16 overflow-hidden rounded-2xl border border-line">
+        <div className="grid divide-y divide-line sm:grid-cols-2 sm:divide-x sm:divide-y-0">
+          <div className="bg-canvas p-7">
+            <p className="text-sm font-semibold uppercase tracking-wider text-slate-body">
+              Replace
+            </p>
+            <ul className="mt-4 space-y-3">
+              {REPLACES.map((r) => (
+                <li key={r.from} className="flex items-center gap-2.5 text-[15px] text-ink-600">
+                  <Icon name="Minus" size={16} className="shrink-0 text-slate-400" />
+                  {r.from}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="bg-ink p-7 text-white blueprint-grid-dark">
+            <p className="text-sm font-semibold uppercase tracking-wider text-brand-300">
+              With BuildAlly
+            </p>
+            <ul className="mt-4 space-y-3">
+              {REPLACES.map((r) => (
+                <li key={r.to} className="flex items-start gap-2.5 text-[15px] text-slate-100">
+                  <Icon name="Check" size={16} className="mt-0.5 shrink-0 text-success" />
+                  {r.to}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
     </Section>
   );
 }

@@ -4,12 +4,10 @@ import { InteractiveDemo } from "@/components/home/InteractiveDemo";
 import { Problem } from "@/components/home/Problem";
 import { HowItWorks } from "@/components/home/HowItWorks";
 import { FeatureHighlights } from "@/components/home/FeatureHighlights";
-import { Showcase } from "@/components/home/Showcase";
-import { RoleBased } from "@/components/home/RoleBased";
+import { ProductScreenshots } from "@/components/home/ProductScreenshots";
 import { DashboardShowcase } from "@/components/home/DashboardShowcase";
 import { MobileExperience } from "@/components/home/MobileExperience";
 import { WhyOwners } from "@/components/home/WhyOwners";
-import { EarlyAccess } from "@/components/home/EarlyAccess";
 import { PricingPreview } from "@/components/home/PricingPreview";
 import { HomeFAQ } from "@/components/home/HomeFAQ";
 
@@ -29,12 +27,10 @@ export default function HomePage() {
       <Problem />
       <HowItWorks />
       <FeatureHighlights />
-      <Showcase />
-      <RoleBased />
+      <ProductScreenshots />
       <DashboardShowcase />
       <MobileExperience />
       <WhyOwners />
-      <EarlyAccess />
       <PricingPreview />
       <HomeFAQ />
       {/* Final CTA band + Footer render globally via the root layout's Footer. */}
