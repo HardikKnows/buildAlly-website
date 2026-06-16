@@ -30,9 +30,11 @@ const SECTIONS = [
     ],
   },
   {
-    heading: "Plans, trials & billing",
+    heading: "Accounts, trials & billing",
     body: [
-      "We offer a Free plan and paid plans, including a 14-day free trial on paid plans. Pricing shown on the website is subject to confirmation and change. Paid subscriptions renew according to the plan you select; you may cancel in accordance with your plan terms. Taxes may apply.",
+      "Accounts are created with email verification, and team members join through secure invitation links. A free interactive demo is available without an account, and a 7-day trial is available after verification. Pilot accounts may be offered at our discretion.",
+      "Paid subscriptions are billed in advance for the applicable billing period and renew until cancelled; you may cancel at any time. Pricing is tailored to your team size and operational requirements and is provided on request. Taxes may apply. Refunds are governed by our Refund Policy.",
+      "If a subscription lapses or is suspended, you retain read-only access to your workspace and your data is not deleted; reactivating restores full access.",
     ],
   },
   {

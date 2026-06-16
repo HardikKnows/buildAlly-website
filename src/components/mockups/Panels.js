@@ -106,6 +106,50 @@ export function PanelDocuments() {
   );
 }
 
+export function PanelPayroll() {
+  const rows = [
+    { name: "R. Sharma", role: "Site Engineer", amount: "₹52,000", status: "Paid", tone: "success" },
+    { name: "P. Nair", role: "Accountant", amount: "₹48,500", status: "Paid", tone: "success" },
+    { name: "I. Khan", role: "Supervisor", amount: "₹38,000", status: "Pending", tone: "warning" },
+    { name: "A. Verma", role: "PM", amount: "₹74,000", status: "Approved", tone: "brand" },
+  ];
+  const toneCls = {
+    success: "bg-success/10 text-success",
+    warning: "bg-warning/10 text-warning",
+    brand: "bg-brand/10 text-brand",
+  };
+  return (
+    <div className="p-5 text-left">
+      <div className="flex items-center justify-between">
+        <p className="text-sm font-semibold text-ink">Payroll — June</p>
+        <span className="rounded-md border border-line bg-white px-2 py-1 text-[11px] text-slate-body">
+          ₹2.12L total
+        </span>
+      </div>
+      <div className="mt-4 space-y-2">
+        {rows.map((r) => (
+          <div
+            key={r.name}
+            className="flex items-center gap-3 rounded-xl border border-line bg-white px-3 py-2.5"
+          >
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-50 text-[11px] font-semibold text-brand">
+              {r.name.split(" ").map((p) => p[0]).join("")}
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-medium text-ink">{r.name}</p>
+              <p className="truncate text-[11px] text-slate-body">{r.role}</p>
+            </div>
+            <span className="font-display text-sm font-bold text-ink">{r.amount}</span>
+            <span className={`rounded-md px-2 py-0.5 text-[11px] font-medium ${toneCls[r.tone]}`}>
+              {r.status}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function PanelApprovals() {
   const items = [
     { title: "Expense ₹84,200 — steel", who: "Eng. Rahul", tone: "warning" },

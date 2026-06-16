@@ -8,6 +8,7 @@ import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { MAIN_NAV, URLS } from "@/lib/site";
+import { track, EVENTS } from "@/lib/track";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -60,11 +61,21 @@ export function Navbar() {
           >
             Login
           </a>
-          <Button href={URLS.bookDemo} variant="secondary" size="sm">
+          <Button
+            href={URLS.bookDemo}
+            variant="secondary"
+            size="sm"
+            onClick={() => track(EVENTS.BOOK_DEMO, { location: "nav" })}
+          >
             Book a Demo
           </Button>
-          <Button href={URLS.signup} variant="primary" size="sm">
-            Start Free Trial
+          <Button
+            href={URLS.demo}
+            variant="primary"
+            size="sm"
+            onClick={() => track(EVENTS.TRY_DEMO, { location: "nav" })}
+          >
+            <Icon name="MonitorPlay" size={16} /> Try Demo
           </Button>
         </div>
 
@@ -108,12 +119,40 @@ export function Navbar() {
               >
                 Login
               </a>
+              <a
+                href={URLS.signup}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => {
+                  track(EVENTS.START_TRIAL, { location: "nav_mobile" });
+                  closeMenu();
+                }}
+                className="block rounded-lg px-3 py-3 text-base font-medium text-ink hover:bg-canvas"
+              >
+                Start free trial
+              </a>
               <div className="flex flex-col gap-2 pt-2">
-                <Button href={URLS.bookDemo} variant="secondary" size="md" onClick={closeMenu}>
+                <Button
+                  href={URLS.bookDemo}
+                  variant="secondary"
+                  size="md"
+                  onClick={() => {
+                    track(EVENTS.BOOK_DEMO, { location: "nav_mobile" });
+                    closeMenu();
+                  }}
+                >
                   Book a Demo
                 </Button>
-                <Button href={URLS.signup} variant="primary" size="md" onClick={closeMenu}>
-                  Start Free Trial
+                <Button
+                  href={URLS.demo}
+                  variant="primary"
+                  size="md"
+                  onClick={() => {
+                    track(EVENTS.TRY_DEMO, { location: "nav_mobile" });
+                    closeMenu();
+                  }}
+                >
+                  <Icon name="MonitorPlay" size={18} /> Try Interactive Demo
                 </Button>
               </div>
             </div>

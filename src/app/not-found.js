@@ -23,8 +23,8 @@ export default function NotFound() {
           <Button href="/" variant="primary" size="lg">
             <Icon name="Home" size={18} /> Back to home
           </Button>
-          <Button href={URLS.signup} variant="secondary" size="lg">
-            Start Free Trial
+          <Button href={URLS.demo} variant="secondary" size="lg">
+            <Icon name="MonitorPlay" size={18} /> Try the Demo
           </Button>
         </div>
       </Container>

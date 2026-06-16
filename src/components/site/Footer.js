@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { Logo } from "@/components/ui/Logo";
-import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Container } from "@/components/ui/Container";
+import { TrackedButton } from "@/components/ui/TrackedButton";
 import { FOOTER_NAV, SITE, URLS, CONTACT, CTA_MICROCOPY } from "@/lib/site";
+import { EVENTS } from "@/lib/track";
 
 export function Footer() {
   return (
@@ -12,19 +13,31 @@ export function Footer() {
       <div className="bg-ink blueprint-grid-dark">
         <Container className="py-16 text-center sm:py-20">
           <h2 className="text-balance text-3xl font-bold text-white sm:text-4xl">
-            Ready to run your sites the modern way?
+            See BuildAlly for yourself
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-pretty text-lg text-slate-300">
-            Replace WhatsApp, spreadsheets, and paper with one platform built for
-            how you actually run construction.
+            Explore the interactive demo with realistic construction data — no
+            setup, no sign-up. Or book a walkthrough with our team.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Button href={URLS.signup} variant="white" size="lg">
-              Start Free Trial <Icon name="ArrowRight" size={18} />
-            </Button>
-            <Button href={URLS.bookDemo} variant="outlineLight" size="lg">
+            <TrackedButton
+              href={URLS.demo}
+              event={EVENTS.TRY_DEMO}
+              eventProps={{ location: "footer" }}
+              variant="white"
+              size="lg"
+            >
+              <Icon name="MonitorPlay" size={18} /> Try Interactive Demo
+            </TrackedButton>
+            <TrackedButton
+              href={URLS.bookDemo}
+              event={EVENTS.BOOK_DEMO}
+              eventProps={{ location: "footer" }}
+              variant="outlineLight"
+              size="lg"
+            >
               Book a Demo
-            </Button>
+            </TrackedButton>
           </div>
           <p className="mt-4 text-sm text-slate-400">{CTA_MICROCOPY}</p>
         </Container>

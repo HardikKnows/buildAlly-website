@@ -26,15 +26,15 @@ export function Hero() {
           </Reveal>
           <Reveal delay={0.05}>
             <h1 className="mt-6 text-balance text-4xl font-extrabold leading-[1.08] tracking-tight text-ink sm:text-5xl md:text-6xl">
-              Run your entire construction business{" "}
+              Run your construction business{" "}
               <span className="text-gradient-brand">from one place</span>.
             </h1>
           </Reveal>
           <Reveal delay={0.1}>
             <p className="mx-auto mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-slate-body sm:text-xl">
-              BuildAlly brings your sites, money, team, and documents into one
-              platform — with real-time visibility for owners and a mobile app
-              your field team will actually use.
+              Manage projects, expenses, payroll, documents, approvals, and
+              teams with BuildAlly — one platform with real-time visibility for
+              every role.
             </p>
           </Reveal>
           <Reveal delay={0.15}>

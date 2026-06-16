@@ -1,8 +1,9 @@
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui/Icon";
-import { Button } from "@/components/ui/Button";
+import { TrackedButton } from "@/components/ui/TrackedButton";
 import { URLS } from "@/lib/site";
+import { EVENTS } from "@/lib/track";
 import { PROBLEMS } from "@/lib/content";
 
 export function Problem() {
@@ -32,14 +33,16 @@ export function Problem() {
           <h3 className="font-display text-xl font-bold leading-snug">
             There&apos;s a better way to run construction.
           </h3>
-          <Button
-            href={URLS.signup}
+          <TrackedButton
+            href={URLS.demo}
+            event={EVENTS.TRY_DEMO}
+            eventProps={{ location: "problem" }}
             variant="white"
             size="sm"
             className="mt-5 self-start"
           >
             See how <Icon name="ArrowRight" size={16} />
-          </Button>
+          </TrackedButton>
         </RevealItem>
       </RevealGroup>
     </Section>

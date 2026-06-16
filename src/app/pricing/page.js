@@ -1,134 +1,115 @@
 import { PageHero } from "@/components/ui/PageHero";
 import { Section, SectionHeading } from "@/components/ui/Section";
-import { Reveal } from "@/components/ui/Reveal";
+import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { Accordion } from "@/components/ui/Accordion";
 import { Icon } from "@/components/ui/Icon";
-import { PricingCards } from "@/components/pricing/PricingCards";
-import { PRICING_MATRIX } from "@/lib/content";
+import { TrackedButton } from "@/components/ui/TrackedButton";
+import { URLS } from "@/lib/site";
+import { EVENTS } from "@/lib/track";
+import { PRICING_FACTORS } from "@/lib/content";
 
 export const metadata = {
-  title: "Pricing — Start Free, Upgrade as You Grow",
+  title: "Pricing — Tailored to Your Business",
   description:
-    "Transparent BuildAlly pricing: a Free plan forever, a Professional plan for growing builders, and Enterprise for procurement-grade needs. 14-day trial, no credit card required.",
+    "BuildAlly pricing depends on your team size and operational requirements. Try the interactive demo or book a demo to get a plan that fits your construction business.",
   alternates: { canonical: "/pricing" },
 };
 
 const PRICING_FAQS = [
   {
-    q: "Is there really a free plan?",
-    a: "Yes — the Free plan is free forever, with up to 3 sites and 5 members. No credit card required to start, and free-tier limits never delete your data; they simply prompt an upgrade when you outgrow them.",
+    q: "Why isn't pricing listed publicly?",
+    a: "Construction businesses vary widely in team size, number of sites, and operational needs. We tailor pricing to your setup rather than forcing you into a generic tier — book a demo and we'll walk you through a plan that fits.",
   },
   {
-    q: "How does the 14-day trial work?",
-    a: "Paid plans include a 14-day free trial with full access. There are no automatic charges without action on your part, so you can evaluate BuildAlly with your real sites and team before committing.",
+    q: "Can I try BuildAlly before purchasing?",
+    a: "Yes. Explore the interactive demo with realistic construction data — no setup or sign-up — and there's a 7-day trial after account verification when you're ready to use it with your own team.",
   },
   {
-    q: "Is the Professional price final?",
-    a: "The price shown is a placeholder while we finalise public pricing. Please confirm the current Professional price with our team before relying on it — book a demo and we'll walk you through the latest plans.",
+    q: "What happens if my subscription expires?",
+    a: "You retain read-only access to your workspace. Your data is never deleted — view everything and reactivate to start editing again whenever you like.",
   },
   {
-    q: "What's included in Enterprise?",
-    a: "Everything in Professional plus custom branding and white-label, audit logs and the Security Center, SSO readiness (Google Workspace and Microsoft Entra ID), tenant isolation, data export, and priority support. Pricing is custom — contact sales.",
-  },
-  {
-    q: "Can I cancel anytime?",
-    a: "Yes. Plans are month-to-month and you can cancel anytime. Your data remains yours, with export available on Enterprise.",
+    q: "Do you offer plans for smaller contractors?",
+    a: "Yes. BuildAlly is designed for growing construction businesses. Start small and scale up as your team and number of sites grow.",
   },
 ];
-
-function Cell({ value }) {
-  if (value === true)
-    return <Icon name="Check" size={18} className="mx-auto text-success" />;
-  if (value === false)
-    return <Icon name="Minus" size={16} className="mx-auto text-slate-300" />;
-  return <span className="text-sm text-ink-600">{value}</span>;
-}
 
 export default function PricingPage() {
   return (
     <>
       <PageHero
         eyebrow="Pricing"
-        title="Simple plans that grow with you"
-        lead="Start free, upgrade when you're ready. No credit card to begin, a 14-day trial on paid plans, and cancel anytime."
-      />
+        title="Pricing tailored to your business"
+        lead="BuildAlly pricing depends on your team size and operational requirements. Book a demo to learn more — or explore the interactive demo first."
+      >
+        <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <TrackedButton
+            href={URLS.contactSales}
+            event={EVENTS.CONTACT_SALES}
+            eventProps={{ location: "pricing_hero" }}
+            variant="primary"
+            size="lg"
+          >
+            Contact Sales <Icon name="ArrowRight" size={18} />
+          </TrackedButton>
+          <TrackedButton
+            href={URLS.demo}
+            event={EVENTS.TRY_DEMO}
+            eventProps={{ location: "pricing_hero" }}
+            variant="secondary"
+            size="lg"
+          >
+            <Icon name="MonitorPlay" size={18} /> Try Interactive Demo
+          </TrackedButton>
+        </div>
+      </PageHero>
 
+      {/* What shapes your pricing */}
       <Section tone="canvas">
-        <PricingCards />
-        <Reveal className="mt-8 text-center text-sm text-slate-body">
-          {/* PLACEHOLDER: confirm final public pricing with the BuildAlly team before publishing */}
-          Prices shown in INR (₹). Professional pricing is a draft pending final confirmation.
-        </Reveal>
-      </Section>
-
-      {/* Comparison matrix */}
-      <Section tone="white">
         <SectionHeading
-          eyebrow="Compare plans"
-          title="Everything in each plan"
+          eyebrow="How pricing works"
+          title="A plan that matches how you operate"
+          lead="Rather than generic tiers, your plan reflects the way your business actually runs."
         />
-        <Reveal className="mt-12 overflow-x-auto">
-          <table className="w-full min-w-160 border-collapse">
-            <thead>
-              <tr>
-                <th className="sticky left-0 bg-white p-4 text-left text-sm font-semibold text-ink">
-                  Feature
-                </th>
-                <th className="p-4 text-center text-sm font-semibold text-ink">Free</th>
-                <th className="rounded-t-xl bg-brand-50 p-4 text-center text-sm font-bold text-brand">
-                  Professional
-                </th>
-                <th className="p-4 text-center text-sm font-semibold text-ink">Enterprise</th>
-              </tr>
-            </thead>
-            <tbody>
-              {PRICING_MATRIX.groups.map((group) => (
-                <MatrixGroup key={group.name} group={group} />
-              ))}
-            </tbody>
-          </table>
+        <RevealGroup className="mt-12 grid gap-5 sm:grid-cols-3">
+          {PRICING_FACTORS.map((f) => (
+            <RevealItem key={f.title} className="rounded-2xl border border-line bg-white p-6">
+              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand">
+                <Icon name={f.icon} size={22} />
+              </span>
+              <h3 className="mt-4 font-display text-lg font-semibold text-ink">{f.title}</h3>
+              <p className="mt-2 text-[15px] leading-relaxed text-slate-body">{f.body}</p>
+            </RevealItem>
+          ))}
+        </RevealGroup>
+
+        <Reveal className="mx-auto mt-12 max-w-2xl rounded-2xl border border-line bg-ink p-8 text-center text-white blueprint-grid-dark">
+          <h3 className="font-display text-2xl font-bold text-white">
+            Ready to talk numbers?
+          </h3>
+          <p className="mx-auto mt-2 max-w-md text-slate-300">
+            Book a demo and we&apos;ll recommend the right plan for your team and sites.
+          </p>
+          <TrackedButton
+            href={URLS.contactSales}
+            event={EVENTS.CONTACT_SALES}
+            eventProps={{ location: "pricing_band" }}
+            variant="white"
+            size="lg"
+            className="mt-6"
+          >
+            Contact Sales <Icon name="ArrowRight" size={18} />
+          </TrackedButton>
         </Reveal>
       </Section>
 
       {/* Pricing FAQ */}
-      <Section tone="canvas" containerSize="narrow">
-        <SectionHeading eyebrow="Pricing questions" title="The fine print, in plain language" />
+      <Section tone="white" containerSize="narrow">
+        <SectionHeading eyebrow="Pricing questions" title="Common questions" />
         <Reveal className="mt-10">
           <Accordion items={PRICING_FAQS} />
         </Reveal>
       </Section>
-    </>
-  );
-}
-
-// Renders a group header row + its feature rows.
-function MatrixGroup({ group }) {
-  return (
-    <>
-      <tr>
-        <td
-          colSpan={4}
-          className="border-b border-line bg-canvas px-4 pt-6 pb-2 text-xs font-semibold uppercase tracking-wider text-slate-body"
-        >
-          {group.name}
-        </td>
-      </tr>
-      {group.rows.map((row) => (
-        <tr key={row.label} className="border-b border-line">
-          <td className="sticky left-0 bg-white p-4 text-left text-sm text-ink-600">
-            {row.label}
-          </td>
-          <td className="p-4 text-center">
-            <Cell value={row.free} />
-          </td>
-          <td className="bg-brand-50/40 p-4 text-center">
-            <Cell value={row.pro} />
-          </td>
-          <td className="p-4 text-center">
-            <Cell value={row.enterprise} />
-          </td>
-        </tr>
-      ))}
     </>
   );
 }

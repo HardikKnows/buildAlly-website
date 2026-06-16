@@ -2,7 +2,7 @@ import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui/Icon";
 import { LeadForm } from "@/components/site/LeadForm";
-import { CONTACT } from "@/lib/site";
+import { CONTACT, URLS } from "@/lib/site";
 
 export const metadata = {
   title: "Book a Demo — See BuildAlly for Your Business",
@@ -34,8 +34,8 @@ export default function BookDemoPage() {
               </h1>
               <p className="mt-5 text-pretty text-lg leading-relaxed text-slate-body">
                 A 30-minute, no-pressure walkthrough with someone who knows
-                construction. Best for mid-market and enterprise teams — smaller
-                firms can simply start free.
+                construction — tailored to how your business runs. Prefer to look
+                around first? Try the interactive demo.
               </p>
             </Reveal>
 
@@ -56,18 +56,18 @@ export default function BookDemoPage() {
             <Reveal className="mt-8 rounded-2xl border border-line bg-white/70 p-5 backdrop-blur">
               <p className="flex items-center gap-2 text-sm font-medium text-ink">
                 <Icon name="Zap" size={16} className="text-brand" />
-                In a hurry? You don&apos;t need a demo to begin.
+                In a hurry? Explore on your own first.
               </p>
               <p className="mt-1 text-sm text-slate-body">
-                Start a free trial in minutes — no credit card required.
+                Open the interactive demo — realistic data, no setup, no sign-up.
               </p>
               <a
-                href="https://app.buildally.in"
+                href={URLS.demo}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:text-brand-deep"
               >
-                Start Free Trial <Icon name="ArrowRight" size={15} />
+                <Icon name="MonitorPlay" size={15} /> Try Interactive Demo
               </a>
             </Reveal>
           </div>

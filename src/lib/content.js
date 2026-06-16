@@ -25,23 +25,80 @@ export const PROBLEMS = [
   },
 ];
 
-// --- How it works (Homepage §4) ---
+// --- How it works (4-step workspace flow) ---
 export const HOW_IT_WORKS = [
   {
     step: "01",
-    title: "Add your sites",
-    body: "Create a Site Hub for every project in minutes — progress, budget, timeline, and health in one place.",
+    icon: "Building2",
+    title: "Create your company workspace",
+    body: "Set up a secure, multi-tenant workspace for your business in minutes — verified by email, isolated from every other company.",
   },
   {
     step: "02",
-    title: "Bring in your team",
-    body: "Invite directors, engineers, accountants, and subcontractors with the right role-based access.",
+    icon: "UserPlus",
+    title: "Invite your team",
+    body: "Bring in directors, admins, PMs, engineers, finance, and HR through secure invite links — each with the right role-based access.",
   },
   {
     step: "03",
-    title: "Run everything from one dashboard",
-    body: "See money, approvals, documents, and what needs your attention — in real time, from any device.",
+    icon: "ClipboardList",
+    title: "Manage projects and operations",
+    body: "Run sites, expenses, payroll, documents, and approvals from one place — on desktop and in the field.",
   },
+  {
+    step: "04",
+    icon: "Eye",
+    title: "Gain complete visibility",
+    body: "Leadership sees everything in real time — what's on track, what needs attention, and where the money is.",
+  },
+];
+
+// --- Built for every role (RoleBased section) ---
+export const ROLES = [
+  {
+    icon: "Crown",
+    role: "Directors",
+    body: "Real-time visibility across every site, rupee, and approval — make faster decisions without chasing updates.",
+  },
+  {
+    icon: "ShieldCheck",
+    role: "Admins",
+    body: "Manage the workspace, roles, and access with confidence — invite teams and keep everything organised and secure.",
+  },
+  {
+    icon: "HardHat",
+    role: "Project Managers",
+    body: "Run sites end to end — progress, timelines, documents, and approvals — from the office or the field.",
+  },
+  {
+    icon: "Wrench",
+    role: "Engineers",
+    body: "Capture site progress and photos, raise expenses, and access the latest drawings — even offline.",
+  },
+  {
+    icon: "Wallet",
+    role: "Finance Teams",
+    body: "Track expenses, payments, and receivables, run approvals, and close the books without the spreadsheet chaos.",
+  },
+  {
+    icon: "Users",
+    role: "HR Teams",
+    body: "Manage members, salary requests, payroll, and payslips with clear, role-aware workflows.",
+  },
+];
+
+// --- Interactive demo highlights ---
+export const DEMO_HIGHLIGHTS = [
+  { icon: "Users", title: "Multiple roles", body: "Explore the product as a director, PM, finance, or HR — see how each team experiences BuildAlly." },
+  { icon: "Database", title: "Realistic data", body: "Walk through real construction scenarios with seeded sites, expenses, payroll, and approvals." },
+  { icon: "Sparkles", title: "No commitment", body: "No sign-up, no setup, no credit card. Just open the demo and click around." },
+];
+
+// --- How BuildAlly works (4-step "How it works") ---
+export const EARLY_ACCESS_POINTS = [
+  { icon: "Handshake", title: "Work directly with our team", body: "Get hands-on onboarding and a direct line to the people building BuildAlly." },
+  { icon: "MessageSquarePlus", title: "Shape the roadmap", body: "Your workflows and feedback directly influence what we build next." },
+  { icon: "Rocket", title: "Early-mover advantage", body: "Get your business onto modern construction software ahead of the curve." },
 ];
 
 // --- The 9 product pillars (Features page + curated homepage cards) ---
@@ -163,14 +220,14 @@ export const PILLARS = [
   {
     id: "revenue",
     icon: "CreditCard",
-    eyebrow: "Revenue Infrastructure",
-    headline: "Start free, upgrade when you grow",
+    eyebrow: "Onboarding & Access",
+    headline: "Start with a demo, scale when you're ready",
     summary:
-      "A billing foundation with a 14-day trial, frictionless upgrades, and enterprise sales readiness.",
+      "Email verification, invite-based onboarding, a 7-day trial, pilot accounts, and read-only suspension — set up to grow with you.",
     features: [
-      "Billing foundation with 14-day trial support",
-      "Self-serve upgrade flows",
-      "Enterprise sales readiness (Contact Sales)",
+      "Email verification and invite-based onboarding",
+      "7-day trial and pilot accounts",
+      "Read-only suspension keeps your data safe if a subscription lapses",
     ],
   },
 ];
@@ -245,138 +302,46 @@ export const OWNER_OUTCOMES = [
   },
 ];
 
-// --- Pricing (Pricing page + homepage preview) ---
-// NOTE: Pricing is a DRAFT — confirm final public pricing with the BuildAlly team.
-export const PLANS = [
-  {
-    id: "free",
-    name: "Free",
-    price: "₹0",
-    cadence: "forever",
-    blurb: "For trying it out and very small firms.",
-    cta: { label: "Start Free Trial", kind: "primary" },
-    highlights: [
-      "Up to 3 sites",
-      "Up to 5 members",
-      "Site Hub & progress tracking",
-      "Basic financial reports",
-      "Mobile app with offline capture",
-    ],
-    featured: false,
-  },
-  {
-    id: "pro",
-    name: "Professional",
-    price: "₹2,499",
-    cadence: "per month",
-    priceNote: "Placeholder — confirm",
-    blurb: "For growing builders who need accountability at scale.",
-    cta: { label: "Start Free Trial", kind: "primary" },
-    highlights: [
-      "Unlimited sites & members",
-      "Advanced financial dashboards",
-      "Approval workflows & notifications",
-      "Activity timeline & document control",
-      "Subcontractor management & payroll",
-      "14-day free trial — no card required",
-    ],
-    featured: true,
-  },
-  {
-    id: "enterprise",
-    name: "Enterprise",
-    price: "Custom",
-    cadence: "contact sales",
-    blurb: "For 100+ employees with procurement and security needs.",
-    cta: { label: "Book a Demo", kind: "secondary" },
-    highlights: [
-      "Everything in Professional",
-      "Custom branding & white-label",
-      "Audit logs & Security Center",
-      "SSO readiness (Google, Microsoft Entra)",
-      "Tenant isolation & data export",
-      "Priority support",
-    ],
-    featured: false,
-  },
+// --- What shapes pricing (Pricing page — no public tables in Phase 2) ---
+export const PRICING_FACTORS = [
+  { icon: "Users", title: "Team size", body: "The number of members, roles, and teams you bring into your workspace." },
+  { icon: "Building2", title: "Operational scope", body: "How many sites and projects you run, and the workflows you depend on." },
+  { icon: "Settings2", title: "Requirements", body: "Onboarding, support, and any enterprise or security needs specific to your business." },
 ];
 
-// --- Full pricing comparison matrix ---
-export const PRICING_MATRIX = {
-  groups: [
-    {
-      name: "Sites & team",
-      rows: [
-        { label: "Active sites", free: "3", pro: "Unlimited", enterprise: "Unlimited" },
-        { label: "Team members", free: "5", pro: "Unlimited", enterprise: "Unlimited" },
-        { label: "Subcontractor management", free: false, pro: true, enterprise: true },
-      ],
-    },
-    {
-      name: "Financials",
-      rows: [
-        { label: "Expense & payment tracking", free: true, pro: true, enterprise: true },
-        { label: "Outstanding receivables", free: "Basic", pro: "Advanced", enterprise: "Advanced" },
-        { label: "Budget vs. spend dashboards", free: false, pro: true, enterprise: true },
-        { label: "Payroll & payslips", free: false, pro: true, enterprise: true },
-      ],
-    },
-    {
-      name: "Operations",
-      rows: [
-        { label: "Approval workflows", free: "Basic", pro: true, enterprise: true },
-        { label: "Notification center", free: true, pro: true, enterprise: true },
-        { label: "Document control & versioning", free: "Basic", pro: true, enterprise: true },
-        { label: "Activity timeline", free: false, pro: true, enterprise: true },
-      ],
-    },
-    {
-      name: "Enterprise & security",
-      rows: [
-        { label: "Role-based access control", free: true, pro: true, enterprise: true },
-        { label: "Audit logging & CSV export", free: false, pro: false, enterprise: true },
-        { label: "Security Center", free: false, pro: false, enterprise: true },
-        { label: "SSO readiness", free: false, pro: false, enterprise: true },
-        { label: "Custom branding / white-label", free: false, pro: false, enterprise: true },
-        { label: "Priority support", free: false, pro: "Standard", enterprise: true },
-      ],
-    },
-  ],
-};
-
-// --- FAQ (Homepage §11 + FAQ page) ---
+// --- FAQ (Homepage + FAQ page) ---
 export const FAQS = [
   {
-    q: "Is BuildAlly built for Indian construction?",
-    a: "Yes. BuildAlly is built for how Indian builders actually work — ₹ Lakh and Crore currency formatting, mobile-first field workflows, receivables and collection tracking, subcontractor and payroll management, and pricing for the market. It speaks the language of your sites, not generic project management.",
+    q: "Can I try BuildAlly before purchasing?",
+    a: "Yes. Explore our interactive demo environment — realistic construction data, multiple roles, no setup or sign-up required. It's the fastest way to see how BuildAlly fits your business.",
+  },
+  {
+    q: "How long is the free trial?",
+    a: "BuildAlly offers a 7-day trial after account verification, so you can evaluate it with your own team and sites before committing.",
+  },
+  {
+    q: "Can I invite my team members?",
+    a: "Yes. Team members can securely join through invitation links, each with the right role-based access — directors, admins, project managers, engineers, finance, and HR.",
+  },
+  {
+    q: "What happens if my subscription expires?",
+    a: "You retain read-only access to your workspace. Your data is never deleted — you can view everything and simply reactivate to start editing again.",
+  },
+  {
+    q: "Is my data secure?",
+    a: "BuildAlly uses modern authentication, role-based access controls, strict per-company tenant isolation, and encrypted infrastructure practices. Your data stays yours.",
+  },
+  {
+    q: "Can BuildAlly work for smaller contractors?",
+    a: "Yes. BuildAlly is designed for growing construction businesses — start small and scale up as your team and number of sites grow.",
   },
   {
     q: "Will my field team actually use it?",
-    a: "That's the design goal. BuildAlly is mobile-first and WhatsApp-simple: a bottom navigation bar, quick actions, and camera-first capture. Supervisors snap a photo or log an expense in seconds — no training manual required.",
-  },
-  {
-    q: "Does it work offline?",
-    a: "Yes. BuildAlly is an installable app with an offline queue. Your team can capture photos, progress, and expenses on site with no signal, and everything syncs automatically the moment they're back online.",
-  },
-  {
-    q: "How secure is my data?",
-    a: "BuildAlly is enterprise-grade under the hood: strict tenant isolation keeps every company's data separated, with audit logging, session management, a Security Center, and SSO readiness (Google Workspace and Microsoft Entra ID). Your data stays yours.",
-  },
-  {
-    q: "Can I start for free?",
-    a: "Yes. There's a Free plan forever (up to 3 sites and 5 members) and a 14-day free trial on paid plans — no credit card required. Start with one site in minutes and bring in your team as you go.",
-  },
-  {
-    q: "How long does setup take?",
-    a: "Minutes, not weeks. Create your first Site Hub, invite your team, and start capturing work. There's nothing to install on a server, and free-tier limits never delete data — they simply prompt an upgrade when you outgrow them.",
+    a: "That's the design goal. BuildAlly is mobile-first and WhatsApp-simple: a bottom navigation bar, quick actions, and camera-first capture that works offline and syncs automatically when back online.",
   },
   {
     q: "Can I manage subcontractors and payroll?",
     a: "Yes. Assign subcontractors to sites, track their payments and utilization, and run salary requests, payroll, and payslips — all from the same workspace, with role-based permissions.",
-  },
-  {
-    q: "Can I manage multiple sites?",
-    a: "Absolutely — that's the core of BuildAlly. Every project gets its own Site Hub with progress, budget, timeline, and a health score, and owners get a portfolio-wide executive dashboard across all of them in real time.",
   },
 ];
 
@@ -396,18 +361,18 @@ export const OBJECTIONS = [
   },
   {
     objection: "We're too small for this.",
-    answer: "Start free with one site in minutes. The Free plan is built for small firms.",
+    answer: "BuildAlly is built for growing construction businesses. Start with the interactive demo and see it work at your scale.",
   },
   {
     objection: "Switching sounds painful.",
-    answer: "Start free, no card required. Import as you go, with guided onboarding.",
+    answer: "Invite your team through secure links and onboard with our team's help. Try the demo first — no commitment.",
   },
   {
     objection: "Is our data safe?",
-    answer: "Tenant isolation, audit logs, session control, and a security center — by default.",
+    answer: "Tenant isolation, role-based access, modern authentication, and encrypted infrastructure — by default.",
   },
   {
-    objection: "It'll be too expensive.",
-    answer: "Free to start. It pays for itself by preventing one missed collection or rework.",
+    objection: "What if my subscription lapses?",
+    answer: "You keep read-only access to your workspace and your data is never deleted. Reactivate anytime.",
   },
 ];

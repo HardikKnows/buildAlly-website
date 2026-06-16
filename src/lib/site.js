@@ -12,15 +12,17 @@ export const SITE = {
 // Trial signup and login live in the app, not the marketing site.
 export const URLS = {
   app: "https://app.buildally.in",
-  signup: "https://app.buildally.in",
+  demo: "https://app.buildally.in/demo", // interactive demo environment (primary CTA)
+  signup: "https://app.buildally.in", // self-serve 7-day trial (tertiary CTA)
   login: "https://app.buildally.in",
   api: "https://api.buildally.in",
   bookDemo: "/book-demo",
+  contactSales: "/contact",
 };
 
-// Reassurance microcopy shown near primary CTAs.
+// Reassurance microcopy shown near the primary (Try Demo) CTA.
 export const CTA_MICROCOPY =
-  "Free plan available · No credit card required · 14-day trial on paid plans.";
+  "No setup required · Explore realistic demo data · 7-day trial after sign-up.";
 
 export const CONTACT = {
   sales: "sales.buildally@gmail.com",
@@ -37,35 +39,36 @@ export const MAIN_NAV = [
 
 export const FOOTER_NAV = [
   {
-    title: "Product",
-    links: [
-      { label: "Features", href: "/features" },
-      { label: "Pricing", href: "/pricing" },
-      { label: "Mobile app", href: "/features#mobile" },
-      { label: "Security", href: "/features#security" },
-    ],
-  },
-  {
     title: "Company",
     links: [
       { label: "About", href: "/about" },
       { label: "Contact", href: "/contact" },
-      { label: "Book a demo", href: "/book-demo" },
+      { label: "FAQ", href: "/faq" },
     ],
   },
   {
-    title: "Resources",
+    title: "Product",
     links: [
-      { label: "FAQ", href: "/faq" },
-      { label: "Book a demo", href: "/book-demo" },
-      { label: "Login", href: URLS.login, external: true },
+      { label: "Try Demo", href: URLS.demo, external: true },
+      { label: "Book a Demo", href: "/book-demo" },
+      { label: "Features", href: "/features" },
+      { label: "Pricing", href: "/pricing" },
     ],
   },
   {
     title: "Legal",
     links: [
-      { label: "Privacy", href: "/privacy" },
-      { label: "Terms", href: "/terms" },
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms of Service", href: "/terms" },
+      { label: "Refund Policy", href: "/refund" },
+    ],
+  },
+  {
+    title: "Contact",
+    links: [
+      { label: "Contact Sales", href: "/contact" },
+      { label: "Start Free Trial", href: URLS.signup, external: true },
+      { label: "Login", href: URLS.login, external: true },
     ],
   },
 ];

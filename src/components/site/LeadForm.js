@@ -122,10 +122,10 @@ export function LeadForm({ variant = "demo", recipient }) {
         <h3 className="mt-4 font-display text-xl font-bold text-ink">Thanks — we&apos;ve got it.</h3>
         <p className="mx-auto mt-2 max-w-sm text-[15px] text-slate-body">
           Your message is on its way to our team and we&apos;ll get back to you
-          shortly. Prefer to start now?
+          shortly. Want to look around in the meantime?
         </p>
-        <Button href="https://app.buildally.in" variant="primary" size="md" className="mt-5">
-          Start Free Trial <Icon name="ArrowRight" size={18} />
+        <Button href="https://app.buildally.in/demo" variant="primary" size="md" className="mt-5">
+          <Icon name="MonitorPlay" size={18} /> Try Interactive Demo
         </Button>
       </motion.div>
     );

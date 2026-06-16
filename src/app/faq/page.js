@@ -8,7 +8,7 @@ import { FAQS, OBJECTIONS } from "@/lib/content";
 export const metadata = {
   title: "FAQ — Common Questions About BuildAlly",
   description:
-    "Answers to common questions about BuildAlly: built for Indian construction, offline support, security, free plan, setup time, subcontractors, payroll, and multi-site management.",
+    "Answers to common questions about BuildAlly: the interactive demo, the 7-day trial, inviting your team, subscription access, data security, and support for smaller contractors.",
   alternates: { canonical: "/faq" },
 };
 
@@ -55,7 +55,7 @@ export default function FAQPage() {
       <Section tone="white" containerSize="narrow">
         <SectionHeading
           title="Still have a question?"
-          lead="Talk to our team, or just start free and see for yourself."
+          lead="Explore the interactive demo, or talk to our team."
         />
         <Reveal className="mt-8 flex justify-center">
           <CTAGroup align="center" />

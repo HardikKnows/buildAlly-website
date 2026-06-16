@@ -87,22 +87,16 @@ function StructuredData() {
       operatingSystem: "Web, iOS, Android (PWA)",
       description: SITE.description,
       url: SITE.domain,
-      offers: [
-        {
-          "@type": "Offer",
-          name: "Free",
-          price: "0",
-          priceCurrency: "INR",
-          description: "Up to 3 sites and 5 members.",
-        },
-        {
-          "@type": "Offer",
-          name: "Professional",
-          price: "2499",
-          priceCurrency: "INR",
-          description: "Unlimited sites and members. Price is a draft — confirm with BuildAlly.",
-        },
-      ],
+      // Pricing is tailored to each business (no public price). Advertise the
+      // free interactive demo rather than a specific price.
+      offers: {
+        "@type": "Offer",
+        category: "demo",
+        price: "0",
+        priceCurrency: "INR",
+        description: "Free interactive demo — no setup or sign-up required.",
+        url: URLS.demo,
+      },
     },
   ];
   return (
