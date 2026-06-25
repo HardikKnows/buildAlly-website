@@ -32,7 +32,7 @@ const SECTIONS = [
   {
     heading: "Accounts, trials & billing",
     body: [
-      "Accounts are created with email verification, and team members join through secure invitation links. A free interactive demo is available without an account, and a 7-day trial is available after verification. Pilot accounts may be offered at our discretion.",
+      "Accounts are created with email verification, and team members join through secure invitation links. Personalized product demos are available on request, and a 7-day trial is available after verification. Pilot accounts may be offered at our discretion.",
       "Paid subscriptions are billed in advance for the applicable billing period and renew until cancelled; you may cancel at any time. Pricing is tailored to your team size and operational requirements and is provided on request. Taxes may apply. Refunds are governed by our Refund Policy.",
       "If a subscription lapses or is suspended, you retain read-only access to your workspace and your data is not deleted; reactivating restores full access.",
     ],

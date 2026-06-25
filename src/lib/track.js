@@ -1,7 +1,7 @@
 // Lightweight, provider-agnostic conversion tracking.
 //
-// Phase 2 requires tracking Try Demo / Book Demo / Contact Sales clicks, using
-// the existing PostHog integration "if available". This marketing site has no
+// We track Book Demo / Contact Sales / Start Trial clicks, using the existing
+// PostHog integration "if available". This marketing site has no
 // analytics provider yet, so this util fires into PostHog ONLY if it has been
 // loaded on the page (e.g. via a snippet added later). Until then it no-ops —
 // no new analytics provider is introduced.
@@ -10,7 +10,6 @@
 // automatically. Optionally also forwards to a dataLayer (GTM) if present.
 
 export const EVENTS = {
-  TRY_DEMO: "try_demo_click",
   BOOK_DEMO: "book_demo_click",
   CONTACT_SALES: "contact_sales_click",
   START_TRIAL: "start_trial_click",

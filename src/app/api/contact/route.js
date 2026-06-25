@@ -89,7 +89,7 @@ export async function POST(request) {
 
   // Optional, non-validated context fields.
   const company = (body.company || "").toString().trim().slice(0, 200);
-  const sites = (body.sites || "").toString().trim().slice(0, 120);
+  const teamSize = (body.teamSize || "").toString().trim().slice(0, 120);
   const intendedInbox = (body.intendedInbox || "").toString().trim().slice(0, 200);
 
   const subject =
@@ -102,7 +102,7 @@ export async function POST(request) {
     ["Company", company],
     ["Email", clean.email],
     ["Phone", clean.phone],
-    variant === "demo" ? ["Sites / team size", sites] : null,
+    variant === "demo" ? ["Team size", teamSize] : null,
     ["Message", clean.message],
     intendedInbox ? ["Intended inbox", intendedInbox] : null,
   ].filter(Boolean);

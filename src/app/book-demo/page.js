@@ -2,12 +2,12 @@ import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui/Icon";
 import { LeadForm } from "@/components/site/LeadForm";
-import { CONTACT, URLS } from "@/lib/site";
+import { CONTACT } from "@/lib/site";
 
 export const metadata = {
   title: "Book a Demo — See BuildAlly for Your Business",
   description:
-    "Book a personalized BuildAlly demo. We'll show you how to run your sites, money, team, and documents from one platform — tailored to how your construction business works.",
+    "Request a personalized BuildAlly demo. Our team will schedule a live walkthrough of how to run your sites, money, team, and documents from one platform — tailored to how your construction business works.",
   alternates: { canonical: "/book-demo" },
 };
 
@@ -33,9 +33,9 @@ export default function BookDemoPage() {
                 See BuildAlly built around your business
               </h1>
               <p className="mt-5 text-pretty text-lg leading-relaxed text-slate-body">
-                A 30-minute, no-pressure walkthrough with someone who knows
-                construction — tailored to how your business runs. Prefer to look
-                around first? Try the interactive demo.
+                Request a live walkthrough and our team will schedule a
+                30-minute, no-pressure session with someone who knows
+                construction — tailored to how your business runs.
               </p>
             </Reveal>
 
@@ -55,19 +55,18 @@ export default function BookDemoPage() {
 
             <Reveal className="mt-8 rounded-2xl border border-line bg-white/70 p-5 backdrop-blur">
               <p className="flex items-center gap-2 text-sm font-medium text-ink">
-                <Icon name="Zap" size={16} className="text-brand" />
-                In a hurry? Explore on your own first.
+                <Icon name="MessageSquare" size={16} className="text-brand" />
+                Prefer to talk first?
               </p>
               <p className="mt-1 text-sm text-slate-body">
-                Open the interactive demo — realistic data, no setup, no sign-up.
+                Have questions about rollout, security, or pricing? Reach our
+                sales team directly.
               </p>
               <a
-                href={URLS.demo}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={`mailto:${CONTACT.sales}`}
                 className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:text-brand-deep"
               >
-                <Icon name="MonitorPlay" size={15} /> Try Interactive Demo
+                <Icon name="Mail" size={15} /> {CONTACT.sales}
               </a>
             </Reveal>
           </div>

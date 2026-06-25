@@ -1,6 +1,6 @@
 import { Hero } from "@/components/home/Hero";
 import { SocialProof } from "@/components/home/SocialProof";
-import { InteractiveDemo } from "@/components/home/InteractiveDemo";
+import { DemoPromo } from "@/components/home/DemoPromo";
 import { Problem } from "@/components/home/Problem";
 import { HowItWorks } from "@/components/home/HowItWorks";
 import { FeatureHighlights } from "@/components/home/FeatureHighlights";
@@ -14,7 +14,7 @@ import { HomeFAQ } from "@/components/home/HomeFAQ";
 export const metadata = {
   title: "BuildAlly — Construction Management Software for Modern Builders",
   description:
-    "Run your construction business from one place. Manage projects, expenses, payroll, documents, approvals, and teams with BuildAlly. Try the interactive demo — no setup required.",
+    "Run your construction business from one place. Manage projects, expenses, payroll, documents, approvals, and teams with BuildAlly. Book a personalized demo with our team.",
   alternates: { canonical: "/" },
 };
 
@@ -23,7 +23,7 @@ export default function HomePage() {
     <>
       <Hero />
       <SocialProof />
-      <InteractiveDemo />
+      <DemoPromo />
       <Problem />
       <HowItWorks />
       <FeatureHighlights />

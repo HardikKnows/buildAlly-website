@@ -19,7 +19,7 @@ const SECTIONS = [
   {
     heading: "Try before you pay",
     body: [
-      "We encourage you to evaluate BuildAlly before purchasing. You can explore our interactive demo at no cost, and a 7-day trial is available after account verification. This lets you confirm BuildAlly fits your business before any payment is made.",
+      "We encourage you to evaluate BuildAlly before purchasing. You can request a personalized demo with our team, and a 7-day trial is available after account verification. This lets you confirm BuildAlly fits your business before any payment is made.",
     ],
   },
   {
@@ -31,7 +31,7 @@ const SECTIONS = [
   {
     heading: "Refund eligibility",
     body: [
-      "Because a free interactive demo and a trial are available before purchase, fees are generally non-refundable except where required by applicable law. We may, at our discretion, consider refund requests in cases such as:",
+      "Because a personalized demo and a trial are available before purchase, fees are generally non-refundable except where required by applicable law. We may, at our discretion, consider refund requests in cases such as:",
     ],
     list: [
       "A duplicate or accidental charge.",

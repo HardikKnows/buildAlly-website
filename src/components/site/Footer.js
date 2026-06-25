@@ -16,27 +16,27 @@ export function Footer() {
             See BuildAlly for yourself
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-pretty text-lg text-slate-300">
-            Explore the interactive demo with realistic construction data — no
-            setup, no sign-up. Or book a walkthrough with our team.
+            Book a personalized walkthrough with our team and see BuildAlly
+            mapped to how you run your sites, money, and people.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <TrackedButton
-              href={URLS.demo}
-              event={EVENTS.TRY_DEMO}
-              eventProps={{ location: "footer" }}
-              variant="white"
-              size="lg"
-            >
-              <Icon name="MonitorPlay" size={18} /> Try Interactive Demo
-            </TrackedButton>
             <TrackedButton
               href={URLS.bookDemo}
               event={EVENTS.BOOK_DEMO}
               eventProps={{ location: "footer" }}
+              variant="white"
+              size="lg"
+            >
+              <Icon name="CalendarCheck" size={18} /> Book a Demo
+            </TrackedButton>
+            <TrackedButton
+              href={URLS.contactSales}
+              event={EVENTS.CONTACT_SALES}
+              eventProps={{ location: "footer" }}
               variant="outlineLight"
               size="lg"
             >
-              Book a Demo
+              Contact Sales
             </TrackedButton>
           </div>
           <p className="mt-4 text-sm text-slate-400">{CTA_MICROCOPY}</p>

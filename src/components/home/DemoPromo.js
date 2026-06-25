@@ -6,8 +6,9 @@ import { URLS } from "@/lib/site";
 import { EVENTS } from "@/lib/track";
 import { DEMO_HIGHLIGHTS } from "@/lib/content";
 
-// Section 2 — Interactive demo promotion. Reduce friction; encourage exploration.
-export function InteractiveDemo() {
+// Section 2 — Personalized demo promotion. Demos are scheduled with our team
+// (no public/anonymous demo); drive to the Book a Demo request form.
+export function DemoPromo() {
   return (
     <section id="demo" className="relative overflow-hidden bg-ink py-20 text-white blueprint-grid-dark sm:py-24">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-72 hero-glow" />
@@ -15,39 +16,40 @@ export function InteractiveDemo() {
         <div className="mx-auto max-w-2xl text-center">
           <Reveal>
             <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-sm font-medium text-brand-300">
-              <Icon name="MonitorPlay" size={15} /> Interactive demo
+              <Icon name="CalendarCheck" size={15} /> Personalized demo
             </span>
           </Reveal>
           <Reveal delay={0.05}>
             <h2 className="mt-5 text-balance text-3xl font-bold leading-tight text-white sm:text-4xl md:text-[2.75rem]">
-              Explore BuildAlly instantly
+              See BuildAlly in action
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
             <p className="mx-auto mt-4 text-pretty text-lg leading-relaxed text-slate-300">
-              Experience BuildAlly using realistic construction data. No setup,
-              no sign-up — just open the demo and click around.
+              Book a personalized walkthrough and discover how BuildAlly helps
+              construction companies manage projects, teams, finances, documents,
+              and site operations from one platform.
             </p>
           </Reveal>
           <Reveal delay={0.15}>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <TrackedButton
-                href={URLS.demo}
-                event={EVENTS.TRY_DEMO}
+                href={URLS.bookDemo}
+                event={EVENTS.BOOK_DEMO}
                 eventProps={{ location: "demo_section" }}
                 variant="white"
                 size="lg"
               >
-                <Icon name="MonitorPlay" size={18} /> Try Demo
+                <Icon name="CalendarCheck" size={18} /> Book a Demo
               </TrackedButton>
               <TrackedButton
-                href={URLS.bookDemo}
-                event={EVENTS.BOOK_DEMO}
+                href={URLS.contactSales}
+                event={EVENTS.CONTACT_SALES}
                 eventProps={{ location: "demo_section" }}
                 variant="outlineLight"
                 size="lg"
               >
-                Book a Demo
+                Contact Sales
               </TrackedButton>
             </div>
           </Reveal>

@@ -34,8 +34,8 @@ export function Problem() {
             There&apos;s a better way to run construction.
           </h3>
           <TrackedButton
-            href={URLS.demo}
-            event={EVENTS.TRY_DEMO}
+            href={URLS.bookDemo}
+            event={EVENTS.BOOK_DEMO}
             eventProps={{ location: "problem" }}
             variant="white"
             size="sm"

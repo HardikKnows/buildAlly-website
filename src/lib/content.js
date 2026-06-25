@@ -87,11 +87,11 @@ export const ROLES = [
   },
 ];
 
-// --- Interactive demo highlights ---
+// --- What you get from a personalized demo ---
 export const DEMO_HIGHLIGHTS = [
-  { icon: "Users", title: "Multiple roles", body: "Explore the product as a director, PM, finance, or HR — see how each team experiences BuildAlly." },
-  { icon: "Database", title: "Realistic data", body: "Walk through real construction scenarios with seeded sites, expenses, payroll, and approvals." },
-  { icon: "Sparkles", title: "No commitment", body: "No sign-up, no setup, no credit card. Just open the demo and click around." },
+  { icon: "MonitorPlay", title: "Tailored to your workflows", body: "We map the Site Hub, dashboards, and approvals to how your team actually runs projects." },
+  { icon: "MessageSquare", title: "Straight answers", body: "Bring your questions on rollout, security, pricing, and migrating off WhatsApp and Excel." },
+  { icon: "Rocket", title: "A clear path to start", body: "Leave with a concrete plan to get your first sites and team onto BuildAlly." },
 ];
 
 // --- How BuildAlly works (4-step "How it works") ---
@@ -302,18 +302,11 @@ export const OWNER_OUTCOMES = [
   },
 ];
 
-// --- What shapes pricing (Pricing page — no public tables in Phase 2) ---
-export const PRICING_FACTORS = [
-  { icon: "Users", title: "Team size", body: "The number of members, roles, and teams you bring into your workspace." },
-  { icon: "Building2", title: "Operational scope", body: "How many sites and projects you run, and the workflows you depend on." },
-  { icon: "Settings2", title: "Requirements", body: "Onboarding, support, and any enterprise or security needs specific to your business." },
-];
-
 // --- FAQ (Homepage + FAQ page) ---
 export const FAQS = [
   {
-    q: "Can I try BuildAlly before purchasing?",
-    a: "Yes. Explore our interactive demo environment — realistic construction data, multiple roles, no setup or sign-up required. It's the fastest way to see how BuildAlly fits your business.",
+    q: "Can I see BuildAlly before purchasing?",
+    a: "Yes. Book a personalized demo and our team will walk you through BuildAlly with your workflows in mind. When you're ready, there's a 7-day trial after account verification so you can evaluate it with your own team.",
   },
   {
     q: "How long is the free trial?",
@@ -361,11 +354,11 @@ export const OBJECTIONS = [
   },
   {
     objection: "We're too small for this.",
-    answer: "BuildAlly is built for growing construction businesses. Start with the interactive demo and see it work at your scale.",
+    answer: "BuildAlly is built for growing construction businesses. Book a quick walkthrough and see it work at your scale.",
   },
   {
     objection: "Switching sounds painful.",
-    answer: "Invite your team through secure links and onboard with our team's help. Try the demo first — no commitment.",
+    answer: "Invite your team through secure links and onboard with our team's help. Book a demo first — no commitment.",
   },
   {
     objection: "Is our data safe?",

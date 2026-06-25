@@ -62,20 +62,20 @@ export function Navbar() {
             Login
           </a>
           <Button
-            href={URLS.bookDemo}
+            href={URLS.contactSales}
             variant="secondary"
+            size="sm"
+            onClick={() => track(EVENTS.CONTACT_SALES, { location: "nav" })}
+          >
+            Contact Sales
+          </Button>
+          <Button
+            href={URLS.bookDemo}
+            variant="primary"
             size="sm"
             onClick={() => track(EVENTS.BOOK_DEMO, { location: "nav" })}
           >
-            Book a Demo
-          </Button>
-          <Button
-            href={URLS.demo}
-            variant="primary"
-            size="sm"
-            onClick={() => track(EVENTS.TRY_DEMO, { location: "nav" })}
-          >
-            <Icon name="MonitorPlay" size={16} /> Try Demo
+            <Icon name="CalendarCheck" size={16} /> Book a Demo
           </Button>
         </div>
 
@@ -133,26 +133,26 @@ export function Navbar() {
               </a>
               <div className="flex flex-col gap-2 pt-2">
                 <Button
-                  href={URLS.bookDemo}
+                  href={URLS.contactSales}
                   variant="secondary"
+                  size="md"
+                  onClick={() => {
+                    track(EVENTS.CONTACT_SALES, { location: "nav_mobile" });
+                    closeMenu();
+                  }}
+                >
+                  Contact Sales
+                </Button>
+                <Button
+                  href={URLS.bookDemo}
+                  variant="primary"
                   size="md"
                   onClick={() => {
                     track(EVENTS.BOOK_DEMO, { location: "nav_mobile" });
                     closeMenu();
                   }}
                 >
-                  Book a Demo
-                </Button>
-                <Button
-                  href={URLS.demo}
-                  variant="primary"
-                  size="md"
-                  onClick={() => {
-                    track(EVENTS.TRY_DEMO, { location: "nav_mobile" });
-                    closeMenu();
-                  }}
-                >
-                  <Icon name="MonitorPlay" size={18} /> Try Interactive Demo
+                  <Icon name="CalendarCheck" size={18} /> Book a Demo
                 </Button>
               </div>
             </div>

@@ -10,19 +10,19 @@ export const SITE = {
 };
 
 // Trial signup and login live in the app, not the marketing site.
+// Demos are scheduled with our team via /book-demo (no public/anonymous demo).
 export const URLS = {
   app: "https://app.buildally.in",
-  demo: "https://app.buildally.in/demo", // interactive demo environment (primary CTA)
   signup: "https://app.buildally.in", // self-serve 7-day trial (tertiary CTA)
   login: "https://app.buildally.in",
   api: "https://api.buildally.in",
-  bookDemo: "/book-demo",
+  bookDemo: "/book-demo", // demo request form — primary CTA
   contactSales: "/contact",
 };
 
-// Reassurance microcopy shown near the primary (Try Demo) CTA.
+// Reassurance microcopy shown near the primary (Book a Demo) CTA.
 export const CTA_MICROCOPY =
-  "No setup required · Explore realistic demo data · 7-day trial after sign-up.";
+  "A personalized walkthrough with our team · See BuildAlly mapped to your workflows.";
 
 export const CONTACT = {
   sales: "sales.buildally@gmail.com",
@@ -49,7 +49,6 @@ export const FOOTER_NAV = [
   {
     title: "Product",
     links: [
-      { label: "Try Demo", href: URLS.demo, external: true },
       { label: "Book a Demo", href: "/book-demo" },
       { label: "Features", href: "/features" },
       { label: "Pricing", href: "/pricing" },

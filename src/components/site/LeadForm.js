@@ -72,7 +72,7 @@ export function LeadForm({ variant = "demo", recipient }) {
       company: fd.get("company") || "",
       email: fd.get("email") || "",
       phone: fd.get("phone") || "",
-      sites: fd.get("sites") || "",
+      teamSize: fd.get("teamSize") || "",
       message: fd.get("message") || "",
       company_website: fd.get("company_website") || "", // honeypot
     };
@@ -110,6 +110,7 @@ export function LeadForm({ variant = "demo", recipient }) {
   };
 
   if (status === "success") {
+    const isDemo = variant === "demo";
     return (
       <motion.div
         initial={{ opacity: 0, y: 12 }}
@@ -119,14 +120,14 @@ export function LeadForm({ variant = "demo", recipient }) {
         <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-success/15 text-success">
           <Icon name="Check" size={26} />
         </span>
-        <h3 className="mt-4 font-display text-xl font-bold text-ink">Thanks — we&apos;ve got it.</h3>
+        <h3 className="mt-4 font-display text-xl font-bold text-ink">
+          Thank you for your interest.
+        </h3>
         <p className="mx-auto mt-2 max-w-sm text-[15px] text-slate-body">
-          Your message is on its way to our team and we&apos;ll get back to you
-          shortly. Want to look around in the meantime?
+          {isDemo
+            ? "We will contact you shortly to schedule a personalized BuildAlly demonstration."
+            : "Your message is on its way to our team and we'll get back to you shortly."}
         </p>
-        <Button href="https://app.buildally.in/demo" variant="primary" size="md" className="mt-5">
-          <Icon name="MonitorPlay" size={18} /> Try Interactive Demo
-        </Button>
       </motion.div>
     );
   }
@@ -158,17 +159,17 @@ export function LeadForm({ variant = "demo", recipient }) {
 
       {variant === "demo" && (
         <div className="sm:col-span-2">
-          <label htmlFor="sites" className="mb-1.5 block text-sm font-medium text-ink">
-            Active sites / team size
+          <label htmlFor="teamSize" className="mb-1.5 block text-sm font-medium text-ink">
+            Team size
           </label>
-          <select id="sites" name="sites" className={fieldCls(false)} defaultValue="">
+          <select id="teamSize" name="teamSize" className={fieldCls(false)} defaultValue="">
             <option value="" disabled>
-              Select a range
+              Select your team size
             </option>
-            <option>1–5 sites</option>
-            <option>5–25 sites</option>
-            <option>25+ sites</option>
-            <option>Enterprise (100+ employees)</option>
+            <option>1–10</option>
+            <option>11–50</option>
+            <option>51–200</option>
+            <option>200+</option>
           </select>
         </div>
       )}
@@ -226,7 +227,7 @@ export function LeadForm({ variant = "demo", recipient }) {
             </>
           ) : (
             <>
-              {variant === "demo" ? "Request my demo" : "Send message"}
+              {variant === "demo" ? "Request demo access" : "Send message"}
               <Icon name="ArrowRight" size={18} />
             </>
           )}

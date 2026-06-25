@@ -1,6 +1,6 @@
 import { Poppins, Inter } from "next/font/google";
 import "./globals.css";
-import { SITE, URLS } from "@/lib/site";
+import { SITE } from "@/lib/site";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { MobileCTABar } from "@/components/site/MobileCTABar";
@@ -87,15 +87,12 @@ function StructuredData() {
       operatingSystem: "Web, iOS, Android (PWA)",
       description: SITE.description,
       url: SITE.domain,
-      // Pricing is tailored to each business (no public price). Advertise the
-      // free interactive demo rather than a specific price.
-      offers: {
-        "@type": "Offer",
-        category: "demo",
-        price: "0",
-        priceCurrency: "INR",
-        description: "Free interactive demo — no setup or sign-up required.",
-        url: URLS.demo,
+      // Demos are scheduled with our team (no public/anonymous demo). Point
+      // prospects to the Book a Demo request flow rather than a price.
+      potentialAction: {
+        "@type": "ReserveAction",
+        name: "Book a Demo",
+        target: `${SITE.domain}/book-demo`,
       },
     },
   ];
