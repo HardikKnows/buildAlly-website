@@ -1,9 +1,7 @@
 import { Poppins, Inter } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/lib/site";
-import { Navbar } from "@/components/site/Navbar";
-import { Footer } from "@/components/site/Footer";
-import { MobileCTABar } from "@/components/site/MobileCTABar";
+import { SiteChrome } from "@/components/site/SiteChrome";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -132,7 +130,7 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${poppins.variable} ${inter.variable} h-full scroll-smooth`}
     >
-      <body className="min-h-full flex flex-col bg-white text-ink pb-17 md:pb-0">
+      <body className="min-h-full flex flex-col bg-white text-ink">
         <StructuredData />
         <a
           href="#main"
@@ -140,12 +138,7 @@ export default function RootLayout({ children }) {
         >
           Skip to content
         </a>
-        <Navbar />
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-        <Footer />
-        <MobileCTABar />
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );
