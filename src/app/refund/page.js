@@ -4,7 +4,7 @@ import { CONTACT } from "@/lib/site";
 export const metadata = {
   title: "Refund Policy",
   description:
-    "BuildAlly's refund policy for subscriptions and trials. Template policy pending review by counsel.",
+    "BuildAlly's refund policy for subscriptions, billing, cancellations, and payment disputes.",
   alternates: { canonical: "/refund" },
   robots: { index: true, follow: true },
 };
@@ -13,68 +13,62 @@ const SECTIONS = [
   {
     heading: "Overview",
     body: [
-      "This Refund Policy explains how refunds work for paid subscriptions to BuildAlly (the \"Services\"). It applies alongside our Terms of Service. By subscribing, you agree to this policy.",
+      "This policy applies to all paid BuildAlly subscriptions and related services.",
     ],
   },
   {
-    heading: "Try before you pay",
+    heading: "Free Trial & Demo",
     body: [
-      "We encourage you to evaluate BuildAlly before purchasing. You can request a personalized demo with our team, and a 7-day trial is available after account verification. This lets you confirm BuildAlly fits your business before any payment is made.",
+      "Customers are encouraged to evaluate the platform through demos and any available trial before purchasing.",
     ],
   },
   {
-    heading: "Subscription charges",
+    heading: "Subscription Billing",
     body: [
-      "Paid subscriptions are billed in advance for the applicable billing period (for example, monthly or annually). Charges begin when you start a paid subscription after your trial or upon selecting a paid plan.",
+      "Subscriptions are billed in advance on monthly or annual plans and renew unless cancelled.",
     ],
   },
   {
-    heading: "Refund eligibility",
+    heading: "Refund Eligibility",
     body: [
-      "Because a personalized demo and a trial are available before purchase, fees are generally non-refundable except where required by applicable law. We may, at our discretion, consider refund requests in cases such as:",
-    ],
-    list: [
-      "A duplicate or accidental charge.",
-      "A technical billing error attributable to BuildAlly.",
-      "A documented inability to access the Services caused by us and not resolved within a reasonable time.",
+      "Fees are generally non-refundable because customers can evaluate before purchase, but BuildAlly may approve refunds for duplicate charges, billing errors caused by BuildAlly, or prolonged service outages attributable to BuildAlly.",
     ],
   },
   {
-    heading: "Non-refundable items",
-    body: ["The following are generally not eligible for a refund:"],
-    list: [
-      "Partial or unused portions of a billing period after cancellation.",
-      "Renewals where cancellation was not made before the renewal date.",
-      "Add-ons, custom onboarding, or professional services already delivered.",
+    heading: "Non-Refundable Charges",
+    body: [
+      "Unused subscription periods, missed cancellations before renewal, implementation, onboarding, consulting, custom development, and third-party fees are non-refundable.",
     ],
   },
   {
     heading: "Cancellations",
     body: [
-      "You can cancel your subscription at any time. Cancellation stops future renewals; it does not automatically refund the current billing period. After a subscription ends, you retain read-only access to your workspace, and your data is not deleted.",
+      "Customers may cancel future renewals at any time. Cancellation does not refund the current billing cycle, and customer data is not automatically deleted after cancellation or suspension.",
     ],
   },
   {
-    heading: "How to request a refund",
+    heading: "Refund Request Process",
     body: [
-      `To request a refund, contact us at ${CONTACT.support} with your account details and the reason for the request, ideally within 7 days of the charge. We aim to review and respond to refund requests promptly.`,
+      `Refund requests should be submitted to ${CONTACT.support} with account details, payment information, and the reason for the request. We aim to review requests promptly.`,
     ],
   },
   {
-    heading: "Processing",
+    heading: "Refund Processing",
     body: [
-      "Approved refunds are issued to the original payment method. The time for the refund to appear depends on your payment provider.",
+      "Approved refunds are returned to the original payment method and processing time depends on the payment provider.",
     ],
   },
   {
-    heading: "Changes to this policy",
+    heading: "Changes to this Policy",
     body: [
-      "We may update this Refund Policy from time to time. We will post the updated version with a revised \"Last updated\" date.",
+      "Updates become effective when published with a revised Last Updated date.",
     ],
   },
   {
     heading: "Contact",
-    body: [`Questions about refunds? Contact us at ${CONTACT.support}.`],
+    body: [
+      `Questions regarding billing or refunds may be sent to ${CONTACT.support}.`,
+    ],
   },
 ];
 
@@ -82,8 +76,8 @@ export default function RefundPolicyPage() {
   return (
     <LegalPage
       title="Refund Policy"
-      updated="17 June 2026"
-      intro="How refunds work for BuildAlly subscriptions and trials."
+      updated="13 July 2026"
+      intro="This Refund Policy explains how subscription billing, cancellations, and refund requests are handled for BuildAlly services."
       sections={SECTIONS}
     />
   );
