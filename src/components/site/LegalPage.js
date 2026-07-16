@@ -18,27 +18,24 @@ export function LegalPage({ title, updated, intro, sections }) {
         </Container>
       </section>
 
-      <Container size="narrow" className="py-12 sm:py-16">
-        {/* Counsel-review disclaimer */}
-        <div className="mb-10 flex items-start gap-3 rounded-2xl border border-warning/30 bg-warning/5 p-5">
-          <Icon name="TriangleAlert" size={20} className="mt-0.5 shrink-0 text-warning" />
-          <p className="text-sm leading-relaxed text-ink-600">
-            <strong className="font-semibold text-ink">Template — review with counsel.</strong>{" "}
-            This is a starting-point document for the BuildAlly team. It is not
-            legal advice and must be reviewed and finalised by a qualified lawyer
-            before publishing.
+      <section className="border-b border-line bg-slate-50/60">
+        <Container size="narrow" className="py-4">
+          <p className="text-sm text-slate-body">
+            This document applies to BuildAlly's website, mobile application, and related services.
           </p>
-        </div>
+        </Container>
+      </section>
 
+      <Container size="narrow" className="py-12 sm:py-16">
         <div className="space-y-10">
           {sections.map((s, i) => (
             <section key={s.heading} id={`s-${i + 1}`}>
-              <h2 className="font-display text-xl font-bold text-ink sm:text-2xl">
+              <h2 className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">
                 {i + 1}. {s.heading}
               </h2>
               <div className="mt-3 space-y-3">
                 {s.body.map((p, j) => (
-                  <p key={j} className="text-[15px] leading-relaxed text-slate-body">
+                  <p key={j} className="text-base leading-8 text-slate-body">
                     {p}
                   </p>
                 ))}
@@ -47,7 +44,7 @@ export function LegalPage({ title, updated, intro, sections }) {
                     {s.list.map((item) => (
                       <li
                         key={item}
-                        className="flex items-start gap-2.5 text-[15px] leading-relaxed text-slate-body"
+                        className="flex items-start gap-3 text-base leading-8 text-slate-body"
                       >
                         <Icon name="Dot" size={18} className="mt-0.5 shrink-0 text-brand" />
                         {item}
