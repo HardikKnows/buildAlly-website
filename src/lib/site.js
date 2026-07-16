@@ -60,6 +60,7 @@ export const FOOTER_NAV = [
       { label: "Privacy Policy", href: "/privacy" },
       { label: "Terms of Service", href: "/terms" },
       { label: "Refund Policy", href: "/refund" },
+      { label: "Delete Account", href: "/delete-account" },
     ],
   },
   {
