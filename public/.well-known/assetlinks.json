@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "in.buildally.app",
+      "sha256_cert_fingerprints": [
+        "47:F6:28:B6:C2:EE:28:8D:CF:B8:BC:E7:F5:F3:DF:7B:4C:CF:33:B8:3A:4C:4B:57:8F:C2:23:31:D2:73:83:C8"
+      ]
+    }
+  }
+]

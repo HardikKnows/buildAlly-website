@@ -1,4 +1,6 @@
 import { ImageResponse } from "next/og";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 
 export const alt =
   "BuildAlly — Construction Management Software for Modern Builders";
@@ -6,7 +8,10 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 // Branded social preview. Only flexbox + a subset of CSS is supported here.
-export default function OpengraphImage() {
+export default async function OpengraphImage() {
+  const logo = await readFile(join(process.cwd(), "public/logo.png"));
+  const logoSrc = `data:image/png;base64,${logo.toString("base64")}`;
+
   return new ImageResponse(
     (
       <div
@@ -23,22 +28,17 @@ export default function OpengraphImage() {
       >
         {/* Top: wordmark */}
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-          <div
+          <img
+            src={logoSrc}
+            alt="BuildAlly"
+            width="56"
+            height="56"
             style={{
               width: 56,
               height: 56,
               borderRadius: 14,
-              background: "linear-gradient(135deg, #2563EB, #1E40AF)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 30,
-              fontWeight: 800,
-              color: "white",
             }}
-          >
-            B
-          </div>
+          />
           <div style={{ display: "flex", fontSize: 34, fontWeight: 700, color: "white" }}>
             Build<span style={{ color: "#60A5FA" }}>Ally</span>
           </div>

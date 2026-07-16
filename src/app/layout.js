@@ -40,6 +40,18 @@ export const metadata = {
   authors: [{ name: "BuildAlly" }],
   creator: "BuildAlly",
   publisher: "BuildAlly",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/app-icon.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: ["/favicon.ico"],
+  },
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
@@ -48,11 +60,20 @@ export const metadata = {
     siteName: SITE.name,
     title: "BuildAlly — Construction Management Software for Modern Builders",
     description: SITE.description,
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "BuildAlly — Construction Management Software for Modern Builders",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "BuildAlly — Construction Management Software for Modern Builders",
     description: SITE.description,
+    images: ["/opengraph-image"],
   },
   robots: {
     index: true,
@@ -78,6 +99,7 @@ function StructuredData() {
       url: SITE.domain,
       description: SITE.description,
       slogan: SITE.tagline,
+      logo: `${SITE.domain}/logo.png`,
     },
     {
       "@context": "https://schema.org",

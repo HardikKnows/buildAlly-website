@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="BuildAlly">
+  <defs>
+    <pattern id="bp" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#FFFFFF" stroke-opacity="0.07" stroke-width="1.5"/>
+    </pattern>
+    <clipPath id="sq"><path d="M256 16C92 16 16 92 16 256s76 240 240 240 240-76 240-240S420 16 256 16Z"/></clipPath>
+  </defs>
+  <g clip-path="url(#sq)">
+    <rect width="512" height="512" fill="#0B224E"/>
+    <rect width="512" height="512" fill="url(#bp)"/>
+    <!-- corner survey ticks -->
+    <g stroke="#FFFFFF" stroke-opacity="0.28" stroke-width="3" fill="none">
+      <path d="M44 70V44H70 M468 70V44H442 M44 442v26h26 M468 442v26h-26"/>
+    </g>
+    <!-- bold B -->
+    <g fill="#FFFFFF">
+      <rect x="150" y="120" width="54" height="272" rx="6"/>
+      <path d="M196 120 h74 a68 68 0 0 1 0 136 h-74 z"/>
+      <path d="M196 256 h84 a70 70 0 0 1 0 138 h-84 z"/>
+    </g>
+    <g fill="#0B224E">
+      <ellipse cx="236" cy="188" rx="28" ry="30"/>
+      <ellipse cx="246" cy="325" rx="34" ry="36"/>
+    </g>
+    <!-- diagonal draughting slash (navy, cuts through the B) -->
+    <line x1="372" y1="120" x2="150" y2="404" stroke="#0B224E" stroke-width="20" stroke-linecap="round"/>
+  </g>
+</svg>
