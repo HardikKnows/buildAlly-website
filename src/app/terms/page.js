@@ -4,100 +4,101 @@ import { CONTACT } from "@/lib/site";
 export const metadata = {
   title: "Terms of Service",
   description:
-    "The terms governing your use of BuildAlly's website and application. Template terms pending review by counsel.",
+    "The terms governing your use of BuildAlly's website, mobile application, and construction management platform.",
   alternates: { canonical: "/terms" },
   robots: { index: true, follow: true },
 };
 
 const SECTIONS = [
   {
-    heading: "Agreement to terms",
+    heading: "Agreement to Terms",
     body: [
-      "These Terms of Service (\"Terms\") govern your access to and use of BuildAlly's marketing website at buildally.in and application at app.buildally.in (together, the \"Services\"). By accessing or using the Services, you agree to be bound by these Terms.",
-      "If you are using the Services on behalf of an organisation, you represent that you are authorised to bind that organisation to these Terms.",
+      "By accessing or using BuildAlly's services, you accept and agree to be bound by these Terms of Service. If you are using the Services on behalf of an organization, you represent that you have the authority to bind that organization to these Terms.",
     ],
   },
   {
-    heading: "The Services",
+    heading: "Services",
     body: [
-      "BuildAlly provides a multi-tenant, cloud-based construction management platform. We may update, improve, or modify the Services over time. Certain features may be offered under different subscription plans.",
+      "BuildAlly provides a cloud-based construction management platform. Features and services may be updated, modified, or discontinued at any time without prior notice.",
     ],
   },
   {
-    heading: "Accounts & eligibility",
+    heading: "Accounts & Eligibility",
     body: [
-      "You are responsible for safeguarding your account credentials and for all activity under your account. You must provide accurate information and promptly update it as needed. You must be capable of forming a binding contract to use the Services.",
+      "You must provide accurate and complete information when creating an account. You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account.",
     ],
   },
   {
-    heading: "Accounts, trials & billing",
+    heading: "Subscriptions & Billing",
     body: [
-      "Accounts are created with email verification, and team members join through secure invitation links. Personalized product demos are available on request, and a 7-day trial is available after verification. Pilot accounts may be offered at our discretion.",
-      "Paid subscriptions are billed in advance for the applicable billing period and renew until cancelled; you may cancel at any time. Pricing is tailored to your team size and operational requirements and is provided on request. Taxes may apply. Refunds are governed by our Refund Policy.",
-      "If a subscription lapses or is suspended, you retain read-only access to your workspace and your data is not deleted; reactivating restores full access.",
+      "BuildAlly offers various subscription plans and trial periods. Subscriptions are billed in advance and renew automatically unless cancelled. Accounts may be suspended for non-payment but customer data will not be automatically deleted upon suspension.",
     ],
   },
   {
-    heading: "Acceptable use",
-    body: ["You agree not to:"],
-    list: [
-      "Use the Services in violation of any applicable law or regulation.",
-      "Attempt to gain unauthorised access to the Services or other accounts.",
-      "Interfere with or disrupt the integrity or performance of the Services.",
-      "Reverse engineer or misuse the Services except as permitted by law.",
+    heading: "Acceptable Use",
+    body: [
+      "You agree not to engage in illegal activities, attempt unauthorized access, distribute malware, reverse engineer the platform, or abuse the Services in any way.",
     ],
   },
   {
-    heading: "Your data",
+    heading: "Customer Data",
     body: [
-      "You retain ownership of the data you submit to the Services (\"Customer Data\"). You grant us a limited licence to host, process, and use Customer Data solely to provide and improve the Services. Our handling of personal information is described in our Privacy Policy.",
+      "You retain ownership of all data you upload to the Services. BuildAlly receives a limited license solely to host, process, and operate the Services. Our Privacy Policy governs the handling of your personal information.",
     ],
   },
   {
-    heading: "Intellectual property",
+    heading: "Intellectual Property",
     body: [
-      "The Services, including all software, design, and content (excluding Customer Data), are owned by BuildAlly and protected by intellectual property laws. These Terms do not grant you any rights other than the limited right to use the Services as permitted.",
+      "BuildAlly owns all software, branding, and platform content, excluding customer data. These Terms do not grant you any rights other than the limited right to use the Services as permitted.",
     ],
   },
   {
-    heading: "Confidentiality & security",
+    heading: "Confidentiality & Security",
     body: [
-      "We apply reasonable technical and organisational measures to protect the Services, including tenant isolation, access controls, and audit logging. You are responsible for configuring access within your workspace appropriately.",
+      "We implement reasonable technical and organizational safeguards, including role-based access controls and tenant isolation, to protect your data and the integrity of the Services.",
+    ],
+  },
+  {
+    heading: "Third-Party Services",
+    body: [
+      "The Services may integrate with third-party providers such as MongoDB Atlas, Cloudinary, Razorpay, Google Play Services, and others, each governed by their own terms and privacy policies.",
     ],
   },
   {
     heading: "Disclaimers",
     body: [
-      "The Services are provided \"as is\" and \"as available\" without warranties of any kind, whether express or implied, to the fullest extent permitted by law.",
+      "The Services are provided \"as is\" and \"as available\" without warranties of any kind, either express or implied.",
     ],
   },
   {
-    heading: "Limitation of liability",
+    heading: "Limitation of Liability",
     body: [
-      "To the maximum extent permitted by law, BuildAlly will not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, arising from your use of the Services.",
+      "To the maximum extent permitted by law, BuildAlly shall not be liable for any indirect, incidental, consequential, or punitive damages arising from your use of the Services.",
     ],
   },
   {
     heading: "Termination",
     body: [
-      "You may stop using the Services at any time. We may suspend or terminate access if you breach these Terms or to protect the Services. Upon termination, your right to use the Services ends; certain provisions survive termination.",
+      "You may stop using the Services at any time. BuildAlly may suspend or terminate your account for violations of these Terms or for security reasons.",
     ],
   },
   {
-    heading: "Governing law",
+    heading: "Governing Law",
     body: [
-      "These Terms are governed by the laws applicable in India, without regard to conflict-of-laws principles. Jurisdiction and venue are to be confirmed by counsel.",
+      "These Terms are governed by the laws of India without regard to conflict-of-laws principles.",
     ],
   },
   {
-    heading: "Changes to these terms",
+    heading: "Changes to Terms",
     body: [
-      "We may modify these Terms from time to time. If we make material changes, we will provide notice as appropriate. Continued use of the Services after changes take effect constitutes acceptance.",
+      "We may update these Terms from time to time. Updated terms become effective when published. Continued use of the Services constitutes acceptance of the revised Terms.",
     ],
   },
   {
     heading: "Contact",
-    body: [`Questions about these Terms? Contact us at ${CONTACT.general}.`],
+    body: [
+      `Questions regarding these Terms may be sent to ${CONTACT.general}.`,
+    ],
   },
 ];
 
@@ -105,8 +106,8 @@ export default function TermsPage() {
   return (
     <LegalPage
       title="Terms of Service"
-      updated="14 June 2026"
-      intro="These terms set out the rules for using BuildAlly. Please read them carefully."
+      updated="13 July 2026"
+      intro="These Terms of Service govern your access to and use of BuildAlly's website, mobile application, and related services."
       sections={SECTIONS}
     />
   );

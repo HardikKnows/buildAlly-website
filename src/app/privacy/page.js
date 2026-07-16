@@ -4,7 +4,7 @@ import { CONTACT } from "@/lib/site";
 export const metadata = {
   title: "Privacy Policy",
   description:
-    "How BuildAlly collects, uses, and protects your information. Template policy pending review by counsel.",
+    "Learn how BuildAlly collects, uses, stores, and protects your information when you use our website and construction management platform.",
   alternates: { canonical: "/privacy" },
   robots: { index: true, follow: true },
 };
@@ -13,77 +13,101 @@ const SECTIONS = [
   {
     heading: "Introduction",
     body: [
-      "BuildAlly (\"BuildAlly\", \"we\", \"us\", or \"our\") provides construction management software. This Privacy Policy explains how we collect, use, disclose, and safeguard information when you visit our marketing website at buildally.in or use our application at app.buildally.in (together, the \"Services\").",
-      "By using the Services, you agree to the collection and use of information in accordance with this policy.",
+      "BuildAlly provides construction management software via buildally.in and app.buildally.in. Use of the Services constitutes acceptance of this Privacy Policy.",
     ],
   },
   {
-    heading: "Information we collect",
-    body: ["We may collect the following categories of information:"],
+    heading: "Information We Collect",
+    body: [
+      "We collect various types of information to provide and improve our Services:",
+    ],
     list: [
-      "Account and contact information you provide (name, company, email, phone) when signing up, booking a demo, or contacting us.",
-      "Business data you add to the application (sites, expenses, payments, documents, team members).",
-      "Usage and device information, such as pages visited, actions taken, browser type, and IP address, collected via cookies and similar technologies.",
+      "Account information: name, email, phone, company, member ID, role.",
+      "Project/business data: sites, expenses, payments, attendance, documents, photos, comments.",
+      "Device information: device type, operating system, browser, IP address, app version, diagnostics.",
+      "Location information: used with your permission for attendance verification, geofencing, site verification, and location-based photo validation.",
     ],
   },
   {
-    heading: "How we use your information",
-    body: ["We use the information we collect to:"],
+    heading: "Camera and Photos",
+    body: [
+      "We may request camera access to capture construction progress and site photos. Photos may include capture time and location metadata where required for verification purposes.",
+    ],
+  },
+  {
+    heading: "Documents and Files",
+    body: [
+      "Users may upload PDFs, images, drawings, contracts, and office documents. These files are stored securely and accessible only to authorized users according to role-based permissions.",
+    ],
+  },
+  {
+    heading: "How We Use Information",
+    body: [
+      "We use collected information to:",
+    ],
     list: [
-      "Provide, operate, maintain, and improve the Services.",
-      "Respond to demo requests, support enquiries, and other communications.",
-      "Send service-related and, with your consent, marketing communications.",
-      "Monitor and analyse usage to improve security, performance, and features.",
-      "Comply with legal obligations and enforce our terms.",
+      "Provide and operate our Services.",
+      "Authenticate users and manage access.",
+      "Support project and attendance management.",
+      "Manage documents, expenses, and payments.",
+      "Enhance security and prevent fraud.",
+      "Provide customer support.",
+      "Improve performance and features.",
+      "Comply with legal obligations.",
     ],
   },
   {
-    heading: "Data security & tenant isolation",
+    heading: "Data Storage",
     body: [
-      "BuildAlly is designed with security in mind, including strict per-company tenant isolation, role-based access control, audit logging, and session management. We apply administrative, technical, and physical safeguards appropriate to the sensitivity of the data.",
-      "No method of transmission or storage is completely secure; we cannot guarantee absolute security.",
+      "Data may be securely stored using trusted cloud providers including MongoDB Atlas, Cloudinary, Railway, Vercel, and Razorpay (for payment processing).",
     ],
   },
   {
-    heading: "Data sharing & disclosure",
+    heading: "Data Sharing",
     body: [
-      "We do not sell your personal information. We may share information with service providers who process data on our behalf, when required by law, or in connection with a business transfer, subject to appropriate safeguards.",
+      "BuildAlly does not sell personal information. We only share data with authorized organization users, trusted infrastructure providers, or when legally required.",
     ],
   },
   {
-    heading: "Data retention",
+    heading: "Data Security",
     body: [
-      "We retain information for as long as your account is active or as needed to provide the Services, comply with legal obligations, resolve disputes, and enforce agreements. Free-tier limits do not delete your data.",
+      "We implement administrative, technical, and organizational safeguards to protect your data. However, no internet transmission or storage is completely secure.",
     ],
   },
   {
-    heading: "Your rights",
+    heading: "Data Retention",
     body: [
-      "Subject to applicable law, you may have the right to access, correct, export, or delete your personal information, and to object to or restrict certain processing. To exercise these rights, contact us using the details below.",
+      "We retain data only as necessary to provide our Services, meet legal obligations, maintain security, and support business operations.",
     ],
   },
   {
-    heading: "Cookies",
+    heading: "Your Rights",
     body: [
-      "We use cookies and similar technologies to operate the site, remember preferences, and measure performance. You can control cookies through your browser settings.",
+      "You have rights to access, correct, delete, and export your data, and to withdraw permissions where applicable. Contact BuildAlly to exercise these rights or for privacy inquiries.",
     ],
   },
   {
-    heading: "Children's privacy",
+    heading: "Children's Privacy",
     body: [
-      "The Services are intended for businesses and are not directed to children under the age required by applicable law. We do not knowingly collect personal information from children.",
+      "BuildAlly is intended for business and professional use and is not directed to children under 13 years of age.",
     ],
   },
   {
-    heading: "Changes to this policy",
+    heading: "Third-Party Services",
     body: [
-      "We may update this Privacy Policy from time to time. We will post the updated version with a revised \"Last updated\" date.",
+      "Our integrations may include Google Play Services, Razorpay, Cloudinary, and MongoDB Atlas, each governed by their own privacy policies.",
     ],
   },
   {
-    heading: "Contact us",
+    heading: "Changes to this Policy",
     body: [
-      `If you have questions about this Privacy Policy or our data practices, contact us at ${CONTACT.general}.`,
+      "We may update this Privacy Policy from time to time. Updates will be posted with a revised \"Last Updated\" date.",
+    ],
+  },
+  {
+    heading: "Contact Us",
+    body: [
+      `For questions about this Privacy Policy or our privacy practices, contact us at ${CONTACT.general}.`,
     ],
   },
 ];
@@ -92,8 +116,8 @@ export default function PrivacyPolicyPage() {
   return (
     <LegalPage
       title="Privacy Policy"
-      updated="14 June 2026"
-      intro="Your trust matters. This policy explains what information we collect and how we use and protect it."
+      updated="13 July 2026"
+      intro="This Privacy Policy explains how BuildAlly collects, uses, stores, and protects information when you use our website, mobile application, and related services."
       sections={SECTIONS}
     />
   );
