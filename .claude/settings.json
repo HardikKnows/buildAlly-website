@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sed -i.bak 's|localhost:3111|localhost:3112|' /private/tmp/claude-501/-Users-hardik-Documents-buildally-website/2a6e83b4-208a-40c4-ab6b-a1cb9d8c5ae4/scratchpad/diag.mjs)",
+      "Bash(node /private/tmp/claude-501/-Users-hardik-Documents-buildally-website/2a6e83b4-208a-40c4-ab6b-a1cb9d8c5ae4/scratchpad/diag.mjs)",
+      "Bash(pkill -f \"next start -p 3112\")",
+      "Bash(git stash *)",
+      "Bash(npx next *)",
+      "Bash(pkill -f \"next start -p 311\")",
+      "Bash(node /private/tmp/claude-501/-Users-hardik-Documents-buildally-website/2a6e83b4-208a-40c4-ab6b-a1cb9d8c5ae4/scratchpad/chain.mjs)",
+      "Bash(npx eslint *)"
+    ]
+  }
+}

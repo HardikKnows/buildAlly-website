@@ -1,4 +1,5 @@
 import { LegalPage } from "@/components/site/LegalPage";
+import { SUPPORT_EMAIL } from "@/lib/email";
 
 export const metadata = {
   title: "Delete Account",
@@ -7,8 +8,6 @@ export const metadata = {
   alternates: { canonical: "/delete-account" },
   robots: { index: true, follow: true },
 };
-
-const SUPPORT_EMAIL = "support@buildally.in";
 
 const SECTIONS = [
   {

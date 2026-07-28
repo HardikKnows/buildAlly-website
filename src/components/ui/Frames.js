@@ -9,8 +9,9 @@ export function BrowserFrame({ children, url = "app.buildally.in", className = "
         <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
         <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
         <span className="h-3 w-3 rounded-full bg-[#28c840]" />
-        <div className="ml-3 flex h-6 flex-1 items-center justify-center rounded-md border border-line bg-white px-3 text-xs text-slate-body">
-          {url}
+        {/* min-w-0 so the (unbreakable) URL can't set a floor on the frame width */}
+        <div className="ml-3 flex h-6 min-w-0 flex-1 items-center justify-center rounded-md border border-line bg-white px-3 text-xs text-slate-body">
+          <span className="truncate">{url}</span>
         </div>
       </div>
       <div className="bg-canvas">{children}</div>

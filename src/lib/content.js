@@ -1,6 +1,8 @@
 // Marketing content derived from WEBSITE_CONTEXT.md (single source of truth).
 // Benefit-led: every feature is paired with the outcome it delivers.
 
+import { PRICING, formatPrice, annualSavings, getPlan } from "./pricing";
+
 // --- Problem cards (Homepage §3 "Sound familiar?") ---
 export const PROBLEMS = [
   {
@@ -306,11 +308,7 @@ export const OWNER_OUTCOMES = [
 export const FAQS = [
   {
     q: "Can I see BuildAlly before purchasing?",
-    a: "Yes. Book a personalized demo and our team will walk you through BuildAlly with your workflows in mind. When you're ready, there's a 7-day trial after account verification so you can evaluate it with your own team.",
-  },
-  {
-    q: "How long is the free trial?",
-    a: "BuildAlly offers a 7-day trial after account verification, so you can evaluate it with your own team and sites before committing.",
+    a: "Yes. Book a personalized demo and our team will walk you through BuildAlly with your workflows in mind. When you're ready, a 7-day trial lets you evaluate it with your own team on real sites.",
   },
   {
     q: "Can I invite my team members?",
@@ -335,6 +333,70 @@ export const FAQS = [
   {
     q: "Can I manage subcontractors and payroll?",
     a: "Yes. Assign subcontractors to sites, track their payments and utilization, and run salary requests, payroll, and payslips — all from the same workspace, with role-based permissions.",
+  },
+];
+
+// --- Plan, trial & storage FAQ (Pricing page + FAQ page) ---
+// Every figure is derived from lib/pricing so the answers can never drift from
+// the plan cards.
+export const PLAN_FAQS = [
+  {
+    q: "Why is the trial paid?",
+    a: `The ${formatPrice(
+      PRICING.trialCredit,
+    )} is not an extra charge — it is fully adjusted against your subscription if you continue with BuildAlly. A paid trial keeps evaluations serious while letting you run BuildAlly on real projects for ${
+      PRICING.trialDays
+    } days.`,
+  },
+  {
+    q: "What happens after my trial ends?",
+    a: "Your workspace becomes read-only. Everything you added stays exactly where it is — nothing is deleted. Choose a plan whenever you're ready and you pick up right where you left off.",
+  },
+  {
+    q: `Will my ${formatPrice(PRICING.trialCredit)} be adjusted?`,
+    a: `Yes. The full ${formatPrice(
+      PRICING.trialCredit,
+    )} is deducted from your first subscription payment, on either a monthly or an annual plan.`,
+  },
+  {
+    q: "Can I upgrade during my trial?",
+    a: `Yes, you can upgrade at any point during the ${
+      PRICING.trialDays
+    } days. The ${formatPrice(
+      PRICING.trialCredit,
+    )} is automatically adjusted against your first payment.`,
+  },
+  {
+    q: "What happens if I exceed my storage?",
+    a: "Uploads pause until you either upgrade your plan or delete unused files. Nothing already in your workspace is removed, and your team keeps full access to it.",
+  },
+  {
+    q: "Can I upgrade later?",
+    a: "Yes. Move up a plan at any time without losing any data — your sites, documents, and history carry over untouched.",
+  },
+  {
+    q: "Is this a limited-period offer?",
+    a: `Yes. Interior at ${formatPrice(
+      getPlan("interior").price,
+    )}/month and Builder at ${formatPrice(
+      getPlan("builder").price,
+    )}/month are launch pricing on our standard rates of ${formatPrice(
+      getPlan("interior").originalPrice,
+    )} and ${formatPrice(
+      getPlan("builder").originalPrice,
+    )} a month. Lock it in while it lasts — your rate stays the same for as long as your subscription is active.`,
+  },
+  {
+    q: "What's the difference between monthly and annual billing?",
+    a: `It's the same plan either way — annual is simply billed once at a lower effective rate. Interior saves ${formatPrice(
+      annualSavings(getPlan("interior")).amount,
+    )} a year and Builder saves ${formatPrice(
+      annualSavings(getPlan("builder")).amount,
+    )} a year compared with paying monthly.`,
+  },
+  {
+    q: "Do you offer custom plans for larger teams?",
+    a: "Enterprise is coming soon — unlimited sites and storage, a dedicated account manager, custom integrations, and onboarding assistance. Talk to sales and we'll shape a plan around your rollout.",
   },
 ];
 

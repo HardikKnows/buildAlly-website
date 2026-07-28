@@ -3,7 +3,8 @@ import { Logo } from "@/components/ui/Logo";
 import { Icon } from "@/components/ui/Icon";
 import { Container } from "@/components/ui/Container";
 import { TrackedButton } from "@/components/ui/TrackedButton";
-import { FOOTER_NAV, SITE, URLS, CONTACT, CTA_MICROCOPY } from "@/lib/site";
+import { FOOTER_NAV, SITE, URLS, CTA_MICROCOPY } from "@/lib/site";
+import { SUPPORT_EMAIL, SUPPORT_MAILTO } from "@/lib/email";
 import { EVENTS } from "@/lib/track";
 
 export function Footer() {
@@ -52,10 +53,10 @@ export function Footer() {
               {SITE.tagline}
             </p>
             <a
-              href={`mailto:${CONTACT.general}`}
+              href={SUPPORT_MAILTO}
               className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:text-brand-deep"
             >
-              <Icon name="Mail" size={15} /> {CONTACT.general}
+              <Icon name="Mail" size={15} /> {SUPPORT_EMAIL}
             </a>
           </div>
 

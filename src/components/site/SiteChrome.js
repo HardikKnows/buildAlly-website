@@ -5,7 +5,7 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { MobileCTABar } from "@/components/site/MobileCTABar";
 
-const CHROMELESS_ROUTES = new Set(["/playstore-assets"]);
+const CHROMELESS_ROUTES = new Set(["/playstore-assets", "/playstore-feature"]);
 
 export function SiteChrome({ children }) {
   const pathname = usePathname();

@@ -13,7 +13,7 @@ export const SITE = {
 // Demos are scheduled with our team via /book-demo (no public/anonymous demo).
 export const URLS = {
   app: "https://app.buildally.in",
-  signup: "https://app.buildally.in", // self-serve 7-day trial (tertiary CTA)
+  signup: "https://app.buildally.in", // self-serve 7-day paid trial (tertiary CTA)
   login: "https://app.buildally.in",
   api: "https://api.buildally.in",
   bookDemo: "/book-demo", // demo request form — primary CTA
@@ -24,11 +24,8 @@ export const URLS = {
 export const CTA_MICROCOPY =
   "A personalized walkthrough with our team · See BuildAlly mapped to your workflows.";
 
-export const CONTACT = {
-  sales: "sales.buildally@gmail.com",
-  support: "support.buildally@gmail.com",
-  general: "hardiktiwari895@gmail.com", // admin / general / contact routing
-};
+// Contact email lives in @/lib/email — one official address for the whole
+// product. Import SUPPORT_EMAIL / supportMailto from there, not from here.
 
 export const MAIN_NAV = [
   { label: "Features", href: "/features" },
@@ -67,7 +64,7 @@ export const FOOTER_NAV = [
     title: "Contact",
     links: [
       { label: "Contact Sales", href: "/contact" },
-      { label: "Start Free Trial", href: URLS.signup, external: true },
+      { label: "Start 7-Day Trial", href: URLS.signup, external: true },
       { label: "Login", href: URLS.login, external: true },
     ],
   },

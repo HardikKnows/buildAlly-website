@@ -69,7 +69,7 @@ export function ProductScreenshots() {
             key={row.title}
             className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
           >
-            <Reveal className={row.reverse ? "lg:order-2" : ""}>
+            <Reveal className={`min-w-0 ${row.reverse ? "lg:order-2" : ""}`}>
               <p className="text-sm font-semibold uppercase tracking-wider text-brand">
                 {row.eyebrow}
               </p>
@@ -86,7 +86,13 @@ export function ProductScreenshots() {
                 ))}
               </ul>
             </Reveal>
-            <Reveal y={26} delay={0.05} className={row.reverse ? "lg:order-1" : ""}>
+            {/* min-w-0: without it the mockup's min-content sizes the auto grid
+                track and pushes the whole page wider than the viewport. */}
+            <Reveal
+              y={26}
+              delay={0.05}
+              className={`min-w-0 ${row.reverse ? "lg:order-1" : ""}`}
+            >
               <BrowserFrame url={row.url}>
                 <row.Panel />
               </BrowserFrame>

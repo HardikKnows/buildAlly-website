@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 
 // Lead-capture form for Book a Demo / Contact.
-// Submits to /api/contact, which delivers via Resend to CONTACT_EMAIL.
+// Submits to /api/contact, which delivers via Resend to the official inbox.
 
 const baseField =
   "w-full rounded-xl border bg-white px-4 py-3 text-[15px] text-ink placeholder:text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-brand/20";

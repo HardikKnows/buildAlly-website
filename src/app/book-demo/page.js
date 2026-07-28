@@ -2,7 +2,7 @@ import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui/Icon";
 import { LeadForm } from "@/components/site/LeadForm";
-import { CONTACT } from "@/lib/site";
+import { SUPPORT_EMAIL, supportMailto } from "@/lib/email";
 
 export const metadata = {
   title: "Book a Demo — See BuildAlly for Your Business",
@@ -63,19 +63,18 @@ export default function BookDemoPage() {
                 sales team directly.
               </p>
               <a
-                href={`mailto:${CONTACT.sales}`}
+                href={supportMailto("Sales enquiry")}
                 className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:text-brand-deep"
               >
-                <Icon name="Mail" size={15} /> {CONTACT.sales}
+                <Icon name="Mail" size={15} /> {SUPPORT_EMAIL}
               </a>
             </Reveal>
           </div>
 
           {/* Right: form */}
           <Reveal y={24} delay={0.1}>
-            {/* PLACEHOLDER: connect a scheduling tool (e.g. Calendly) or CRM endpoint.
-                Until then, this form composes a mailto to the sales inbox. */}
-            <LeadForm variant="demo" recipient={CONTACT.sales} />
+            {/* PLACEHOLDER: connect a scheduling tool (e.g. Calendly) or CRM endpoint. */}
+            <LeadForm variant="demo" recipient={SUPPORT_EMAIL} />
           </Reveal>
         </div>
       </Container>

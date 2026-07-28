@@ -1,5 +1,6 @@
 import { LegalPage } from "@/components/site/LegalPage";
-import { CONTACT } from "@/lib/site";
+import { SUPPORT_EMAIL } from "@/lib/email";
+import { PRICING, formatPrice } from "@/lib/pricing";
 
 export const metadata = {
   title: "Refund Policy",
@@ -17,9 +18,14 @@ const SECTIONS = [
     ],
   },
   {
-    heading: "Free Trial & Demo",
+    heading: "Paid Trial & Demo",
     body: [
-      "Customers are encouraged to evaluate the platform through demos and any available trial before purchasing.",
+      `Customers are encouraged to evaluate the platform through a personalized demo and the ${PRICING.trialDays}-day trial before purchasing.`,
+      `The ${formatPrice(
+        PRICING.trialCredit,
+      )} trial fee is a one-time charge for a ${
+        PRICING.trialDays
+      }-day evaluation and is credited in full towards the first payment on any monthly or annual subscription.`,
     ],
   },
   {
@@ -49,7 +55,7 @@ const SECTIONS = [
   {
     heading: "Refund Request Process",
     body: [
-      `Refund requests should be submitted to ${CONTACT.support} with account details, payment information, and the reason for the request. We aim to review requests promptly.`,
+      `Refund requests should be submitted to ${SUPPORT_EMAIL} with account details, payment information, and the reason for the request. We aim to review requests promptly.`,
     ],
   },
   {
@@ -67,7 +73,7 @@ const SECTIONS = [
   {
     heading: "Contact",
     body: [
-      `Questions regarding billing or refunds may be sent to ${CONTACT.support}.`,
+      `Questions regarding billing or refunds may be sent to ${SUPPORT_EMAIL}.`,
     ],
   },
 ];

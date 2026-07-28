@@ -2,7 +2,8 @@ import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui/Icon";
 import { LeadForm } from "@/components/site/LeadForm";
-import { CONTACT, URLS } from "@/lib/site";
+import { URLS } from "@/lib/site";
+import { SUPPORT_EMAIL, supportMailto } from "@/lib/email";
 
 export const metadata = {
   title: "Contact — Talk to the BuildAlly Team",
@@ -16,13 +17,14 @@ const CHANNELS = [
     icon: "Briefcase",
     title: "Sales",
     body: "Pricing, demos, and rollout for your team.",
-    action: { label: CONTACT.sales, href: `mailto:${CONTACT.sales}` },
+    // One inbox for everything — the prefilled subject keeps intent triageable.
+    action: { label: SUPPORT_EMAIL, href: supportMailto("Sales enquiry") },
   },
   {
     icon: "LifeBuoy",
     title: "Support",
     body: "Already using BuildAlly? We're here to help.",
-    action: { label: CONTACT.support, href: `mailto:${CONTACT.support}` },
+    action: { label: SUPPORT_EMAIL, href: supportMailto("Support request") },
   },
   {
     icon: "LogIn",
@@ -83,8 +85,7 @@ export default function ContactPage() {
 
           {/* Form */}
           <Reveal y={24} delay={0.1} className="lg:col-span-3">
-            {/* PLACEHOLDER: connect a forms/email provider. Falls back to mailto for now. */}
-            <LeadForm variant="contact" recipient={CONTACT.general} />
+            <LeadForm variant="contact" recipient={SUPPORT_EMAIL} />
           </Reveal>
         </div>
       </Container>

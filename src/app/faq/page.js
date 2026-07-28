@@ -3,18 +3,20 @@ import { Section, SectionHeading } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { Accordion } from "@/components/ui/Accordion";
 import { CTAGroup } from "@/components/ui/CTAGroup";
-import { FAQS, OBJECTIONS } from "@/lib/content";
+import { FAQS, PLAN_FAQS, OBJECTIONS } from "@/lib/content";
 
 export const metadata = {
   title: "FAQ — Common Questions About BuildAlly",
   description:
-    "Answers to common questions about BuildAlly: booking a personalized demo, the 7-day trial, inviting your team, subscription access, data security, and support for smaller contractors.",
+    "Answers to common questions about BuildAlly: booking a personalized demo, how the ₹999 7-day trial is credited to your subscription, plan limits and storage, inviting your team, data security, and support for smaller contractors.",
   alternates: { canonical: "/faq" },
 };
 
-// Combine the homepage FAQs with objection-handling for a fuller list.
+// Combine the homepage FAQs with plan/trial pricing answers and
+// objection-handling for a fuller list.
 const ALL = [
   ...FAQS,
+  ...PLAN_FAQS,
   ...OBJECTIONS.map((o) => ({ q: o.objection, a: o.answer })),
 ];
 

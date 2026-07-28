@@ -1,5 +1,5 @@
 import { LegalPage } from "@/components/site/LegalPage";
-import { CONTACT } from "@/lib/site";
+import { SUPPORT_EMAIL } from "@/lib/email";
 
 export const metadata = {
   title: "Terms of Service",
@@ -97,7 +97,7 @@ const SECTIONS = [
   {
     heading: "Contact",
     body: [
-      `Questions regarding these Terms may be sent to ${CONTACT.general}.`,
+      `Questions regarding these Terms may be sent to ${SUPPORT_EMAIL}.`,
     ],
   },
 ];

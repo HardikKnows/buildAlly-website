@@ -129,7 +129,7 @@ export function Navbar() {
                 }}
                 className="block rounded-lg px-3 py-3 text-base font-medium text-ink hover:bg-canvas"
               >
-                Start free trial
+                Start 7-Day Trial
               </a>
               <div className="flex flex-col gap-2 pt-2">
                 <Button

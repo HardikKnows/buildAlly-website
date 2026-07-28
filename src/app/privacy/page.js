@@ -1,5 +1,5 @@
 import { LegalPage } from "@/components/site/LegalPage";
-import { CONTACT } from "@/lib/site";
+import { SUPPORT_EMAIL } from "@/lib/email";
 
 export const metadata = {
   title: "Privacy Policy",
@@ -107,7 +107,7 @@ const SECTIONS = [
   {
     heading: "Contact Us",
     body: [
-      `For questions about this Privacy Policy or our privacy practices, contact us at ${CONTACT.general}.`,
+      `For questions about this Privacy Policy or our privacy practices, contact us at ${SUPPORT_EMAIL}.`,
     ],
   },
 ];

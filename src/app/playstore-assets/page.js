@@ -2,10 +2,8 @@ import { BrowserFrame, PhoneFrame } from "@/components/ui/Frames";
 import { DashboardMockup } from "@/components/mockups/DashboardMockup";
 import { PhoneMockup } from "@/components/mockups/PhoneMockup";
 import {
-  PanelApprovals,
   PanelDocuments,
   PanelFinance,
-  PanelPayroll,
   PanelSiteHub,
 } from "@/components/mockups/Panels";
 
@@ -15,18 +13,11 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 
-const PRODUCT_PANELS = [
-  { id: "site-hub", url: "app.buildally.in/sites", Panel: PanelSiteHub },
-  { id: "finance", url: "app.buildally.in/finance", Panel: PanelFinance },
-  { id: "payroll", url: "app.buildally.in/payroll", Panel: PanelPayroll },
-  { id: "documents", url: "app.buildally.in/documents", Panel: PanelDocuments },
-  { id: "approvals", url: "app.buildally.in/approvals", Panel: PanelApprovals },
-];
-
 function AssetSection({ id, children }) {
   return (
     <section
       id={id}
+      data-export
       className="flex min-h-screen items-center justify-center bg-white px-6 py-24"
     >
       {children}
@@ -37,27 +28,11 @@ function AssetSection({ id, children }) {
 export default function PlayStoreAssetsPage() {
   return (
     <main id="main" className="bg-white">
-      <AssetSection id="hero-phone-mockup">
-        <PhoneFrame>
-          <PhoneMockup />
-        </PhoneFrame>
-      </AssetSection>
-
       <AssetSection id="dashboard-mockup">
         <div className="w-full max-w-5xl">
           <BrowserFrame>
             <DashboardMockup />
           </BrowserFrame>
-        </div>
-      </AssetSection>
-
-      <AssetSection id="product-screenshots">
-        <div className="grid w-full max-w-6xl grid-cols-1 items-center gap-8 md:grid-cols-2 xl:grid-cols-3">
-          {PRODUCT_PANELS.map(({ id, url, Panel }) => (
-            <BrowserFrame key={id} url={url}>
-              <Panel />
-            </BrowserFrame>
-          ))}
         </div>
       </AssetSection>
 
@@ -67,10 +42,26 @@ export default function PlayStoreAssetsPage() {
         </PhoneFrame>
       </AssetSection>
 
-      <AssetSection id="dashboard-showcase">
-        <div className="w-full max-w-6xl">
-          <BrowserFrame>
-            <DashboardMockup />
+      <AssetSection id="projects-screenshot">
+        <div className="w-full max-w-3xl">
+          <BrowserFrame url="app.buildally.in/sites">
+            <PanelSiteHub />
+          </BrowserFrame>
+        </div>
+      </AssetSection>
+
+      <AssetSection id="documents-screenshot">
+        <div className="w-full max-w-3xl">
+          <BrowserFrame url="app.buildally.in/documents">
+            <PanelDocuments />
+          </BrowserFrame>
+        </div>
+      </AssetSection>
+
+      <AssetSection id="expenses-screenshot">
+        <div className="w-full max-w-3xl">
+          <BrowserFrame url="app.buildally.in/finance">
+            <PanelFinance />
           </BrowserFrame>
         </div>
       </AssetSection>

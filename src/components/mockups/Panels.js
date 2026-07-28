@@ -95,7 +95,7 @@ export function PanelDocuments() {
             <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-50 text-brand">
               <Icon name={d.icon} size={17} />
             </span>
-            <span className="flex-1 truncate text-sm text-ink">{d.name}</span>
+            <span className="min-w-0 flex-1 truncate text-sm text-ink">{d.name}</span>
             <span className={`rounded-md px-2 py-0.5 text-[11px] font-medium ${toneCls[d.tone]}`}>
               {d.status}
             </span>

@@ -1,18 +1,16 @@
 import { Resend } from "resend";
+import { emailFrom, inboxAddress } from "@/lib/email";
 
 // Production contact/demo form handler.
-// Sends submissions via Resend to CONTACT_EMAIL.
+// Sends submissions via Resend to the official BuildAlly inbox.
 //
 // Required env vars:
-//   RESEND_API_KEY     — your Resend API key
-//   CONTACT_EMAIL      — inbox that receives submissions
-// Optional env vars:
-//   RESEND_FROM_EMAIL  — verified sender, e.g. "BuildAlly <hello@buildally.in>".
-//                        Defaults to Resend's onboarding sender (test mode only).
+//   RESEND_API_KEY — your Resend API key
+// Optional env vars (see @/lib/email for defaults):
+//   EMAIL_FROM     — verified Resend sender
+//   EMAIL_TO       — inbox that receives submissions
 
 export const runtime = "nodejs"; // Resend SDK needs the Node runtime on Vercel.
-
-const FROM = process.env.RESEND_FROM_EMAIL || "BuildAlly <onboarding@resend.dev>";
 
 // Loose but real validation. Server is the source of truth.
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -66,20 +64,16 @@ export async function POST(request) {
     return Response.json({ ok: false, errors }, { status: 400 });
   }
 
-  // Route by intent: demo requests -> sales, contact messages -> support.
-  // Each falls back to CONTACT_EMAIL if its dedicated inbox isn't configured.
+  // Demo requests and contact messages both reach the single official inbox;
+  // the variant only shapes the subject line so the team can triage.
   const variant = body.variant === "demo" ? "demo" : "contact";
-  const fallback = process.env.CONTACT_EMAIL;
-  const to =
-    variant === "demo"
-      ? process.env.SALES_EMAIL || fallback
-      : process.env.SUPPORT_EMAIL || fallback;
+  const to = inboxAddress();
 
   // Config guard — fail clearly if env is missing rather than 500-ing opaquely.
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey || !to) {
     console.error(
-      "Contact form misconfigured: RESEND_API_KEY or a destination inbox (SALES_EMAIL / SUPPORT_EMAIL / CONTACT_EMAIL) missing."
+      "Contact form misconfigured: RESEND_API_KEY missing or no destination inbox resolved."
     );
     return Response.json(
       { ok: false, error: "The form isn't configured yet. Please email us directly." },
@@ -133,7 +127,7 @@ export async function POST(request) {
   try {
     const resend = new Resend(apiKey);
     const { error } = await resend.emails.send({
-      from: FROM,
+      from: emailFrom("support"), // BuildAlly Support <support@buildally.in>
       to,
       replyTo: clean.email,
       subject,
