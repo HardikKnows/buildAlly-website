@@ -2,12 +2,13 @@ import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui/Icon";
 import { PhoneShot } from "@/components/ui/Screenshot";
+import { PlayStoreBadge } from "@/components/ui/PlayStoreBadge";
 import { MOBILE_SHOTS } from "@/lib/product";
 
 // Verified against inventory §24 "Mobile Experience" — every claim here is
 // implemented today.
 const POINTS = [
-  { icon: "Download", title: "Install from the browser", body: "A PWA with app shortcuts. No app store, no IT ticket." },
+  { icon: "Download", title: "Install from the browser", body: "A PWA with app shortcuts — or get the Android app from Google Play." },
   { icon: "Camera", title: "Native camera & GPS", body: "Check in and capture verified site photos straight from the phone." },
   { icon: "WifiOff", title: "Works offline", body: "A queue replays what your team recorded once signal comes back." },
   { icon: "LayoutGrid", title: "Every role, reflowed", body: "Dashboards, the 12-tab Site Hub and the client portal, all on mobile." },
@@ -46,6 +47,13 @@ export function MobileExperience() {
               </li>
             ))}
           </ul>
+
+          <div className="mt-8 flex flex-wrap items-center gap-4">
+            <PlayStoreBadge />
+            <p className="text-sm text-slate-body">
+              Or install straight from your browser — no app store needed.
+            </p>
+          </div>
         </Reveal>
 
         <Reveal y={26} className="order-1 min-w-0 lg:order-2">
