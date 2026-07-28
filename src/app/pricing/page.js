@@ -10,7 +10,13 @@ import { TrialBanner } from "@/components/pricing/TrialBanner";
 import { SITE, URLS } from "@/lib/site";
 import { EVENTS } from "@/lib/track";
 import { PLAN_FAQS } from "@/lib/content";
-import { PRICING, STORAGE_USES, getPlan, formatPrice } from "@/lib/pricing";
+import {
+  PRICING,
+  STORAGE_USES,
+  getPlan,
+  formatPrice,
+  priceFor,
+} from "@/lib/pricing";
 
 // Derive all pricing copy from the centralized config — no duplicated numbers.
 const trial = getPlan("trial");
@@ -20,16 +26,17 @@ const builder = getPlan("builder");
 export const metadata = {
   title: "Pricing — BuildAlly Construction Management Software Plans",
   description: `BuildAlly pricing for builders and interior teams: a ${formatPrice(
-    trial.price,
-  )} ${PRICING.trialDays}-day trial credited towards your subscription, Interior at ${formatPrice(
-    interior.price,
-  )}/month, and Builder at ${formatPrice(
-    builder.price,
-  )}/month (limited-period launch pricing). Site management, attendance, expenses, treasury, documents, and reports in one construction ERP built for Indian builders.`,
+    priceFor(trial, "monthly").price,
+  )} ${PRICING.trialDays}-day trial credited towards your subscription, Interior from ${formatPrice(
+    priceFor(interior, "monthly").price,
+  )}/month, and Builder from ${formatPrice(
+    priceFor(builder, "monthly").price,
+  )}/month (limited-period launch pricing, billed monthly or annually). Site management, attendance, expenses, treasury, documents, and reports in one construction ERP built for Indian builders.`,
   alternates: { canonical: "/pricing" },
 };
 
 // Product + Offer structured data so search engines can surface the plans.
+// Annual is the default cycle, so that's what we publish.
 function PricingStructuredData() {
   const data = {
     "@context": "https://schema.org",
@@ -38,11 +45,12 @@ function PricingStructuredData() {
     description: SITE.description,
     brand: { "@type": "Brand", name: SITE.name },
     offers: PRICING.plans
-      .filter((plan) => plan.price)
-      .map((plan) => ({
+      .map((plan) => ({ plan, billing: priceFor(plan, "annual") }))
+      .filter(({ billing }) => billing?.price)
+      .map(({ plan, billing }) => ({
         "@type": "Offer",
         name: plan.name,
-        price: plan.price,
+        price: billing.price,
         priceCurrency: PRICING.currency,
         url: `${SITE.domain}/pricing`,
         availability: "https://schema.org/InStock",
@@ -160,12 +168,12 @@ export default function PricingPage() {
         </Reveal>
       </Section>
 
-      {/* Comparison table */}
-      <Section tone="canvas" containerSize="wide">
+      {/* Comparison table — the "Compare plans" links on each card land here. */}
+      <Section tone="canvas" id="compare" containerSize="wide">
         <SectionHeading
           eyebrow="Compare plans"
           title="Every plan, side by side"
-          lead="The full platform is in every plan. What changes is how many live sites you run, how much you store, and the support you get."
+          lead="The complete platform ships with every plan — attendance, expenses, treasury, and documents from day one. Plans differ by capacity, advanced analytics, automation, and support."
         />
         <PlanComparison />
       </Section>

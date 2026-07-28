@@ -1,8 +1,9 @@
 // Single source of truth for BuildAlly public pricing (marketing website).
 //
-// Update prices, site limits, and storage ONCE here — the pricing page, the
-// homepage teaser, the comparison table, and the structured data all read from
-// this config. Do not hardcode a rupee amount or a storage figure anywhere else.
+// Update prices, limits, storage, and features ONCE here — the pricing page,
+// the billing toggle, the homepage teaser, the comparison table, and the
+// structured data all read from this config. Do not hardcode a rupee amount,
+// a site limit, or a storage figure anywhere else.
 //
 // Plans:
 //   Trial       ₹999 / 7 days  — fully credited towards any paid subscription
@@ -10,9 +11,21 @@
 //   Builder     ₹4,499/mo  ·  ₹49,999/yr   (recommended)
 //   Enterprise  custom pricing — coming soon
 //
-// Limited-period launch offer on the two paid plans. `originalPrice` /
-// `originalAnnualPrice` are the standard rates shown struck through; the
-// discount badge is computed from them, never hardcoded.
+// Each paid plan carries a per-cycle `billing` block. `originalPrice` is the
+// standard rate shown struck through for the limited-period launch offer; the
+// discount badge is computed from it, never hardcoded.
+//
+// Feature philosophy: every plan ships the complete platform — construction
+// teams need attendance, expenses, treasury, and documents from day one. Plans
+// differ by capacity (sites, storage), advanced analytics and automation,
+// support tier, and premium capabilities. Core features are never withheld.
+
+export const BILLING_CYCLES = [
+  { id: "annual", label: "Annual Billing" },
+  { id: "monthly", label: "Monthly Billing" },
+];
+
+export const DEFAULT_CYCLE = "annual";
 
 export const PRICING = {
   currency: "INR",
@@ -26,21 +39,34 @@ export const PRICING = {
       name: "BuildAlly Trial",
       shortName: "Trial",
       tagline: "A 7-day professional evaluation on your real projects.",
-      price: 999,
-      periodLabel: "for 7 days",
-      billingNote: "One-time · Credited to your subscription",
+      bestFor: ["Teams evaluating BuildAlly on a live site"],
+      // Same price on either cycle — a trial has no billing cadence.
+      billing: {
+        annual: {
+          price: 999,
+          periodLabel: "for 7 days",
+          note: "One-time · Credited to your subscription",
+        },
+        monthly: {
+          price: 999,
+          periodLabel: "for 7 days",
+          note: "One-time · Credited to your subscription",
+        },
+      },
       sites: "Up to 5",
-      sitesShort: "5",
       storage: "2 GB",
+      members: "Included",
       support: "Email support",
-      features: [
+      highlights: [
         "Full platform access",
         "Up to 5 active sites",
-        "2 GB storage",
-        "Complete feature access",
-        "₹999 credited towards any paid subscription",
-        "Read-only after the trial expires",
-        "No data is deleted",
+        "2 GB cloud storage",
+        "Project, site & member management",
+        "Attendance & task management",
+        "Expenses, salary & treasury",
+        "Documents, reports & notifications",
+        "Mobile responsive access",
+        "₹999 credited towards your subscription",
       ],
       cta: { label: "Start 7-Day Trial", action: "trial" },
     },
@@ -50,28 +76,34 @@ export const PRICING = {
       shortName: "Interior",
       tagline: "Everything a design-led team needs to run projects end to end.",
       bestFor: ["Interior designers", "Renovation contractors", "Small builders"],
-      originalPrice: 3899,
-      price: 2899,
-      periodLabel: "/month",
-      originalAnnualPrice: 39999,
-      annualPrice: 29999,
-      billingNote: "Billed monthly or annually · Cancel anytime",
+      billing: {
+        annual: {
+          price: 29999,
+          originalPrice: 39999,
+          periodLabel: "/year",
+          note: "Billed annually · Cancel anytime",
+        },
+        monthly: {
+          price: 2899,
+          originalPrice: 3899,
+          periodLabel: "/month",
+          note: "Billed monthly · Cancel anytime",
+        },
+      },
       sites: "Up to 7",
-      sitesShort: "7",
       storage: "25 GB",
-      support: "Priority email support",
-      features: [
+      members: "Unlimited",
+      support: "Priority email",
+      inherits: "Everything in Trial, plus…",
+      highlights: [
         "Up to 7 active sites",
-        "25 GB storage",
-        "Complete project management",
-        "Attendance",
-        "Expenses",
-        "Salary",
-        "Treasury",
-        "Documents",
-        "Reports",
-        "Task management",
-        "Photo management",
+        "25 GB cloud storage",
+        "Unlimited team members",
+        "Geofencing attendance",
+        "Geotagged site photos",
+        "Estimated salary & payroll",
+        "Expense approval workflow",
+        "Treasury dashboard & advanced financial reports",
         "Priority email support",
       ],
       cta: { label: "Choose Interior", action: "subscribe" },
@@ -85,25 +117,37 @@ export const PRICING = {
         "Construction companies",
         "Civil contractors",
         "Turnkey builders",
-        "Residential builders",
-        "Commercial builders",
+        "Residential & commercial builders",
       ],
-      originalPrice: 6000,
-      price: 4499,
-      periodLabel: "/month",
-      originalAnnualPrice: 65000,
-      annualPrice: 49999,
-      billingNote: "Billed monthly or annually · Cancel anytime",
+      billing: {
+        annual: {
+          price: 49999,
+          originalPrice: 65000,
+          periodLabel: "/year",
+          note: "Billed annually · Cancel anytime",
+        },
+        monthly: {
+          price: 4499,
+          originalPrice: 6000,
+          periodLabel: "/month",
+          note: "Billed monthly · Cancel anytime",
+        },
+      },
       sites: "Up to 12",
-      sitesShort: "12",
       storage: "75 GB",
-      support: "Priority support",
-      features: [
+      members: "Unlimited",
+      support: "Faster priority",
+      inherits: "Everything in Interior, plus…",
+      highlights: [
         "Up to 12 active sites",
-        "75 GB storage",
-        "Everything in Interior",
-        "Priority support",
-        "Best value",
+        "75 GB cloud storage",
+        "Advanced project analytics",
+        "Company-wide financial dashboard",
+        "Advanced treasury controls",
+        "Multi-level approval workflows",
+        "Detailed reporting & analytics",
+        "Faster priority support",
+        "Early access to new features",
       ],
       featured: true,
       badge: "Most Popular",
@@ -114,56 +158,114 @@ export const PRICING = {
       name: "Enterprise",
       shortName: "Enterprise",
       tagline: "For large builders with custom scale, security, and integrations.",
+      bestFor: ["Large builders & multi-company groups"],
       priceLabel: "Custom Pricing",
       comingSoon: true,
       billingNote: "Tailored to your scale and rollout",
       sites: "Unlimited",
-      sitesShort: "Unlimited",
       storage: "Unlimited",
-      support: "Dedicated manager",
-      features: [
+      members: "Unlimited",
+      support: "SLA-backed",
+      inherits: "Everything in Builder, plus…",
+      highlights: [
         "Unlimited active sites",
-        "Unlimited storage",
+        "Unlimited cloud storage",
         "Dedicated account manager",
-        "Priority support",
-        "Custom integrations",
-        "Enterprise security",
-        "Onboarding assistance",
+        "Custom onboarding & integrations",
+        "API access",
+        "White labelling",
+        "Advanced security controls",
+        "Custom roles & permissions",
+        "SLA-backed priority support",
       ],
       cta: { label: "Contact Sales", action: "contact" },
     },
   ],
 };
 
-// Plan-by-plan feature comparison. `true` renders a checkmark, a falsy value
-// renders an em dash, and a string renders as-is. Column order follows
-// COMPARISON.columns, which must stay in sync with the plan ids above.
+// Grouped feature comparison. `true` renders a checkmark, a falsy value renders
+// an em dash, and a string renders as-is. Values follow COMPARISON.columns.
+//
+// Core construction features (attendance, expenses, treasury, documents) are
+// available on every plan by design — see the feature philosophy note above.
 export const COMPARISON = {
   columns: ["trial", "interior", "builder", "enterprise"],
-  rows: [
-    { label: "Active Sites", values: ["5", "7", "12", "Unlimited"] },
-    { label: "Storage", values: ["2 GB", "25 GB", "75 GB", "Unlimited"] },
-    { label: "Attendance", values: [true, true, true, true] },
-    { label: "Expenses", values: [true, true, true, true] },
-    { label: "Salary", values: [true, true, true, true] },
-    { label: "Treasury", values: [true, true, true, true] },
-    { label: "Documents", values: [true, true, true, true] },
-    { label: "Reports", values: [true, true, true, true] },
-    { label: "Team Management", values: [true, true, true, true] },
-    { label: "Notifications", values: [true, true, true, true] },
+  groups: [
     {
-      label: "Customer Support",
-      values: ["Email", "Priority email", "Priority", "Dedicated manager"],
+      title: "Usage Limits",
+      rows: [
+        { label: "Active Sites", values: ["5", "7", "12", "Unlimited"] },
+        { label: "Storage", values: ["2 GB", "25 GB", "75 GB", "Unlimited"] },
+        {
+          label: "Team Members",
+          values: ["Included", "Unlimited", "Unlimited", "Unlimited"],
+        },
+      ],
     },
     {
-      label: "White Label",
-      note: "Future",
-      values: [false, false, false, "Coming soon"],
+      title: "Project Management",
+      rows: [
+        { label: "Project Dashboard", values: [true, true, true, true] },
+        { label: "Site Progress", values: [true, true, true, true] },
+        { label: "Site Gallery", values: [true, true, true, true] },
+        { label: "Task Management", values: [true, true, true, true] },
+        {
+          label: "Advanced Project Analytics",
+          values: [false, false, true, true],
+        },
+      ],
     },
     {
-      label: "API Access",
-      note: "Future",
-      values: [false, false, false, "Coming soon"],
+      title: "Workforce",
+      rows: [
+        { label: "Attendance", values: [true, true, true, true] },
+        { label: "Geofencing", values: [false, true, true, true] },
+        { label: "Geotagging", values: [false, true, true, true] },
+        { label: "Salary Management", values: [true, true, true, true] },
+        { label: "Estimated Salary", values: [false, true, true, true] },
+      ],
+    },
+    {
+      title: "Finance",
+      rows: [
+        { label: "Expenses", values: [true, true, true, true] },
+        { label: "Treasury", values: [true, true, true, true] },
+        {
+          label: "Financial Reports",
+          values: ["Standard", "Advanced", "Company-wide", "Enterprise"],
+        },
+        {
+          label: "Approval Workflow",
+          values: ["Standard", "Standard", "Multi-level", "Multi-level"],
+        },
+      ],
+    },
+    {
+      title: "Documents",
+      rows: [
+        { label: "Document Management", values: [true, true, true, true] },
+        { label: "Agreements", values: [true, true, true, true] },
+        { label: "Drawings", values: [true, true, true, true] },
+        { label: "Reports", values: [true, true, true, true] },
+      ],
+    },
+    {
+      title: "Platform",
+      rows: [
+        { label: "Notifications", values: [true, true, true, true] },
+        { label: "Mobile Friendly", values: [true, true, true, true] },
+        { label: "Role-Based Access", values: [true, true, true, true] },
+        {
+          label: "Priority Support",
+          values: [false, "Email", "Faster", "SLA-backed"],
+        },
+        {
+          label: "Early Access Features",
+          values: [false, false, true, true],
+        },
+        { label: "API Access", values: [false, false, false, true] },
+        { label: "White Label", values: [false, false, false, true] },
+      ],
     },
   ],
 };
@@ -191,20 +293,53 @@ export function comparisonPlans() {
   return COMPARISON.columns.map((id) => getPlan(id));
 }
 
-// Launch-offer discount off the standard monthly rate, e.g. 25 (%).
-// Null for plans without a published standard rate.
-export function discountPercent(plan) {
-  if (!plan?.originalPrice || !plan?.price) return null;
-  const off = Math.round((1 - plan.price / plan.originalPrice) * 100);
+// Every comparison row, flattened — used by the mobile per-plan view.
+export function comparisonRows() {
+  return COMPARISON.groups.flatMap((g) =>
+    g.rows.map((row) => ({ ...row, group: g.title })),
+  );
+}
+
+/**
+ * The billing block for a plan on a given cycle, e.g.
+ * priceFor(interior, "annual") -> { price: 29999, originalPrice: 39999, ... }
+ * Returns null for plans without published pricing (Enterprise).
+ */
+export function priceFor(plan, cycle = DEFAULT_CYCLE) {
+  if (!plan?.billing) return null;
+  return plan.billing[cycle] || plan.billing[DEFAULT_CYCLE] || null;
+}
+
+// Launch-offer discount off the standard rate for a cycle, e.g. 25 (%).
+export function discountPercent(plan, cycle = DEFAULT_CYCLE) {
+  const b = priceFor(plan, cycle);
+  if (!b?.originalPrice || !b?.price) return null;
+  const off = Math.round((1 - b.price / b.originalPrice) * 100);
   return off > 0 ? off : null;
 }
 
-// What an annual subscription saves against 12 monthly payments.
-// -> { amount: 4789, percent: 14 } — null for plans without annual billing.
+// What paying annually saves against 12 monthly payments.
+// -> { amount: 4789, percent: 14, monthsFree: 1.7 } — null if not applicable.
 export function annualSavings(plan) {
-  if (!plan?.annualPrice || !plan?.price) return null;
-  const twelveMonths = plan.price * 12;
-  const amount = twelveMonths - plan.annualPrice;
+  const monthly = priceFor(plan, "monthly");
+  const annual = priceFor(plan, "annual");
+  if (!monthly?.price || !annual?.price) return null;
+  // A trial costs the same either way; there is nothing to save.
+  if (monthly.price === annual.price) return null;
+  const twelveMonths = monthly.price * 12;
+  const amount = twelveMonths - annual.price;
   if (amount <= 0) return null;
-  return { amount, percent: Math.round((amount / twelveMonths) * 100) };
+  return {
+    amount,
+    percent: Math.round((amount / twelveMonths) * 100),
+    monthsFree: Math.round((amount / monthly.price) * 10) / 10,
+  };
+}
+
+// Per-month equivalent of an annual plan (₹29,999/yr -> ₹2,500/mo). Null otherwise.
+export function monthlyEquivalent(plan) {
+  const annual = priceFor(plan, "annual");
+  const monthly = priceFor(plan, "monthly");
+  if (!annual?.price || !monthly?.price || annual.price === monthly.price) return null;
+  return Math.round(annual.price / 12);
 }

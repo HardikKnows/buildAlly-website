@@ -1,7 +1,7 @@
 // Marketing content derived from WEBSITE_CONTEXT.md (single source of truth).
 // Benefit-led: every feature is paired with the outcome it delivers.
 
-import { PRICING, formatPrice, annualSavings, getPlan } from "./pricing";
+import { PRICING, formatPrice, annualSavings, getPlan, priceFor } from "./pricing";
 
 // --- Problem cards (Homepage §3 "Sound familiar?") ---
 export const PROBLEMS = [
@@ -377,13 +377,13 @@ export const PLAN_FAQS = [
   {
     q: "Is this a limited-period offer?",
     a: `Yes. Interior at ${formatPrice(
-      getPlan("interior").price,
+      priceFor(getPlan("interior"), "monthly").price,
     )}/month and Builder at ${formatPrice(
-      getPlan("builder").price,
+      priceFor(getPlan("builder"), "monthly").price,
     )}/month are launch pricing on our standard rates of ${formatPrice(
-      getPlan("interior").originalPrice,
+      priceFor(getPlan("interior"), "monthly").originalPrice,
     )} and ${formatPrice(
-      getPlan("builder").originalPrice,
+      priceFor(getPlan("builder"), "monthly").originalPrice,
     )} a month. Lock it in while it lasts — your rate stays the same for as long as your subscription is active.`,
   },
   {

@@ -73,6 +73,12 @@
     border-color: var(--color-line);
   }
 
+  /* In-page anchors (e.g. "Compare plans" -> #compare) glide instead of jump.
+     The reduced-motion block below overrides this back to `auto`. */
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background: var(--background);
     color: var(--foreground);

@@ -6,11 +6,14 @@ import { TrackedButton } from "@/components/ui/TrackedButton";
 import { TrialBanner } from "@/components/pricing/TrialBanner";
 import { URLS } from "@/lib/site";
 import { EVENTS } from "@/lib/track";
-import { PRICING, formatPrice } from "@/lib/pricing";
+import { PRICING, formatPrice, priceFor } from "@/lib/pricing";
 
-// Section 8 — Pricing teaser. Shows the entry price per plan and sends people
-// to the Pricing page, which is the single place plans are published in full.
-const TEASERS = PRICING.plans.filter((p) => p.id !== "trial");
+// Section 8 — Pricing teaser. Shows each plan's entry (monthly) price and sends
+// people to the Pricing page, which is the single place plans are published in
+// full — including the annual/monthly toggle.
+const TEASERS = PRICING.plans
+  .filter((p) => p.id !== "trial")
+  .map((plan) => ({ plan, billing: priceFor(plan, "monthly") }));
 
 export function PricingPreview() {
   return (
@@ -30,7 +33,7 @@ export function PricingPreview() {
       </Reveal>
 
       <RevealGroup className="mx-auto mt-10 grid max-w-3xl gap-4 sm:grid-cols-3">
-        {TEASERS.map((plan) => (
+        {TEASERS.map(({ plan, billing }) => (
           <RevealItem
             key={plan.id}
             className={`rounded-2xl border bg-white p-5 text-center ${
@@ -39,15 +42,15 @@ export function PricingPreview() {
           >
             <p className="text-sm font-semibold text-ink">{plan.shortName}</p>
             <p className="mt-2 font-display text-2xl font-extrabold tracking-tight text-ink">
-              {plan.price ? formatPrice(plan.price) : plan.priceLabel}
+              {billing ? formatPrice(billing.price) : plan.priceLabel}
             </p>
             <p className="mt-1 text-xs text-slate-body">
-              {plan.originalPrice && (
+              {billing?.originalPrice && (
                 <span className="text-slate-400 line-through">
-                  {formatPrice(plan.originalPrice)}
+                  {formatPrice(billing.originalPrice)}
                 </span>
               )}{" "}
-              {plan.price ? plan.periodLabel : "Coming soon"}
+              {billing ? billing.periodLabel : "Coming soon"}
             </p>
           </RevealItem>
         ))}

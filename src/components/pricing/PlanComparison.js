@@ -2,10 +2,11 @@ import { Icon } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
 import { COMPARISON, comparisonPlans } from "@/lib/pricing";
 
-// Plan comparison. A real table on md+, and native <details> blocks per plan on
-// small screens — so the comparison never scrolls sideways on a phone.
+// Full feature comparison, grouped by area. A real table on md+, and native
+// <details> blocks per plan on small screens — so it never scrolls sideways.
 
 const PLANS = comparisonPlans();
+const COL_COUNT = PLANS.length + 1;
 
 // A cell value is either `true` (included), falsy (not included), or a string.
 function CellValue({ value, label }) {
@@ -33,19 +34,6 @@ function CellValue({ value, label }) {
     );
   }
   return <span className="text-sm font-medium text-ink-600">{value}</span>;
-}
-
-function RowLabel({ row }) {
-  return (
-    <>
-      {row.label}
-      {row.note && (
-        <span className="ml-2 rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-slate-body">
-          {row.note}
-        </span>
-      )}
-    </>
-  );
 }
 
 export function PlanComparison() {
@@ -81,31 +69,42 @@ export function PlanComparison() {
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-line">
-            {COMPARISON.rows.map((row) => (
-              <tr key={row.label}>
+          {COMPARISON.groups.map((group) => (
+            <tbody key={group.title} className="divide-y divide-line">
+              <tr className="border-t border-line bg-canvas/70">
                 <th
-                  scope="row"
-                  className="px-5 py-3.5 text-sm font-medium text-ink-600"
+                  scope="colgroup"
+                  colSpan={COL_COUNT}
+                  className="px-5 py-2.5 text-[11px] font-bold uppercase tracking-wider text-slate-body"
                 >
-                  <RowLabel row={row} />
+                  {group.title}
                 </th>
-                {row.values.map((value, i) => (
-                  <td
-                    key={PLANS[i].id}
-                    className={`px-3 py-3.5 text-center ${
-                      PLANS[i].featured ? "bg-brand-50/40" : ""
-                    }`}
-                  >
-                    <CellValue
-                      value={value}
-                      label={`${row.label} on ${PLANS[i].shortName}`}
-                    />
-                  </td>
-                ))}
               </tr>
-            ))}
-          </tbody>
+              {group.rows.map((row) => (
+                <tr key={row.label}>
+                  <th
+                    scope="row"
+                    className="px-5 py-3.5 text-sm font-medium text-ink-600"
+                  >
+                    {row.label}
+                  </th>
+                  {row.values.map((value, i) => (
+                    <td
+                      key={PLANS[i].id}
+                      className={`px-3 py-3.5 text-center ${
+                        PLANS[i].featured ? "bg-brand-50/40" : ""
+                      }`}
+                    >
+                      <CellValue
+                        value={value}
+                        label={`${row.label} on ${PLANS[i].shortName}`}
+                      />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          ))}
         </table>
       </div>
 
@@ -132,24 +131,29 @@ export function PlanComparison() {
                 <Icon name="Plus" size={16} />
               </span>
             </summary>
-            <dl className="divide-y divide-line border-t border-line">
-              {COMPARISON.rows.map((row) => (
-                <div
-                  key={row.label}
-                  className="flex items-center justify-between gap-4 px-5 py-3"
-                >
-                  <dt className="text-sm text-slate-body">
-                    <RowLabel row={row} />
-                  </dt>
-                  <dd className="shrink-0 text-right">
-                    <CellValue
-                      value={row.values[planIndex]}
-                      label={`${row.label} on ${plan.shortName}`}
-                    />
-                  </dd>
-                </div>
+            <div className="border-t border-line">
+              {COMPARISON.groups.map((group) => (
+                <dl key={group.title}>
+                  <div className="bg-canvas px-5 py-2 text-[11px] font-bold uppercase tracking-wider text-slate-body">
+                    {group.title}
+                  </div>
+                  {group.rows.map((row) => (
+                    <div
+                      key={row.label}
+                      className="flex items-center justify-between gap-4 border-t border-line px-5 py-3"
+                    >
+                      <dt className="text-sm text-slate-body">{row.label}</dt>
+                      <dd className="shrink-0 text-right">
+                        <CellValue
+                          value={row.values[planIndex]}
+                          label={`${row.label} on ${plan.shortName}`}
+                        />
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
               ))}
-            </dl>
+            </div>
           </details>
         ))}
       </div>
