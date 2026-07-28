@@ -13,6 +13,7 @@ export const EVENTS = {
   BOOK_DEMO: "book_demo_click",
   CONTACT_SALES: "contact_sales_click",
   START_TRIAL: "start_trial_click",
+  EXPLORE_PLANS: "explore_plans_click",
 };
 
 export function track(event, props = {}) {

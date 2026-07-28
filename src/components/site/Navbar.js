@@ -62,20 +62,21 @@ export function Navbar() {
             Login
           </a>
           <Button
-            href={URLS.contactSales}
+            href="/pricing"
             variant="secondary"
             size="sm"
-            onClick={() => track(EVENTS.CONTACT_SALES, { location: "nav" })}
+            onClick={() => track(EVENTS.EXPLORE_PLANS, { location: "nav" })}
           >
-            Contact Sales
+            Explore Plans
           </Button>
           <Button
-            href={URLS.bookDemo}
+            href={URLS.signup}
+            external
             variant="primary"
             size="sm"
-            onClick={() => track(EVENTS.BOOK_DEMO, { location: "nav" })}
+            onClick={() => track(EVENTS.START_TRIAL, { location: "nav" })}
           >
-            <Icon name="CalendarCheck" size={16} /> Book a Demo
+            Start 7-Day Trial <Icon name="ArrowRight" size={16} />
           </Button>
         </div>
 

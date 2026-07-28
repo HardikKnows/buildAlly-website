@@ -9,7 +9,22 @@
       "Bash(pkill -f \"next start -p 311\")",
       "Bash(node /private/tmp/claude-501/-Users-hardik-Documents-buildally-website/2a6e83b4-208a-40c4-ab6b-a1cb9d8c5ae4/scratchpad/chain.mjs)",
       "Bash(npx eslint *)",
-      "Bash(pkill -f \"next start -p 3120\")"
+      "Bash(pkill -f \"next start -p 3120\")",
+      "Bash(grep -n \"^#\\\\{1,3\\\\} \" docs/marketing-feature-inventory.md)",
+      "Bash(awk '{print $9, $5}')",
+      "Bash(sips -g pixelWidth -g pixelHeight dashboard-overview.png mobile-dashboard.png)",
+      "Bash(sips -s format webp docs/marketing-assets/dashboard-overview.png --out /tmp/t.webp)",
+      "Read(//tmp/**)",
+      "Bash(awk '{print \"webp bytes:\", $5}')",
+      "Bash(awk '{print $5}')",
+      "Bash(sips --resampleWidth 2000 docs/marketing-assets/dashboard-overview.png --out /private/tmp/rs.png)",
+      "Read(//private/tmp/**)",
+      "Bash(awk '{print \"resized-2000w bytes:\", $5}')",
+      "Bash(sips -g pixelWidth /private/tmp/rs.png)",
+      "Bash(git rm *)",
+      "Bash(pkill -f \"next start -p 3140\")",
+      "Bash(curl -s -o /dev/null http://localhost)",
+      "Bash(grep -rhoE \"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\\\.[a-zA-Z]{2,}\" src/ .env.example)"
     ]
   }
 }

@@ -6,7 +6,7 @@ export const SITE = {
   domain: "https://buildally.in",
   tagline: "Construction management software built for modern builders.",
   description:
-    "BuildAlly is the operating system for construction companies. Manage sites, money, teams, and documents in one real-time platform — built for Indian builders.",
+    "BuildAlly is construction management software for builders and interior designers. Manage projects, GPS attendance, salaries, treasury, expenses, documents and site progress from one platform — built for Indian construction companies.",
 };
 
 // Trial signup and login live in the app, not the marketing site.
@@ -20,9 +20,9 @@ export const URLS = {
   contactSales: "/contact",
 };
 
-// Reassurance microcopy shown near the primary (Book a Demo) CTA.
+// Reassurance microcopy shown near the primary (Start Trial) CTA.
 export const CTA_MICROCOPY =
-  "A personalized walkthrough with our team · See BuildAlly mapped to your workflows.";
+  "₹999 for 7 days on your real sites · Fully credited towards your subscription.";
 
 // Contact email lives in @/lib/email — one official address for the whole
 // product. Import SUPPORT_EMAIL / supportMailto from there, not from here.
@@ -36,19 +36,20 @@ export const MAIN_NAV = [
 
 export const FOOTER_NAV = [
   {
+    title: "Product",
+    links: [
+      { label: "Features", href: "/features" },
+      { label: "Pricing", href: "/pricing" },
+      { label: "Mobile", href: "/#mobile" },
+      { label: "Book a Demo", href: "/book-demo" },
+    ],
+  },
+  {
     title: "Company",
     links: [
       { label: "About", href: "/about" },
       { label: "Contact", href: "/contact" },
       { label: "FAQ", href: "/faq" },
-    ],
-  },
-  {
-    title: "Product",
-    links: [
-      { label: "Book a Demo", href: "/book-demo" },
-      { label: "Features", href: "/features" },
-      { label: "Pricing", href: "/pricing" },
     ],
   },
   {
@@ -61,9 +62,9 @@ export const FOOTER_NAV = [
     ],
   },
   {
-    title: "Contact",
+    title: "Support",
     links: [
-      { label: "Contact Sales", href: "/contact" },
+      { label: "Contact Support", href: "/contact" },
       { label: "Start 7-Day Trial", href: URLS.signup, external: true },
       { label: "Login", href: URLS.login, external: true },
     ],

@@ -22,22 +22,23 @@ export function Footer() {
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <TrackedButton
-              href={URLS.bookDemo}
-              event={EVENTS.BOOK_DEMO}
+              href={URLS.signup}
+              external
+              event={EVENTS.START_TRIAL}
               eventProps={{ location: "footer" }}
               variant="white"
               size="lg"
             >
-              <Icon name="CalendarCheck" size={18} /> Book a Demo
+              Start 7-Day Trial <Icon name="ArrowRight" size={18} />
             </TrackedButton>
             <TrackedButton
-              href={URLS.contactSales}
-              event={EVENTS.CONTACT_SALES}
+              href="/pricing"
+              event={EVENTS.EXPLORE_PLANS}
               eventProps={{ location: "footer" }}
               variant="outlineLight"
               size="lg"
             >
-              Contact Sales
+              Explore Plans
             </TrackedButton>
           </div>
           <p className="mt-4 text-sm text-slate-400">{CTA_MICROCOPY}</p>

@@ -320,7 +320,15 @@ export const FAQS = [
   },
   {
     q: "Is my data secure?",
-    a: "BuildAlly uses modern authentication, role-based access controls, strict per-company tenant isolation, and encrypted infrastructure practices. Your data stays yours.",
+    a: "Yes. Every company gets an isolated workspace, with nine roles and 60+ permissions enforced server-side on every request — not just hidden in the interface. Location and permission changes are written to an append-only audit log, and attendance selfies are encrypted at rest.",
+  },
+  {
+    q: "Is BuildAlly mobile friendly?",
+    a: "Yes. BuildAlly is a progressive web app your team installs straight from the browser — no app store. It uses the native camera and GPS for attendance and verified photos, and queues work offline so nothing is lost when signal drops on site.",
+  },
+  {
+    q: "Can I cancel anytime?",
+    a: "Yes. Cancel whenever you like and you keep access for the rest of the period you've paid for. After that your workspace turns read-only — your data is never deleted.",
   },
   {
     q: "Can BuildAlly work for smaller contractors?",
@@ -367,8 +375,8 @@ export const PLAN_FAQS = [
     )} is automatically adjusted against your first payment.`,
   },
   {
-    q: "What happens if I exceed my storage?",
-    a: "Uploads pause until you either upgrade your plan or delete unused files. Nothing already in your workspace is removed, and your team keeps full access to it.",
+    q: "Can I increase my storage?",
+    a: "Yes — moving up a plan raises your quota (2 GB on Trial, 25 GB on Interior, 75 GB on Builder). If you reach the limit, uploads pause until you upgrade or remove unused files. Nothing already in your workspace is deleted, and images are optimised on upload so the quota goes further than you'd expect.",
   },
   {
     q: "Can I upgrade later?",

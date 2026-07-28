@@ -1,36 +1,41 @@
 import { Hero } from "@/components/home/Hero";
-import { SocialProof } from "@/components/home/SocialProof";
-import { DemoPromo } from "@/components/home/DemoPromo";
+import { TrustBar } from "@/components/home/TrustBar";
 import { Problem } from "@/components/home/Problem";
-import { HowItWorks } from "@/components/home/HowItWorks";
-import { FeatureHighlights } from "@/components/home/FeatureHighlights";
-import { ProductScreenshots } from "@/components/home/ProductScreenshots";
-import { DashboardShowcase } from "@/components/home/DashboardShowcase";
+import {
+  Tier1Features,
+  GpsSection,
+  Tier2Features,
+  Tier3Features,
+} from "@/components/home/FeatureSections";
 import { MobileExperience } from "@/components/home/MobileExperience";
-import { WhyOwners } from "@/components/home/WhyOwners";
+import { WhyBuildAlly } from "@/components/home/WhyBuildAlly";
+import { CustomerJourney } from "@/components/home/CustomerJourney";
 import { PricingPreview } from "@/components/home/PricingPreview";
 import { HomeFAQ } from "@/components/home/HomeFAQ";
 
 export const metadata = {
   title: "BuildAlly — Construction Management Software for Modern Builders",
   description:
-    "Run your construction business from one place. Manage projects, expenses, payroll, documents, approvals, and teams with BuildAlly. Book a personalized demo with our team.",
+    "BuildAlly is construction management software for builders and interior designers. Manage projects, GPS attendance, salaries, treasury, expenses, documents and site progress from one platform. Start a 7-day trial.",
   alternates: { canonical: "/" },
 };
 
+// Section order follows the Tier 1/2/3 feature hierarchy: the strongest
+// differentiators (sites, attendance, payroll, treasury, spend, then GPS
+// verification) come first, supporting capabilities come later.
 export default function HomePage() {
   return (
     <>
       <Hero />
-      <SocialProof />
-      <DemoPromo />
+      <TrustBar />
       <Problem />
-      <HowItWorks />
-      <FeatureHighlights />
-      <ProductScreenshots />
-      <DashboardShowcase />
+      <Tier1Features />
+      <GpsSection />
+      <Tier2Features />
       <MobileExperience />
-      <WhyOwners />
+      <Tier3Features />
+      <WhyBuildAlly />
+      <CustomerJourney />
       <PricingPreview />
       <HomeFAQ />
       {/* Final CTA band + Footer render globally via the root layout's Footer. */}
