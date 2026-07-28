@@ -18,10 +18,10 @@
 export const TEAM = [
   {
     name: "Hardik Tiwari",
-    role: "Founder & CEO",
+    role: "Founder",
     bio: "Founded BuildAlly to simplify construction management through technology — so builders, contractors and interior firms can run projects, teams, finances and site operations from one platform.",
     image: null,
-    linkedin: null,
+    linkedin: "https://www.linkedin.com/in/hardik-tiwari-a785262a1/",
     email: null,
   },
   {
