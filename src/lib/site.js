@@ -31,6 +31,7 @@ export const MAIN_NAV = [
   { label: "Features", href: "/features" },
   { label: "Pricing", href: "/pricing" },
   { label: "About", href: "/about" },
+  { label: "Team", href: "/#team" },
   { label: "FAQ", href: "/faq" },
 ];
 

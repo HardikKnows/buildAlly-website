@@ -35,7 +35,9 @@ export function Navbar() {
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
         <Logo />
 
-        <div className="hidden items-center gap-1 md:flex">
+        {/* Desktop nav switches in at lg, not md: five links plus three actions
+            overflow a 768px viewport. Below lg the drawer carries the same nav. */}
+        <div className="hidden items-center gap-1 lg:flex">
           {MAIN_NAV.map((item) => {
             const active = pathname === item.href;
             return (
@@ -52,7 +54,7 @@ export function Navbar() {
           })}
         </div>
 
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="hidden items-center gap-2 lg:flex">
           <a
             href={URLS.login}
             target="_blank"
@@ -85,7 +87,7 @@ export function Navbar() {
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
-          className="flex h-11 w-11 items-center justify-center rounded-lg text-ink md:hidden"
+          className="flex h-11 w-11 items-center justify-center rounded-lg text-ink lg:hidden"
         >
           <Icon name={open ? "X" : "Menu"} size={24} />
         </button>
@@ -98,7 +100,7 @@ export function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.22 }}
-            className="overflow-hidden border-t border-line bg-white md:hidden"
+            className="overflow-hidden border-t border-line bg-white lg:hidden"
           >
             <div className="space-y-1 px-5 py-4">
               {MAIN_NAV.map((item) => (
