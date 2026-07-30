@@ -1,7 +1,15 @@
 // Marketing content derived from WEBSITE_CONTEXT.md (single source of truth).
 // Benefit-led: every feature is paired with the outcome it delivers.
 
-import { PRICING, formatPrice, annualSavings, getPlan, priceFor } from "./pricing";
+import {
+  PRICING,
+  SITE_ADDONS,
+  formatPrice,
+  annualSavings,
+  getPlan,
+  priceFor,
+  addonExample,
+} from "./pricing";
 
 // --- Problem cards (Homepage §3 "Sound familiar?") ---
 export const PROBLEMS = [
@@ -380,7 +388,34 @@ export const PLAN_FAQS = [
   },
   {
     q: "Can I upgrade later?",
-    a: "Yes. Move up a plan at any time without losing any data — your sites, documents, and history carry over untouched.",
+    a: "Yes. Move up a plan at any time without losing any data — your sites, documents, and history carry over untouched. If capacity is all you need, a Site Capacity Pack adds sites without changing your plan at all.",
+  },
+  {
+    q: "Can I purchase more sites without upgrading my plan?",
+    a: `Yes. BuildAlly offers flexible Site Capacity Packs so you can increase your active site limit without changing your subscription — ${SITE_ADDONS.packs
+      .map((p) => `+${p.sites} sites for ${formatPrice(p.price)}/year`)
+      .join(", ")}. ${SITE_ADDONS.renewalNote}`,
+  },
+  {
+    q: "What happens when I reach my site limit?",
+    a: `You can either upgrade your subscription plan or purchase additional Site Capacity Packs. No data is lost either way — every existing site, document, and record stays exactly where it is. Only new site creation is blocked until additional capacity is available, and it resumes the moment you add it.`,
+  },
+  {
+    q: "Can I purchase multiple site packs?",
+    a: (() => {
+      const ex = addonExample();
+      return `Yes, packs stack. For example, a ${ex.plan.shortName} plan (${
+        ex.base
+      } sites) with a ${ex.packs
+        .map((n) => `+${n}`)
+        .join(" pack and a ")} pack gives you ${
+        ex.total
+      } active sites — on the same subscription, with a single renewal date.`;
+    })(),
+  },
+  {
+    q: "Do you support promotional codes?",
+    a: "Yes. If you have a promotional code from our team or one of our campaign partners, apply it securely during checkout on the payment step — the discount is reflected before you pay.",
   },
   {
     q: "Is this a limited-period offer?",

@@ -15,6 +15,13 @@
 // standard rate shown struck through for the limited-period launch offer; the
 // discount badge is computed from it, never hardcoded.
 //
+// Active-site limits are 7 (Trial), 8 (Interior), 15 (Builder). A company that
+// outgrows its limit does not have to change plans — see SITE_ADDONS below.
+//
+// Coupons: never publish codes or discount percentages here. Promotional codes
+// belong to influencer, referral, launch, and sales campaigns; the website only
+// says they can be applied at checkout (COUPON_NOTE).
+//
 // Feature philosophy: every plan ships the complete platform — construction
 // teams need attendance, expenses, treasury, and documents from day one. Plans
 // differ by capacity (sites, storage), advanced analytics and automation,
@@ -53,13 +60,13 @@ export const PRICING = {
           note: "One-time · Credited to your subscription",
         },
       },
-      sites: "Up to 5",
+      sites: "Up to 7",
       storage: "2 GB",
       members: "Included",
       support: "Email support",
       highlights: [
         "Full platform access",
-        "Up to 5 active sites",
+        "Up to 7 active sites",
         "2 GB cloud storage",
         "Project, site & member management",
         "Attendance & task management",
@@ -90,13 +97,13 @@ export const PRICING = {
           note: "Billed monthly · Cancel anytime",
         },
       },
-      sites: "Up to 7",
+      sites: "Up to 8",
       storage: "25 GB",
       members: "Unlimited",
       support: "Priority email",
       inherits: "Everything in Trial, plus…",
       highlights: [
-        "Up to 7 active sites",
+        "Up to 8 active sites",
         "25 GB cloud storage",
         "Unlimited team members",
         "Geofencing attendance",
@@ -105,6 +112,7 @@ export const PRICING = {
         "Expense approval workflow",
         "Treasury dashboard & advanced financial reports",
         "Priority email support",
+        "Expand active sites anytime with Site Capacity Packs",
       ],
       cta: { label: "Choose Interior", action: "subscribe" },
     },
@@ -133,13 +141,13 @@ export const PRICING = {
           note: "Billed monthly · Cancel anytime",
         },
       },
-      sites: "Up to 12",
+      sites: "Up to 15",
       storage: "75 GB",
       members: "Unlimited",
       support: "Faster priority",
       inherits: "Everything in Interior, plus…",
       highlights: [
-        "Up to 12 active sites",
+        "Up to 15 active sites",
         "75 GB cloud storage",
         "Advanced project analytics",
         "Company-wide financial dashboard",
@@ -148,6 +156,7 @@ export const PRICING = {
         "Detailed reporting & analytics",
         "Faster priority support",
         "Early access to new features",
+        "Expand active sites anytime with Site Capacity Packs",
       ],
       featured: true,
       badge: "Most Popular",
@@ -194,11 +203,15 @@ export const COMPARISON = {
     {
       title: "Usage Limits",
       rows: [
-        { label: "Active Sites", values: ["5", "7", "12", "Unlimited"] },
+        { label: "Active Sites", values: ["7", "8", "15", "Unlimited"] },
         { label: "Storage", values: ["2 GB", "25 GB", "75 GB", "Unlimited"] },
         {
           label: "Team Members",
           values: ["Included", "Unlimited", "Unlimited", "Unlimited"],
+        },
+        {
+          label: "Site Capacity Packs",
+          values: [false, true, true, "Not needed"],
         },
       ],
     },
@@ -279,6 +292,65 @@ export const STORAGE_USES = [
   "Reports",
 ];
 
+// --- Site Capacity Packs ---
+// Extra active sites bought on top of a subscription. A company that outgrows
+// its plan does not have to upgrade: packs add capacity to the plan it already
+// has, stack with each other, and renew alongside the main subscription.
+// Priced per year, matching the annual subscription cycle.
+export const SITE_ADDONS = {
+  packs: [
+    { sites: 5, price: 8499 },
+    { sites: 10, price: 15999 },
+    { sites: 15, price: 25999 },
+  ],
+  renewalNote:
+    "Additional site packs renew together with your main subscription for a seamless billing experience.",
+  // Worked example for the "can I buy more than one?" question, built from the
+  // Builder plan so the arithmetic is always consistent with the plan cards.
+  example: { planId: "builder", packs: [5, 10] },
+};
+
+// Checkout flow shown on the pricing page. Optional steps are marked so the
+// illustration reads correctly for someone buying a plan and nothing else.
+export const CHECKOUT_STEPS = [
+  {
+    icon: "LayoutGrid",
+    title: "Choose your plan",
+    body: "Pick Interior or Builder, billed monthly or annually.",
+  },
+  {
+    icon: "Tag",
+    title: "Apply a promotional code",
+    optional: true,
+    body: "Have a code from a campaign or our team? Enter it securely at checkout.",
+  },
+  {
+    icon: "Layers",
+    title: "Add site capacity",
+    optional: true,
+    body: "Need more active sites than your plan includes? Add a pack in the same checkout.",
+  },
+  {
+    icon: "ShieldCheck",
+    title: "Pay securely",
+    body: "Encrypted payment through our payment gateway. No hidden charges.",
+  },
+  {
+    icon: "Rocket",
+    title: "Workspace activated",
+    body: "Your capacity is live immediately — invite your team and start adding sites.",
+  },
+];
+
+// Public coupon messaging. Codes and discount percentages are deliberately not
+// published: they belong to influencer, referral, launch, and sales campaigns.
+export const COUPON_NOTE =
+  "Have a promotional code? Apply it securely during checkout.";
+
+// Reassurance under the plan cards, so nobody hesitates over outgrowing a plan.
+export const ADDON_TEASER =
+  "Need more than your plan includes? Purchase additional site capacity anytime.";
+
 // Format a whole-rupee amount with Indian digit grouping, e.g. 49999 -> "₹49,999".
 export function formatPrice(amount) {
   return `${PRICING.currencySymbol}${Number(amount).toLocaleString("en-IN")}`;
@@ -333,6 +405,29 @@ export function annualSavings(plan) {
     amount,
     percent: Math.round((amount / twelveMonths) * 100),
     monthsFree: Math.round((amount / monthly.price) * 10) / 10,
+  };
+}
+
+// A plan's active-site limit as a number ("Up to 15" -> 15). Null for
+// Enterprise, whose capacity is unlimited.
+export function planSiteLimit(plan) {
+  const match = /\d+/.exec(plan?.sites || "");
+  return match ? Number(match[0]) : null;
+}
+
+/**
+ * The stacking example, computed rather than written out:
+ * -> { plan, packs: [5, 10], base: 15, total: 30 }
+ */
+export function addonExample() {
+  const plan = getPlan(SITE_ADDONS.example.planId);
+  const base = planSiteLimit(plan);
+  const packs = SITE_ADDONS.example.packs;
+  return {
+    plan,
+    packs,
+    base,
+    total: base + packs.reduce((sum, n) => sum + n, 0),
   };
 }
 

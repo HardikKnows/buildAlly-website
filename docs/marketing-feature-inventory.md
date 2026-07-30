@@ -805,7 +805,7 @@ subscription.
 
 There is **no free tier**. A workspace is activated exactly one of two ways:
 
-1. **Paid 7-day trial — ₹999.** Full feature access, capped at 5 active sites and
+1. **Paid 7-day trial — ₹999.** Full feature access, capped at 7 active sites and
    2 GB. The ₹999 is banked as an account **credit** and deducted in full from the
    first subscription purchase.
 2. **Direct subscription** — Interior or Builder, monthly or annual. No trial, no
@@ -818,16 +818,36 @@ There is **no free tier**. A workspace is activated exactly one of two ways:
 | **For** | Interior designers, renovation contractors, small builders | Construction companies, civil contractors, turnkey/residential/commercial builders | Large organizations |
 | **Monthly** | ~~₹3,800~~ **₹2,899** (24% off) | ~~₹6,000~~ **₹4,499** (25% off) | Custom |
 | **Annual** | ~~₹39,000~~ **₹29,999** (23% off) | ~~₹65,000~~ **₹49,999** (23% off) | Custom |
-| **Active sites** | 7 | 12 | Unlimited |
+| **Active sites** | 8 | 15 | Unlimited |
 | **Members** | Unlimited | Unlimited | Unlimited |
 | **Storage** | 25 GB | 75 GB | Unlimited |
 | **Badge** | — | **Recommended** | **Coming Soon** |
 
-Trial: ₹999 · 7 days · 5 active sites · 2 GB · full feature access · ₹999 credited
+Trial: ₹999 · 7 days · 7 active sites · 2 GB · full feature access · ₹999 credited
 toward any subscription · *your data is never deleted if you don't subscribe*.
 
 > Prices carry a **"Limited Period Offer"** label. Site caps count **active** sites
 > only — completing a site frees its slot.
+
+### Site Capacity Packs (add-ons)
+
+Extra active sites bought on top of a subscription, without changing the plan.
+Packs stack (Builder 15 + a +5 pack + a +10 pack = 30 active sites) and renew
+alongside the main subscription.
+
+| Pack | Price |
+|---|---|
+| **+5 sites** | ₹8,499/year |
+| **+10 sites** | ₹15,999/year |
+| **+15 sites** | ₹25,999/year |
+
+Hitting the cap never deletes anything — only *new* site creation is blocked
+until the customer upgrades or buys a pack.
+
+**Coupons.** Promotional codes are applied at checkout. Codes and discount
+percentages are deliberately **not published on the marketing site** — they exist
+for influencer, referral, launch, and sales campaigns, so the public pricing
+stays clean and the campaigns stay exclusive.
 
 ### Lifecycle
 
@@ -1069,7 +1089,7 @@ blank. In an industry with high churn and rehiring, that distinction matters.
 | **SSO readiness (enterprise IdP)** | Coming Soon | Listed as an Enterprise feature. Google SSO ships today; enterprise IdP integration does not. |
 | **Dedicated support & custom onboarding** | Coming Soon | Enterprise plan feature. |
 | **Cloudflare R2 storage** | Coming Soon | The storage layer is already provider-abstracted (Cloudinary today, local disk in dev), so an R2 provider slots in without a migration. Not built. |
-| **Storage add-ons** | Coming Soon | No add-on purchase path exists; quotas are per-plan only. |
+| **Storage add-ons** | Coming Soon | Site Capacity Packs ship (see the commercial model above), but there is no equivalent for storage — GB quotas are per-plan only. |
 | **API integrations / public API** | Coming Soon | The REST API exists but is not documented, versioned or exposed as a customer-facing product. |
 | **Advanced analytics** | Coming Soon | Beyond today's dashboards, task analytics and conversion metrics. |
 | **Multiple treasury accounts (bank / petty cash)** | Coming Soon | The data model already supports `bank` and `petty_cash` account types; only the default company fund is created and no UI exists to add more. |

@@ -15,6 +15,12 @@ const HERO_SHOT = {
   height: 2000,
 };
 
+const HERO_ASSURANCES = [
+  "Flexible pricing",
+  "Expand with site add-ons",
+  "No hidden charges",
+];
+
 const MOBILE_SHOT = {
   src: "/product/mobile-attendance-marking.png",
   alt: "GPS attendance check-in on the BuildAlly mobile app",
@@ -73,6 +79,20 @@ export function Hero() {
               {formatPrice(PRICING.trialCredit)} for {PRICING.trialDays} days ·
               Fully credited towards your subscription
             </p>
+            {/* Flexibility reassurance — short enough not to crowd the CTAs. */}
+            <ul className="mt-3.5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-ink-600">
+              {HERO_ASSURANCES.map((point) => (
+                <li key={point} className="flex items-center gap-1.5">
+                  <Icon
+                    name="Check"
+                    size={15}
+                    strokeWidth={2.5}
+                    className="shrink-0 text-success"
+                  />
+                  {point}
+                </li>
+              ))}
+            </ul>
           </Reveal>
         </div>
 

@@ -218,16 +218,17 @@ Design and copy should speak primarily to the **owner/director/decision-maker**,
 - **Billing foundation**, **14-day trial support**, **upgrade flows**, **enterprise sales readiness** (Contact Sales).
 
 ### Subscription tiers (for the Pricing page)
-> Confirm final public pricing with the BuildAlly team before publishing. The following reflects the product's configured tiers.
+> **Superseded — do not price from this section.** The early draft here (a free
+> tier, a ₹2,499 "Professional" plan, a 14-day free trial) was replaced by the
+> shipped commercial model. Live pricing, plan limits, storage quotas, and Site
+> Capacity Packs live in **`src/lib/pricing.js`**, which every page reads from;
+> `docs/marketing-feature-inventory.md` documents the same model in prose.
 
-| Plan | Price | For | Limits / Highlights |
-|---|---|---|---|
-| **Free** | ₹0 / forever | Trying it out, very small firms | Up to **3 sites**, **5 members**, basic reports |
-| **Professional** | **₹2,499 / month** (placeholder — confirm) | Growing builders | **Unlimited** sites & members, advanced reports, notifications, activity timeline |
-| **Enterprise** | **Custom** (Contact Sales) | 100+ employees, procurement needs | Custom branding, audit logs, priority support, SSO readiness |
-
-- **Trial:** 14-day free trial on paid plans; no automatic charges without action.
-- **Soft limits:** Free-tier limits never delete data — they prompt an upgrade.
+- **No free tier.** A workspace starts with the **paid ₹999 / 7-day trial** (fully credited towards the first subscription) or a direct Interior / Builder subscription. Enterprise is Contact Sales.
+- **Capacity, not features, separates the plans** — every plan ships the complete platform.
+- **Site Capacity Packs** let a company add active sites without changing its subscription; packs stack and renew with the main subscription.
+- **Coupons** are applied at checkout and are never published on the site — they belong to influencer, referral, launch, and sales campaigns.
+- **Soft limits:** reaching a site or storage cap never deletes data — it blocks new site creation / uploads until capacity is added.
 
 ---
 

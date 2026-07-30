@@ -7,12 +7,16 @@ import { TrackedButton } from "@/components/ui/TrackedButton";
 import { PricingPlans } from "@/components/pricing/PricingPlans";
 import { PlanComparison } from "@/components/pricing/PlanComparison";
 import { TrialBanner } from "@/components/pricing/TrialBanner";
+import { SiteAddOns } from "@/components/pricing/SiteAddOns";
+import { CheckoutFlow } from "@/components/pricing/CheckoutFlow";
 import { SITE, URLS } from "@/lib/site";
 import { EVENTS } from "@/lib/track";
 import { PLAN_FAQS } from "@/lib/content";
 import {
   PRICING,
   STORAGE_USES,
+  ADDON_TEASER,
+  COUPON_NOTE,
   getPlan,
   formatPrice,
   priceFor,
@@ -103,10 +107,43 @@ export default function PricingPage() {
       {/* Plan cards */}
       <Section tone="canvas" id="plans" containerSize="wide">
         <PricingPlans location="pricing_page" />
-        <Reveal className="mx-auto mt-10 max-w-2xl text-center text-sm text-slate-body">
-          Prices in INR, exclusive of applicable taxes. Upgrade at any time
-          without losing data — your sites, documents, and history carry over.
+        <Reveal className="mx-auto mt-10 flex max-w-3xl flex-col items-center gap-3">
+          <a
+            href="#add-ons"
+            className="inline-flex items-center gap-2 rounded-full border border-brand/25 bg-brand-50/70 px-4 py-2 text-sm font-semibold text-brand transition-colors hover:border-brand/45 hover:bg-brand-50"
+          >
+            <Icon name="Layers" size={16} />
+            {ADDON_TEASER}
+          </a>
+          <p className="inline-flex items-center gap-2 text-sm text-slate-body">
+            <Icon name="Ticket" size={16} className="shrink-0 text-brand" />
+            {COUPON_NOTE}
+          </p>
+          <p className="max-w-2xl text-center text-sm text-slate-body">
+            Prices in INR, exclusive of applicable taxes. Upgrade at any time
+            without losing data — your sites, documents, and history carry over.
+          </p>
         </Reveal>
+      </Section>
+
+      {/* Site Capacity Packs — grow without changing plans */}
+      <Section tone="white" id="add-ons">
+        <SectionHeading
+          eyebrow="Site add-ons"
+          title="Need more sites?"
+          lead="Running out of active sites? Simply expand your capacity without changing your subscription plan."
+        />
+        <SiteAddOns />
+      </Section>
+
+      {/* How checkout works */}
+      <Section tone="canvas" containerSize="wide">
+        <SectionHeading
+          eyebrow="Billing"
+          title="How checkout works"
+          lead="Five steps from picking a plan to an active workspace — two of them optional, none of them a surprise."
+        />
+        <CheckoutFlow />
       </Section>
 
       {/* Why the trial is paid */}

@@ -11,6 +11,7 @@ import { MobileExperience } from "@/components/home/MobileExperience";
 import { WhyBuildAlly } from "@/components/home/WhyBuildAlly";
 import { CustomerJourney } from "@/components/home/CustomerJourney";
 import { PricingPreview } from "@/components/home/PricingPreview";
+import { ScaleAsYouGrow } from "@/components/home/ScaleAsYouGrow";
 import { HomeFAQ } from "@/components/home/HomeFAQ";
 import { TeamSection } from "@/components/home/TeamSection";
 
@@ -38,6 +39,7 @@ export default function HomePage() {
       <WhyBuildAlly />
       <CustomerJourney />
       <PricingPreview />
+      <ScaleAsYouGrow />
       <HomeFAQ />
       <TeamSection />
       {/* Final CTA band + Footer render globally via the root layout's Footer. */}
