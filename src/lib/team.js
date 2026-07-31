@@ -26,7 +26,7 @@ export const TEAM = [
   },
   {
     name: "Shobhit Shrivastava",
-    role: "Co-Founder",
+    role: "Founder",
     bio: "Works alongside the founding team to shape BuildAlly's growth, product strategy and customer experience.",
     image: null,
     linkedin: null,
