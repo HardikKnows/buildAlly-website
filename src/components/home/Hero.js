@@ -3,6 +3,7 @@ import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { Screenshot } from "@/components/ui/Screenshot";
 import { Icon } from "@/components/ui/Icon";
+import { PlayStoreBadge } from "@/components/ui/PlayStoreBadge";
 import { TrackedButton } from "@/components/ui/TrackedButton";
 import { URLS } from "@/lib/site";
 import { EVENTS } from "@/lib/track";
@@ -33,6 +34,12 @@ export function Hero() {
     <section className="relative overflow-hidden blueprint-grid">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[600px] hero-glow" />
       <Container className="relative pt-16 pb-20 sm:pt-24 sm:pb-28">
+        {/* Play badge pinned top-right, inside the hero's top padding so it
+            never collides with the centered copy. Hidden on phones, where the
+            corner would crowd the headline. */}
+        <Reveal delay={0.1} className="absolute right-5 top-6 hidden sm:right-8 sm:block">
+          <PlayStoreBadge />
+        </Reveal>
         <div className="mx-auto max-w-3xl text-center">
           <Reveal>
             <span className="inline-flex items-center gap-2 rounded-full border border-line bg-white/70 px-4 py-1.5 text-sm font-medium text-ink-600 backdrop-blur">

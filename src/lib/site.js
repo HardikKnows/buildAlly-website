@@ -18,10 +18,10 @@ export const URLS = {
   api: "https://api.buildally.in",
   bookDemo: "/book-demo", // demo request form — primary CTA
   contactSales: "/contact",
-  // Google Play listing. Paste the full store URL here and the badge in the
-  // Mobile section turns into a live link automatically — nothing else to
-  // change. While it is null the badge renders as "Coming soon" and is not
-  // clickable, so there is never a dead link on the page.
+  // Google Play listing. Paste the full store URL here and the badges (hero
+  // top-right + Mobile section) turn into live links automatically — nothing
+  // else to change. While it is null the badge renders as "Coming soon" and is
+  // not clickable, so there is never a dead link on the page.
   // e.g. "https://play.google.com/store/apps/details?id=in.buildally.app"
   playStore: null,
 };

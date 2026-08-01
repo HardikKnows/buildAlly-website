@@ -1,6 +1,7 @@
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui/Icon";
+import { ProblemFace } from "@/components/home/ProblemFaces";
 import { TrackedButton } from "@/components/ui/TrackedButton";
 import { URLS } from "@/lib/site";
 import { EVENTS } from "@/lib/track";
@@ -15,13 +16,17 @@ export function Problem() {
         lead="Construction runs on fragmented, informal tools. Information gets lost, money leaks, and you find out about problems too late."
       />
       <RevealGroup className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {PROBLEMS.map((p) => (
+        {PROBLEMS.map((p, i) => (
           <RevealItem
             key={p.title}
             className="group rounded-2xl border border-line bg-white p-6 transition-colors hover:border-destructive/30"
           >
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-destructive/10 text-destructive">
-              <Icon name="X" size={20} />
+            <span
+              className={`flex h-10 w-10 items-center justify-center rounded-xl bg-destructive/10 text-destructive transition-transform duration-200 ease-out group-hover:scale-105 ${
+                i % 2 === 0 ? "group-hover:-rotate-3" : "group-hover:rotate-3"
+              }`}
+            >
+              <ProblemFace name={p.face} size={20} />
             </span>
             <h3 className="mt-4 font-display text-lg font-semibold text-ink">
               {p.title}

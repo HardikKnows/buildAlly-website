@@ -14,22 +14,27 @@ import {
 // --- Problem cards (Homepage §3 "Sound familiar?") ---
 export const PROBLEMS = [
   {
+    face: "overwhelmed",
     title: "15 WhatsApp groups, still no clarity",
     body: "Site updates scroll away. Nothing is searchable, and no one is accountable.",
   },
   {
+    face: "confused",
     title: "Expenses live in three spreadsheets",
     body: "Numbers never match, are never current, and one wrong cell hides an overrun.",
   },
   {
+    face: "frustrated",
     title: "Approvals happen on calls and paper",
     body: "Decisions get stuck on someone's phone. Nothing is traceable.",
   },
   {
+    face: "worried",
     title: "You hear about overruns too late",
     body: "By the time a cost blowout or missed payment reaches you, it has already happened.",
   },
   {
+    face: "stressed",
     title: "Drawings are scattered across devices",
     body: "Nobody knows which drawing is the latest — until the wrong one gets built.",
   },
