@@ -1,7 +1,7 @@
+import Image from "next/image";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui/Icon";
-import { ProblemFace } from "@/components/home/ProblemFaces";
 import { TrackedButton } from "@/components/ui/TrackedButton";
 import { URLS } from "@/lib/site";
 import { EVENTS } from "@/lib/track";
@@ -16,17 +16,22 @@ export function Problem() {
         lead="Construction runs on fragmented, informal tools. Information gets lost, money leaks, and you find out about problems too late."
       />
       <RevealGroup className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {PROBLEMS.map((p, i) => (
+        {PROBLEMS.map((p) => (
           <RevealItem
             key={p.title}
             className="group rounded-2xl border border-line bg-white p-6 transition-colors hover:border-destructive/30"
           >
-            <span
-              className={`flex h-10 w-10 items-center justify-center rounded-xl bg-destructive/10 text-destructive transition-transform duration-200 ease-out group-hover:scale-105 ${
-                i % 2 === 0 ? "group-hover:-rotate-3" : "group-hover:rotate-3"
-              }`}
-            >
-              <ProblemFace name={p.face} size={20} />
+            {/* 3D emoji (Fluent, MIT) rendered from a local PNG so every OS
+                shows the identical face. Decorative — the title carries the
+                meaning — hence the empty alt. */}
+            <span className="flex h-20 w-20 items-center justify-center rounded-2xl bg-destructive/10">
+              <Image
+                src={`/emoji/${p.face}.png`}
+                alt=""
+                width={56}
+                height={56}
+                className="drop-shadow-[0_3px_6px_rgba(15,23,42,0.16)] transition-transform duration-200 ease-out group-hover:-translate-y-0.5 group-hover:scale-[1.08]"
+              />
             </span>
             <h3 className="mt-4 font-display text-lg font-semibold text-ink">
               {p.title}
