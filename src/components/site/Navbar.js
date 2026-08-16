@@ -72,13 +72,12 @@ export function Navbar() {
             Explore Plans
           </Button>
           <Button
-            href={URLS.signup}
-            external
+            href={URLS.bookDemo}
             variant="primary"
             size="sm"
-            onClick={() => track(EVENTS.START_TRIAL, { location: "nav" })}
+            onClick={() => track(EVENTS.BOOK_DEMO, { location: "nav" })}
           >
-            Start 7-Day Trial <Icon name="ArrowRight" size={16} />
+            <Icon name="CalendarCheck" size={16} /> Book a Demo
           </Button>
         </div>
 

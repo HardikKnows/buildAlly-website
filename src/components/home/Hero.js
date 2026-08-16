@@ -17,7 +17,7 @@ const HERO_SHOT = {
 };
 
 const HERO_ASSURANCES = [
-  "Flexible pricing",
+  "AI-powered construction intelligence included",
   "Expand with site add-ons",
   "No hidden charges",
 ];
@@ -49,42 +49,44 @@ export function Hero() {
           </Reveal>
           <Reveal delay={0.05}>
             <h1 className="mt-6 text-balance text-4xl font-extrabold leading-[1.08] tracking-tight text-ink sm:text-5xl md:text-6xl">
-              Construction management software{" "}
-              <span className="text-gradient-brand">built for modern builders</span>
+              Construction management,{" "}
+              <span className="text-gradient-brand">
+                built for the way you build
+              </span>
             </h1>
           </Reveal>
           <Reveal delay={0.1}>
             <p className="mx-auto mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-slate-body sm:text-xl">
-              Manage projects, teams, attendance, salaries, expenses, treasury,
-              documents and site progress — all from one platform.
+              Manage your construction sites, teams, schedules, expenses,
+              documents and daily operations from one powerful platform — with
+              AI-powered construction intelligence built in.
             </p>
           </Reveal>
           <Reveal delay={0.15}>
             <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <TrackedButton
-                href={URLS.signup}
-                external
-                event={EVENTS.START_TRIAL}
+                href={URLS.bookDemo}
+                event={EVENTS.BOOK_DEMO}
                 eventProps={{ location: "hero" }}
                 variant="primary"
                 size="lg"
               >
-                Start {PRICING.trialDays}-Day Trial{" "}
-                <Icon name="ArrowRight" size={18} />
+                <Icon name="CalendarCheck" size={18} /> Book a Demo
               </TrackedButton>
               <TrackedButton
-                href="/pricing"
+                href="/features"
                 event={EVENTS.EXPLORE_PLANS}
                 eventProps={{ location: "hero" }}
                 variant="secondary"
                 size="lg"
               >
-                Explore Plans
+                Explore BuildAlly
               </TrackedButton>
             </div>
             <p className="mt-4 text-sm text-slate-body">
-              {formatPrice(PRICING.trialCredit)} for {PRICING.trialDays} days ·
-              Fully credited towards your subscription
+              Prefer hands-on? Start a {PRICING.trialDays}-day trial for{" "}
+              {formatPrice(PRICING.trialCredit)} — fully credited towards your
+              subscription.
             </p>
             {/* Flexibility reassurance — short enough not to crowd the CTAs. */}
             <ul className="mt-3.5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-ink-600">

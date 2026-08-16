@@ -6,7 +6,7 @@ export const SITE = {
   domain: "https://buildally.in",
   tagline: "Construction management software built for modern builders.",
   description:
-    "BuildAlly is construction management software for builders and interior designers. Manage projects, GPS attendance, salaries, treasury, expenses, documents and site progress from one platform — built for Indian construction companies.",
+    "BuildAlly is a construction management platform for construction companies and interior designers. Manage sites, teams, construction schedules, expenses, documents, agreements and daily operations from one platform — with AI-powered construction intelligence built in.",
 };
 
 // Trial signup and login live in the app, not the marketing site.
@@ -35,6 +35,7 @@ export const CTA_MICROCOPY =
 
 export const MAIN_NAV = [
   { label: "Features", href: "/features" },
+  { label: "AI", href: "/#ai" },
   { label: "Pricing", href: "/pricing" },
   { label: "About", href: "/about" },
   { label: "Team", href: "/#team" },
@@ -46,6 +47,7 @@ export const FOOTER_NAV = [
     title: "Product",
     links: [
       { label: "Features", href: "/features" },
+      { label: "BuildAlly AI", href: "/#ai" },
       { label: "Pricing", href: "/pricing" },
       { label: "Mobile", href: "/#mobile" },
       { label: "Book a Demo", href: "/book-demo" },

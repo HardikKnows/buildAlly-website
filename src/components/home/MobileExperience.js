@@ -26,9 +26,9 @@ export function MobileExperience() {
             Built for the site, not just the site office
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-slate-body">
-            The people generating the data — engineers and supervisors — are never
-            at a desk. If it doesn&apos;t work on a phone, it doesn&apos;t get
-            recorded.
+            Designed for field teams. The people generating the data — engineers
+            and supervisors — are never at a desk. If it doesn&apos;t work on a
+            phone, it doesn&apos;t get recorded.
           </p>
           <ul className="mt-8 space-y-5">
             {POINTS.map((p) => (

@@ -24,6 +24,7 @@ function shot(name, alt, size = DESKTOP) {
 
 // --- Trust indicators (immediately below the hero) ---
 export const TRUST_INDICATORS = [
+  { icon: "Sparkles", label: "AI construction intelligence" },
   { icon: "ShieldCheck", label: "Secure cloud platform" },
   { icon: "Building2", label: "Multi-tenant SaaS" },
   { icon: "MapPin", label: "GPS attendance" },
@@ -146,9 +147,9 @@ export const TIER2_FEATURES = [
   },
   {
     icon: "ListChecks",
-    title: "Task Management",
-    body: "Assign, track and approve site tasks — with completion requests that feed milestone progress.",
-    image: shot("task-management", "BuildAlly task management board with assigned site tasks"),
+    title: "Construction Schedule & Tasks",
+    body: "Milestones, calculated schedules and progress tracking — with completion requests that keep every number honest.",
+    image: shot("task-management", "BuildAlly construction schedule and task management board with assigned site tasks"),
   },
   {
     icon: "Users",

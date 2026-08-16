@@ -14,31 +14,31 @@ export function Footer() {
       <div className="bg-ink blueprint-grid-dark">
         <Container className="py-16 text-center sm:py-20">
           <h2 className="text-balance text-3xl font-bold text-white sm:text-4xl">
-            See BuildAlly for yourself
+            Ready to build smarter?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-pretty text-lg text-slate-300">
-            Book a personalized walkthrough with our team and see BuildAlly
-            mapped to how you run your sites, money, and people.
+            Bring your construction operations into one place. Manage sites,
+            coordinate teams, understand what&apos;s happening — and act faster.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <TrackedButton
+              href={URLS.bookDemo}
+              event={EVENTS.BOOK_DEMO}
+              eventProps={{ location: "footer" }}
+              variant="white"
+              size="lg"
+            >
+              <Icon name="CalendarCheck" size={18} /> Book a Demo
+            </TrackedButton>
             <TrackedButton
               href={URLS.signup}
               external
               event={EVENTS.START_TRIAL}
               eventProps={{ location: "footer" }}
-              variant="white"
-              size="lg"
-            >
-              Start 7-Day Trial <Icon name="ArrowRight" size={18} />
-            </TrackedButton>
-            <TrackedButton
-              href="/pricing"
-              event={EVENTS.EXPLORE_PLANS}
-              eventProps={{ location: "footer" }}
               variant="outlineLight"
               size="lg"
             >
-              Explore Plans
+              Start 7-Day Trial <Icon name="ArrowRight" size={18} />
             </TrackedButton>
           </div>
           <p className="mt-4 text-sm text-slate-400">{CTA_MICROCOPY}</p>

@@ -7,6 +7,9 @@ import {
   Tier2Features,
   Tier3Features,
 } from "@/components/home/FeatureSections";
+import { AISection } from "@/components/home/AISection";
+import { RoleExperience } from "@/components/home/RoleExperience";
+import { Lifecycle, TaskSystem } from "@/components/home/Lifecycle";
 import { MobileExperience } from "@/components/home/MobileExperience";
 import { WhyBuildAlly } from "@/components/home/WhyBuildAlly";
 import { CustomerJourney } from "@/components/home/CustomerJourney";
@@ -18,13 +21,13 @@ import { TeamSection } from "@/components/home/TeamSection";
 export const metadata = {
   title: "BuildAlly — Construction Management Software for Modern Builders",
   description:
-    "BuildAlly is construction management software for builders and interior designers. Manage projects, GPS attendance, salaries, treasury, expenses, documents and site progress from one platform. Start a 7-day trial.",
+    "BuildAlly is a construction management platform for construction companies. Manage sites, teams, construction schedules, expenses, documents, agreements and daily operations from one platform — with AI-powered construction intelligence included. Book a demo.",
   alternates: { canonical: "/" },
 };
 
-// Section order follows the Tier 1/2/3 feature hierarchy: the strongest
-// differentiators (sites, attendance, payroll, treasury, spend, then GPS
-// verification) come first, supporting capabilities come later.
+// Section order: platform core first (Tier 1, GPS verification), then the AI
+// differentiator, the rest of the platform, roles, mobile, and the lifecycle
+// story — pricing and FAQs close the page.
 export default function HomePage() {
   return (
     <>
@@ -33,8 +36,12 @@ export default function HomePage() {
       <Problem />
       <Tier1Features />
       <GpsSection />
+      <AISection />
       <Tier2Features />
+      <RoleExperience />
       <MobileExperience />
+      <Lifecycle />
+      <TaskSystem />
       <Tier3Features />
       <WhyBuildAlly />
       <CustomerJourney />

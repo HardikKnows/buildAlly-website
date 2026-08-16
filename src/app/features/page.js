@@ -9,7 +9,7 @@ import { PILLARS, OBJECTIONS } from "@/lib/content";
 export const metadata = {
   title: "Features — Everything to Run Construction in One Platform",
   description:
-    "Explore BuildAlly's platform: site management, financial dashboards, workforce & payroll, document control, approvals, executive intelligence, a mobile field app, and enterprise-grade security.",
+    "Explore BuildAlly's platform: site management, construction schedules, AI construction intelligence, financial dashboards, workforce & payroll, documents, agreements & quotations, approvals, a mobile field app, and enterprise-grade security.",
   alternates: { canonical: "/features" },
 };
 
@@ -19,7 +19,7 @@ export default function FeaturesPage() {
       <PageHero
         eyebrow="The platform"
         title="One platform for sites, money, people, and documents"
-        lead="BuildAlly replaces the tangle of WhatsApp, spreadsheets, and paper with nine connected pillars — each built around how construction actually works."
+        lead="BuildAlly replaces the tangle of WhatsApp, spreadsheets, and paper with connected pillars — each built around how construction actually works, with AI-powered construction intelligence throughout."
       >
         <CTAGroup align="center" />
       </PageHero>

@@ -66,7 +66,8 @@ export default async function OpengraphImage() {
               maxWidth: 900,
             }}
           >
-            Sites, money, team, and documents — unified, real-time, and built for the field.
+            Sites, schedules, teams, money and documents — with AI-powered
+            construction intelligence built in.
           </div>
         </div>
 
@@ -74,7 +75,7 @@ export default async function OpengraphImage() {
         <div style={{ display: "flex", gap: 16, fontSize: 24, color: "#93C5FD" }}>
           <span>Built for Indian builders</span>
           <span style={{ color: "#475569" }}>·</span>
-          <span>Works offline</span>
+          <span>AI included</span>
           <span style={{ color: "#475569" }}>·</span>
           <span>Enterprise-grade security</span>
         </div>

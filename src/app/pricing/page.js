@@ -17,6 +17,7 @@ import {
   STORAGE_USES,
   ADDON_TEASER,
   COUPON_NOTE,
+  AI_INCLUDED_NOTE,
   getPlan,
   formatPrice,
   priceFor,
@@ -35,7 +36,7 @@ export const metadata = {
     priceFor(interior, "monthly").price,
   )}/month, and Builder from ${formatPrice(
     priceFor(builder, "monthly").price,
-  )}/month (limited-period launch pricing, billed monthly or annually). Site management, attendance, expenses, treasury, documents, and reports in one construction ERP built for Indian builders.`,
+  )}/month (limited-period launch pricing, billed monthly or annually). AI-powered construction intelligence included. Site management, schedules, attendance, expenses, treasury, documents, and reports in one construction management platform built for Indian builders.`,
   alternates: { canonical: "/pricing" },
 };
 
@@ -108,6 +109,10 @@ export default function PricingPage() {
       <Section tone="canvas" id="plans" containerSize="wide">
         <PricingPlans location="pricing_page" />
         <Reveal className="mx-auto mt-10 flex max-w-3xl flex-col items-center gap-3">
+          <p className="inline-flex items-center gap-2 rounded-full border border-brand/25 bg-brand-50/70 px-4 py-2 text-center text-sm font-semibold text-brand">
+            <Icon name="Sparkles" size={16} className="shrink-0" />
+            {AI_INCLUDED_NOTE}
+          </p>
           <a
             href="#add-ons"
             className="inline-flex items-center gap-2 rounded-full border border-brand/25 bg-brand-50/70 px-4 py-2 text-sm font-semibold text-brand transition-colors hover:border-brand/45 hover:bg-brand-50"
@@ -210,7 +215,7 @@ export default function PricingPage() {
         <SectionHeading
           eyebrow="Compare plans"
           title="Every plan, side by side"
-          lead="The complete platform ships with every plan — attendance, expenses, treasury, and documents from day one. Plans differ by capacity, advanced analytics, automation, and support."
+          lead="The complete platform ships with every plan — AI construction intelligence, attendance, expenses, treasury, and documents from day one. Plans differ by capacity, advanced analytics, automation, and support."
         />
         <PlanComparison />
       </Section>

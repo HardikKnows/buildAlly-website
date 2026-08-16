@@ -135,6 +135,37 @@ export const PILLARS = [
     ],
   },
   {
+    id: "schedule",
+    icon: "CalendarRange",
+    eyebrow: "Construction Schedule",
+    headline: "A schedule that stays true",
+    summary:
+      "Milestones and calculated schedules driven by real task completion — kept separate from day-to-day operational work so the dates never drift.",
+    features: [
+      "Construction tasks and milestones",
+      "Calculated schedules and dependencies",
+      "Progress tracking that traces back to completed work",
+      "Schedule health at a glance",
+      "Operational tasks kept separate, so the schedule stays protected",
+    ],
+  },
+  {
+    id: "ai",
+    icon: "Sparkles",
+    eyebrow: "AI Construction Intelligence",
+    headline: "Your construction intelligence assistant",
+    summary:
+      "BuildAlly AI understands your real project data — and helps you understand, decide, and act. Included with your subscription, subject to fair-use limits.",
+    features: [
+      "Answers questions about your sites from real BuildAlly data",
+      "Explains delays and site health with evidence",
+      "Summarizes construction activity and materials",
+      "Prepares operational tasks and multi-step workflows for your review",
+      "Proactively surfaces important changes",
+      "Important changes always go through your confirmation",
+    ],
+  },
+  {
     id: "financial",
     icon: "Wallet",
     eyebrow: "Financial Management",
@@ -173,6 +204,20 @@ export const PILLARS = [
       "Centralized documents with site-level organization",
       "Document approvals and version visibility",
       "Filter by site, category, status, and tag",
+    ],
+  },
+  {
+    id: "agreements",
+    icon: "FileSignature",
+    eyebrow: "Agreements & Quotations",
+    headline: "Win the work before the site exists",
+    summary:
+      "Directors can create agreements and quotations directly from BuildAlly — supporting the lifecycle from pre-project paperwork to live construction.",
+    features: [
+      "Agreement Creator with professional PDF output",
+      "Quotation Generator for client proposals",
+      "Generate documents directly from BuildAlly",
+      "Agreement → Quotation → Client → Site → Construction",
     ],
   },
   {
@@ -318,10 +363,47 @@ export const OWNER_OUTCOMES = [
 ];
 
 // --- FAQ (Homepage + FAQ page) ---
+// The first six render on the homepage, so the platform + AI questions lead.
 export const FAQS = [
+  {
+    q: "What is BuildAlly?",
+    a: "BuildAlly is a construction management platform for construction companies. It brings your sites, teams, construction schedules, finances, documents, agreements and day-to-day operations into one place — with AI-powered construction intelligence built into the platform.",
+  },
+  {
+    q: "Does BuildAlly include AI?",
+    a: "Yes. BuildAlly AI is included with your BuildAlly subscription, subject to fair-use limits designed to keep the service reliable for all customers. There is no separate AI add-on or extra AI charge.",
+  },
+  {
+    q: "What can BuildAlly AI do?",
+    a: "BuildAlly AI understands your real BuildAlly data. It can answer questions about your sites, explain delays with evidence, summarize construction activity, identify what needs attention, and prepare operational tasks and multi-step workflows — which it hands to you for review before anything important happens.",
+  },
+  {
+    q: "Can AI modify my construction schedule?",
+    a: "AI can prepare and execute approved operational actions through BuildAlly's controlled workflow, but construction schedule changes remain protected. Milestones and calculated dates stay under your control.",
+  },
   {
     q: "Can I see BuildAlly before purchasing?",
     a: "Yes. Book a personalized demo and our team will walk you through BuildAlly with your workflows in mind. When you're ready, a 7-day trial lets you evaluate it with your own team on real sites.",
+  },
+  {
+    q: "Can I manage multiple construction sites?",
+    a: "Yes. BuildAlly is built for running multiple construction sites from one workspace — each with its own Site Hub, dashboards, schedule, documents, photos and team, plus a company-wide view across all of them.",
+  },
+  {
+    q: "Who is BuildAlly for?",
+    a: "Construction companies of every size — builders, civil contractors and turnkey teams — as well as interior designers. Directors get oversight, project managers run the work, site engineers get a simple mobile task list, and clients stay connected through their own portal.",
+  },
+  {
+    q: "Can AI create tasks?",
+    a: "Yes. BuildAlly AI can create operational tasks and prepare multi-step workflows — collecting the required information and attachments first — and it acts only after you review and confirm.",
+  },
+  {
+    q: "Can I create agreements and quotations?",
+    a: "Yes. Directors can use the Agreement Creator and Quotation Generator directly from BuildAlly to produce professional PDF documents — even before the project exists as a site.",
+  },
+  {
+    q: "Can different employees have different permissions?",
+    a: "Yes, through role-based access. Each person sees exactly the part of the business their role allows — enforced by the server, not just hidden in the interface.",
   },
   {
     q: "Can I invite my team members?",
@@ -361,6 +443,10 @@ export const FAQS = [
 // Every figure is derived from lib/pricing so the answers can never drift from
 // the plan cards.
 export const PLAN_FAQS = [
+  {
+    q: "Is AI included?",
+    a: "Yes. BuildAlly AI is included with your BuildAlly subscription, subject to fair-use limits designed to keep the service reliable for all customers. There is no separate AI plan or add-on.",
+  },
   {
     q: "Why is the trial paid?",
     a: `The ${formatPrice(

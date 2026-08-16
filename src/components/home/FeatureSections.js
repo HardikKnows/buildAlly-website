@@ -25,7 +25,7 @@ export function Tier1Features() {
       <SectionHeading
         eyebrow="The platform"
         title="Everything a construction business runs on"
-        lead="Sites, attendance, payroll, treasury and spend — one workspace, real-time, for every role on the project."
+        lead="Sites, schedules, attendance, payroll, treasury and spend — one workspace, real-time, for every role on the project."
       />
       <div className="mt-16 space-y-20 sm:space-y-28">
         {TIER1_FEATURES.map((f, i) => {

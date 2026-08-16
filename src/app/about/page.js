@@ -19,7 +19,7 @@ const VALUES = [
 ];
 
 const STATS = [
-  { value: "9", label: "Connected product pillars" },
+  { value: "12", label: "Connected product pillars" },
   { value: "1", label: "Platform replacing WhatsApp + Excel + paper" },
   { value: "₹ L/Cr", label: "Currency formatting built for India" },
   { value: "Offline", label: "Field capture that works with no signal" },

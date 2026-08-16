@@ -66,6 +66,7 @@ export const PRICING = {
       support: "Email support",
       highlights: [
         "Full platform access",
+        "AI construction intelligence included",
         "Up to 7 active sites",
         "2 GB cloud storage",
         "Project, site & member management",
@@ -103,6 +104,7 @@ export const PRICING = {
       support: "Priority email",
       inherits: "Everything in Trial, plus…",
       highlights: [
+        "AI construction intelligence included",
         "Up to 8 active sites",
         "25 GB cloud storage",
         "Unlimited team members",
@@ -147,6 +149,7 @@ export const PRICING = {
       support: "Faster priority",
       inherits: "Everything in Interior, plus…",
       highlights: [
+        "AI construction intelligence included",
         "Up to 15 active sites",
         "75 GB cloud storage",
         "Advanced project analytics",
@@ -263,6 +266,20 @@ export const COMPARISON = {
       ],
     },
     {
+      title: "BuildAlly AI",
+      rows: [
+        { label: "AI Assistant", values: [true, true, true, true] },
+        {
+          label: "Construction Intelligence & proactive alerts",
+          values: [true, true, true, true],
+        },
+        {
+          label: "AI Actions & Workflows (with your confirmation)",
+          values: [true, true, true, true],
+        },
+      ],
+    },
+    {
       title: "Platform",
       rows: [
         { label: "Notifications", values: [true, true, true, true] },
@@ -346,6 +363,11 @@ export const CHECKOUT_STEPS = [
 // published: they belong to influencer, referral, launch, and sales campaigns.
 export const COUPON_NOTE =
   "Have a promotional code? Apply it securely during checkout.";
+
+// AI is part of the subscription — never a separate add-on or price. The
+// fair-use mention stays quiet and secondary by design.
+export const AI_INCLUDED_NOTE =
+  "AI-powered construction intelligence included with every plan. Subject to fair-use limits.";
 
 // Reassurance under the plan cards, so nobody hesitates over outgrowing a plan.
 export const ADDON_TEASER =

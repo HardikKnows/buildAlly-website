@@ -21,7 +21,7 @@ export function LegalPage({ title, updated, intro, sections }) {
       <section className="border-b border-line bg-slate-50/60">
         <Container size="narrow" className="py-4">
           <p className="text-sm text-slate-body">
-            This document applies to BuildAlly's website, mobile application, and related services.
+            This document applies to BuildAlly&apos;s website, mobile application, and related services.
           </p>
         </Container>
       </section>

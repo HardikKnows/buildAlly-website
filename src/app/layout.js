@@ -26,6 +26,11 @@ export const metadata = {
   description: SITE.description,
   keywords: [
     "construction management software",
+    "construction management platform",
+    "construction project management",
+    "construction site management",
+    "construction AI",
+    "construction management software India",
     "builder management software",
     "construction ERP",
     "interior project management software",

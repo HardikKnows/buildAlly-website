@@ -6,7 +6,13 @@ import { TrackedButton } from "@/components/ui/TrackedButton";
 import { TrialBanner } from "@/components/pricing/TrialBanner";
 import { URLS } from "@/lib/site";
 import { EVENTS } from "@/lib/track";
-import { PRICING, ADDON_TEASER, formatPrice, priceFor } from "@/lib/pricing";
+import {
+  PRICING,
+  ADDON_TEASER,
+  AI_INCLUDED_NOTE,
+  formatPrice,
+  priceFor,
+} from "@/lib/pricing";
 
 // Section 8 — Pricing teaser. Shows each plan's entry (monthly) price and sends
 // people to the Pricing page, which is the single place plans are published in
@@ -56,8 +62,12 @@ export function PricingPreview() {
         ))}
       </RevealGroup>
 
-      <Reveal className="mx-auto mt-6 max-w-2xl text-center text-sm text-slate-body">
-        {ADDON_TEASER}
+      <Reveal className="mx-auto mt-6 flex max-w-2xl flex-col items-center gap-2 text-center text-sm text-slate-body">
+        <span className="inline-flex items-center gap-1.5 font-medium text-ink-600">
+          <Icon name="Sparkles" size={15} className="shrink-0 text-brand" />
+          {AI_INCLUDED_NOTE}
+        </span>
+        <span>{ADDON_TEASER}</span>
       </Reveal>
 
       <Reveal className="mt-8 flex justify-center">
