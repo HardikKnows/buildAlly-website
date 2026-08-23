@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { TrackedButton } from "@/components/ui/TrackedButton";
+import { SignupButton } from "@/components/ui/SignupLink";
 import {
   PRICING,
   BILLING_CYCLES,
@@ -20,13 +21,11 @@ import { EVENTS } from "@/lib/track";
 // selected on load (it's the better value). Switching is pure client state —
 // there is only ever one set of cards in the DOM, never a duplicated section.
 
-// Map a plan's CTA action to its destination + tracking event, so the pricing
-// config stays free of routing concerns.
-function ctaTarget(action) {
-  if (action === "contact") {
-    return { href: URLS.contactSales, external: false, event: EVENTS.CONTACT_SALES };
-  }
-  return { href: URLS.signup, external: true, event: EVENTS.START_TRIAL };
+// Whether a plan's CTA goes to sales or into signup, so the pricing config
+// stays free of routing concerns. Signup CTAs render as <SignupButton> so the
+// visitor's referral / campaign attribution survives the hop to the app.
+function isContactCta(action) {
+  return action === "contact";
 }
 
 function BillingToggle({ cycle, onChange }) {
@@ -66,7 +65,7 @@ function PlanCard({ plan, cycle, location }) {
   const offPercent = discountPercent(plan, cycle);
   const savings = annualSavings(plan);
   const perMonth = cycle === "annual" ? monthlyEquivalent(plan) : null;
-  const target = ctaTarget(plan.cta.action);
+  const contact = isContactCta(plan.cta.action);
   const note = billing?.note || plan.billingNote;
 
   return (
@@ -196,17 +195,29 @@ function PlanCard({ plan, cycle, location }) {
 
       {/* CTA */}
       <div className="mt-auto pt-7">
-        <TrackedButton
-          href={target.href}
-          external={target.external}
-          event={target.event}
-          eventProps={{ location, plan: plan.id, cycle }}
-          variant={plan.featured ? "primary" : "secondary"}
-          size="lg"
-          className="w-full"
-        >
-          {plan.cta.label}
-        </TrackedButton>
+        {contact ? (
+          <TrackedButton
+            href={URLS.contactSales}
+            event={EVENTS.CONTACT_SALES}
+            eventProps={{ location, plan: plan.id, cycle }}
+            variant={plan.featured ? "primary" : "secondary"}
+            size="lg"
+            className="w-full"
+          >
+            {plan.cta.label}
+          </TrackedButton>
+        ) : (
+          <SignupButton
+            // The app chooses the plan at /activate after email verification,
+            // so plan intent rides the analytics event, not a query param.
+            eventProps={{ location, plan: plan.id, cycle }}
+            variant={plan.featured ? "primary" : "secondary"}
+            size="lg"
+            className="w-full"
+          >
+            {plan.cta.label}
+          </SignupButton>
+        )}
         {note && (
           <p className="mt-3 text-center text-xs text-slate-body">{note}</p>
         )}

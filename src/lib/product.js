@@ -15,6 +15,8 @@
 //   Tier 2 — cards in a grid (major features)
 //   Tier 3 — a compact list (supporting capabilities)
 
+import { PRICING, formatPrice } from "./pricing";
+
 const DESKTOP = { width: 3200, height: 2000 };
 const MOBILE = { width: 1242, height: 2688 };
 
@@ -205,7 +207,7 @@ export const WHY_BUILDALLY = [
 export const JOURNEY = [
   { step: "01", icon: "UserPlus", title: "Register", body: "Create your account with email, Google or a magic link." },
   { step: "02", icon: "Building2", title: "Create company", body: "Set up your isolated workspace and company profile." },
-  { step: "03", icon: "Rocket", title: "Start your trial", body: "₹999 for 7 days, credited back against your subscription." },
+  { step: "03", icon: "Rocket", title: "Start your trial", body: `${formatPrice(PRICING.trialCredit)} for ${PRICING.trialDays} days, credited back against your subscription.` },
   { step: "04", icon: "MapPin", title: "Create sites", body: "Add projects and set each site's geofence." },
   { step: "05", icon: "Users", title: "Invite your team", body: "Secure invites with the right role for each person." },
   { step: "06", icon: "ClipboardList", title: "Manage projects", body: "Attendance, expenses, salary, documents and reports." },

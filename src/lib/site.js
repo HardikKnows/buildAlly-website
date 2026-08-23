@@ -1,6 +1,8 @@
 // Central site configuration — URLs, CTAs, navigation, contact.
 // Keep all external destinations here so CTAs stay consistent site-wide.
 
+import { PRICING, formatPrice } from "./pricing";
+
 export const SITE = {
   name: "BuildAlly",
   domain: "https://buildally.in",
@@ -11,9 +13,14 @@ export const SITE = {
 
 // Trial signup and login live in the app, not the marketing site.
 // Demos are scheduled with our team via /book-demo (no public/anonymous demo).
+//
+// `signup` is the app's real registration route, not the bare origin: the bare
+// origin lands on login, and only /register-company reads the `?ref=` referral
+// code. Link to it through SignupButton/SignupAnchor so campaign and referral
+// params survive the hop — see @/lib/attribution.
 export const URLS = {
   app: "https://app.buildally.in",
-  signup: "https://app.buildally.in", // self-serve 7-day paid trial (tertiary CTA)
+  signup: "https://app.buildally.in/register-company", // self-serve 7-day paid trial
   login: "https://app.buildally.in",
   api: "https://api.buildally.in",
   bookDemo: "/book-demo", // demo request form — primary CTA
@@ -27,8 +34,10 @@ export const URLS = {
 };
 
 // Reassurance microcopy shown near the primary (Start Trial) CTA.
-export const CTA_MICROCOPY =
-  "₹999 for 7 days on your real sites · Fully credited towards your subscription.";
+// Derived from @/lib/pricing so the trial price is never restated by hand.
+export const CTA_MICROCOPY = `${formatPrice(PRICING.trialCredit)} for ${
+  PRICING.trialDays
+} days on your real sites · Fully credited towards your subscription.`;
 
 // Contact email lives in @/lib/email — one official address for the whole
 // product. Import SUPPORT_EMAIL / supportMailto from there, not from here.
@@ -74,7 +83,12 @@ export const FOOTER_NAV = [
     title: "Support",
     links: [
       { label: "Contact Support", href: "/contact" },
-      { label: "Start 7-Day Trial", href: URLS.signup, external: true },
+      {
+        label: `Start ${PRICING.trialDays}-Day Trial`,
+        href: URLS.signup,
+        external: true,
+        signup: true, // routed through SignupAnchor so attribution survives
+      },
       { label: "Login", href: URLS.login, external: true },
     ],
   },

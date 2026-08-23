@@ -13,7 +13,7 @@ const POINTS = [
   {
     icon: "Layers",
     title: "Add capacity, keep your plan",
-    body: "Buy a Site Capacity Pack whenever you need more active sites — your subscription, features, and pricing stay exactly as they are.",
+    body: "Add sites one at a time whenever you need them — your subscription, features, and plan price stay exactly as they are.",
   },
   {
     icon: "RefreshCw",
@@ -71,11 +71,11 @@ export function ScaleAsYouGrow() {
 
         <Reveal delay={0.1} className="rounded-2xl border border-line bg-canvas p-6 sm:p-8">
           <p className="text-sm font-semibold text-ink">
-            Site Capacity Packs
+            Additional sites, per year
           </p>
           <p className="mt-1.5 text-sm leading-relaxed text-slate-body">
-            Added on top of any subscription. Packs stack, so you can combine
-            them as your site count climbs.
+            Added on top of any subscription — and priced lower on Growth, so
+            scaling up costs less the bigger you get.
           </p>
           <SiteAddOnStrip className="mt-6" />
           <p className="mt-6 flex items-start gap-2.5 border-t border-line pt-5 text-sm leading-relaxed text-slate-body">

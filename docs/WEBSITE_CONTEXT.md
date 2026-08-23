@@ -220,13 +220,17 @@ Design and copy should speak primarily to the **owner/director/decision-maker**,
 ### Subscription tiers (for the Pricing page)
 > **Superseded — do not price from this section.** The early draft here (a free
 > tier, a ₹2,499 "Professional" plan, a 14-day free trial) was replaced by the
-> shipped commercial model. Live pricing, plan limits, storage quotas, and Site
-> Capacity Packs live in **`src/lib/pricing.js`**, which every page reads from;
-> `docs/marketing-feature-inventory.md` documents the same model in prose.
+> shipped commercial model. Live pricing, plan limits, storage quotas, and
+> additional-site rates live in **`src/lib/pricing.js`**, which every page reads
+> from; `docs/marketing-feature-inventory.md` documents the same model in prose.
+>
+> The plans were later renamed **Interior → Starter** and **Builder → Growth**,
+> and capacity add-ons moved from fixed packs to **per-site** pricing. Any
+> mention of "Interior", "Builder" or "Site Capacity Packs" below is historical.
 
-- **No free tier.** A workspace starts with the **paid ₹999 / 7-day trial** (fully credited towards the first subscription) or a direct Interior / Builder subscription. Enterprise is Contact Sales.
+- **No free tier.** A workspace starts with the **paid ₹999 / 7-day trial** (fully credited towards the first subscription) or a direct Starter / Growth subscription. Enterprise is Contact Sales.
 - **Capacity, not features, separates the plans** — every plan ships the complete platform.
-- **Site Capacity Packs** let a company add active sites without changing its subscription; packs stack and renew with the main subscription.
+- **Additional sites** let a company add active sites without changing its subscription, priced per site per year (₹3,500 on Starter, ₹3,000 on Growth) and renewing with the main subscription.
 - **Coupons** are applied at checkout and are never published on the site — they belong to influencer, referral, launch, and sales campaigns.
 - **Soft limits:** reaching a site or storage cap never deletes data — it blocks new site creation / uploads until capacity is added.
 

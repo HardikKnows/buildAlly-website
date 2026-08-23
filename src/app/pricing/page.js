@@ -12,12 +12,17 @@ import { CheckoutFlow } from "@/components/pricing/CheckoutFlow";
 import { SITE, URLS } from "@/lib/site";
 import { EVENTS } from "@/lib/track";
 import { PLAN_FAQS } from "@/lib/content";
+import { PricingCalculator } from "@/components/pricing/PricingCalculator";
+import { SignupButton } from "@/components/ui/SignupLink";
 import {
   PRICING,
+  SITE_ADDONS,
   STORAGE_USES,
   ADDON_TEASER,
   COUPON_NOTE,
   AI_INCLUDED_NOTE,
+  TAX_NOTE,
+  GROWTH_CALLOUT,
   getPlan,
   formatPrice,
   priceFor,
@@ -25,18 +30,20 @@ import {
 
 // Derive all pricing copy from the centralized config — no duplicated numbers.
 const trial = getPlan("trial");
-const interior = getPlan("interior");
-const builder = getPlan("builder");
+const starter = getPlan("starter");
+const growth = getPlan("growth");
 
 export const metadata = {
   title: "Pricing — BuildAlly Construction Management Software Plans",
   description: `BuildAlly pricing for builders and interior teams: a ${formatPrice(
     priceFor(trial, "monthly").price,
-  )} ${PRICING.trialDays}-day trial credited towards your subscription, Interior from ${formatPrice(
-    priceFor(interior, "monthly").price,
-  )}/month, and Builder from ${formatPrice(
-    priceFor(builder, "monthly").price,
-  )}/month (limited-period launch pricing, billed monthly or annually). AI-powered construction intelligence included. Site management, schedules, attendance, expenses, treasury, documents, and reports in one construction management platform built for Indian builders.`,
+  )} ${PRICING.trialDays}-day trial credited towards your subscription, Starter from ${formatPrice(
+    priceFor(starter, "monthly").price,
+  )}/month (${starter.sites.toLowerCase()} sites), and Growth from ${formatPrice(
+    priceFor(growth, "monthly").price,
+  )}/month (${growth.sites.toLowerCase()} sites, limited-period launch pricing, billed monthly or annually). Additional sites from ${formatPrice(
+    SITE_ADDONS.perSite.growth,
+  )}/site/year. AI-powered construction intelligence included. Site management, schedules, attendance, expenses, treasury, documents, and reports in one construction management platform built for Indian builders.`,
   alternates: { canonical: "/pricing" },
 };
 
@@ -82,16 +89,14 @@ export default function PricingPage() {
         <div className="flex flex-col items-center gap-6">
           <TrialBanner href="#plans" />
           <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <TrackedButton
-              href={URLS.signup}
-              external
-              event={EVENTS.START_TRIAL}
+            <SignupButton
               eventProps={{ location: "pricing_hero" }}
               variant="primary"
               size="lg"
             >
-              Start 7-Day Trial <Icon name="ArrowRight" size={18} />
-            </TrackedButton>
+              Start {PRICING.trialDays}-Day Trial{" "}
+              <Icon name="ArrowRight" size={18} />
+            </SignupButton>
             <TrackedButton
               href={URLS.bookDemo}
               event={EVENTS.BOOK_DEMO}
@@ -125,24 +130,52 @@ export default function PricingPage() {
             {COUPON_NOTE}
           </p>
           <p className="max-w-2xl text-center text-sm text-slate-body">
-            Prices in INR, exclusive of applicable taxes. Upgrade at any time
-            without losing data — your sites, documents, and history carry over.
+            {TAX_NOTE}
+          </p>
+        </Reveal>
+
+        {/* Which plan fits — stated as fact, no urgency. */}
+        <Reveal className="mx-auto mt-10 max-w-3xl rounded-2xl border border-brand/20 bg-brand-50/50 p-6 sm:p-7">
+          <p className="flex items-start gap-3 text-[15px] leading-relaxed text-ink">
+            <Icon
+              name="Layers"
+              size={19}
+              className="mt-0.5 shrink-0 text-brand"
+            />
+            <span>
+              <strong className="font-semibold">{GROWTH_CALLOUT.title}</strong>{" "}
+              {GROWTH_CALLOUT.body}
+            </span>
           </p>
         </Reveal>
       </Section>
 
-      {/* Site Capacity Packs — grow without changing plans */}
+      {/* Additional sites — grow without changing plans */}
       <Section tone="white" id="add-ons">
         <SectionHeading
           eyebrow="Site add-ons"
           title="Need more sites?"
-          lead="Running out of active sites? Simply expand your capacity without changing your subscription plan."
+          lead={`Running out of active sites? Add them individually — ${formatPrice(
+            SITE_ADDONS.perSite.starter,
+          )} per site per year on Starter, ${formatPrice(
+            SITE_ADDONS.perSite.growth,
+          )} on Growth — without changing your subscription plan.`}
         />
         <SiteAddOns />
       </Section>
 
+      {/* Work out the cost for your own site count */}
+      <Section tone="canvas" id="calculator">
+        <SectionHeading
+          eyebrow="Cost calculator"
+          title="What would BuildAlly cost you?"
+          lead="Set the number of sites you run and compare both plans side by side, including any additional sites you'd need."
+        />
+        <PricingCalculator />
+      </Section>
+
       {/* How checkout works */}
-      <Section tone="canvas" containerSize="wide">
+      <Section tone="white" containerSize="wide">
         <SectionHeading
           eyebrow="Billing"
           title="How checkout works"
@@ -152,7 +185,7 @@ export default function PricingPage() {
       </Section>
 
       {/* Why the trial is paid */}
-      <Section tone="white" containerSize="narrow">
+      <Section tone="canvas" containerSize="narrow">
         <SectionHeading
           eyebrow="The paid trial"
           title="Why is the trial paid?"
@@ -211,7 +244,7 @@ export default function PricingPage() {
       </Section>
 
       {/* Comparison table — the "Compare plans" links on each card land here. */}
-      <Section tone="canvas" id="compare" containerSize="wide">
+      <Section tone="white" id="compare" containerSize="wide">
         <SectionHeading
           eyebrow="Compare plans"
           title="Every plan, side by side"
@@ -221,7 +254,7 @@ export default function PricingPage() {
       </Section>
 
       {/* Storage */}
-      <Section tone="white">
+      <Section tone="canvas">
         <SectionHeading
           eyebrow="Storage"
           title="Smart cloud storage"
@@ -275,7 +308,7 @@ export default function PricingPage() {
       </Section>
 
       {/* Pricing FAQ */}
-      <Section tone="canvas" containerSize="narrow">
+      <Section tone="white" containerSize="narrow">
         <SectionHeading eyebrow="Pricing questions" title="Common questions" />
         <Reveal className="mt-10">
           <Accordion items={PLAN_FAQS} />
@@ -283,7 +316,7 @@ export default function PricingPage() {
       </Section>
 
       {/* Closing CTA */}
-      <Section tone="white" containerSize="narrow">
+      <Section tone="canvas" containerSize="narrow">
         <Reveal className="rounded-2xl border border-line bg-ink p-8 text-center text-white blueprint-grid-dark sm:p-10">
           <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">
             Not sure which plan fits?

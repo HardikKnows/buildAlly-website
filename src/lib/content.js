@@ -9,6 +9,9 @@ import {
   getPlan,
   priceFor,
   addonExample,
+  planSiteLimit,
+  crossoverSites,
+  addonRate,
 } from "./pricing";
 
 // --- Problem cards (Homepage §3 "Sound familiar?") ---
@@ -475,33 +478,71 @@ export const PLAN_FAQS = [
   },
   {
     q: "Can I increase my storage?",
-    a: "Yes — moving up a plan raises your quota (2 GB on Trial, 25 GB on Interior, 75 GB on Builder). If you reach the limit, uploads pause until you upgrade or remove unused files. Nothing already in your workspace is deleted, and images are optimised on upload so the quota goes further than you'd expect.",
+    a: `Yes — moving up a plan raises your quota (${PRICING.plans
+      .filter((p) => p.storage && p.id !== "enterprise")
+      .map((p) => `${p.storage} on ${p.shortName}`)
+      .join(", ")}). If you reach the limit, uploads pause until you upgrade or remove unused files. Nothing already in your workspace is deleted, and images are optimised on upload so the quota goes further than you'd expect.`,
+  },
+  {
+    q: "Can I add more sites?",
+    a: `Yes. ${getPlan("starter").shortName} includes ${planSiteLimit(
+      getPlan("starter"),
+    )} active sites, and additional sites can be added for ${formatPrice(
+      addonRate("starter"),
+    )} per site per year. On ${getPlan("growth").shortName} the rate is lower — ${formatPrice(
+      addonRate("growth"),
+    )} per site per year — so growing costs less the bigger you get.`,
+  },
+  {
+    q: "What happens if I need many more sites?",
+    a: (() => {
+      const growth = getPlan("growth");
+      return `${growth.shortName} includes ${planSiteLimit(
+        growth,
+      )} active sites for ${formatPrice(
+        priceFor(growth, "annual").price,
+      )}/year and may be the better fit. Neither plan has a site ceiling, so you are never blocked from growing — but from ${crossoverSites()} sites onward ${
+        growth.shortName
+      } already works out cheaper than adding sites to ${
+        getPlan("starter").shortName
+      }. If you're running ${
+        SITE_ADDONS.enterpriseSuggestedFrom
+      }+ sites, talk to us about Enterprise for dedicated onboarding and support.`;
+    })(),
   },
   {
     q: "Can I upgrade later?",
-    a: "Yes. Move up a plan at any time without losing any data — your sites, documents, and history carry over untouched. If capacity is all you need, a Site Capacity Pack adds sites without changing your plan at all.",
+    a: "Yes. Move up a plan at any time without losing any data — your sites, documents, and history carry over untouched. An upgrade takes effect immediately and is charged pro-rata for the time left in your cycle. If capacity is all you need, additional sites can be added without changing your plan at all.",
   },
   {
-    q: "Can I purchase more sites without upgrading my plan?",
-    a: `Yes. BuildAlly offers flexible Site Capacity Packs so you can increase your active site limit without changing your subscription — ${SITE_ADDONS.packs
-      .map((p) => `+${p.sites} sites for ${formatPrice(p.price)}/year`)
-      .join(", ")}. ${SITE_ADDONS.renewalNote}`,
+    q: "Can I downgrade?",
+    a: "Yes. A downgrade is scheduled for the end of the period you have already paid for, so nothing is charged and nothing is reduced on the day you request it — your current limits stay in place until your renewal date. You can cancel a scheduled downgrade any time before it takes effect.",
+  },
+  {
+    q: "What happens to my existing sites if I downgrade?",
+    a: "Nothing is deleted. Your site limit is a soft limit: if you end up above it, every existing site, document and record stays exactly where it is and stays accessible. Only the creation of new active sites is paused until you are back within your limit — and because completing a site frees its slot, capacity comes back as projects finish.",
   },
   {
     q: "What happens when I reach my site limit?",
-    a: `You can either upgrade your subscription plan or purchase additional Site Capacity Packs. No data is lost either way — every existing site, document, and record stays exactly where it is. Only new site creation is blocked until additional capacity is available, and it resumes the moment you add it.`,
+    a: "You can either add more sites to your current plan or move up a plan. No data is lost either way — every existing site, document, and record stays exactly where it is. Only new site creation is blocked until additional capacity is available, and it resumes the moment you add it.",
   },
   {
-    q: "Can I purchase multiple site packs?",
+    q: "How much does adding sites actually cost?",
     a: (() => {
       const ex = addonExample();
-      return `Yes, packs stack. For example, a ${ex.plan.shortName} plan (${
-        ex.base
-      } sites) with a ${ex.packs
-        .map((n) => `+${n}`)
-        .join(" pack and a ")} pack gives you ${
-        ex.total
-      } active sites — on the same subscription, with a single renewal date.`;
+      return `A worked example: ${ex.plan.shortName} at ${formatPrice(
+        ex.quote.base,
+      )}/year includes ${ex.base} sites. Adding ${
+        ex.additional
+      } more at ${formatPrice(ex.quote.rate)} each costs ${formatPrice(
+        ex.quote.addonCost,
+      )}, so ${ex.quote.sites} sites comes to ${formatPrice(
+        ex.quote.total,
+      )}/year. For comparison, ${ex.upgrade.shortName} gives you ${
+        ex.upgradeSites
+      } sites for ${formatPrice(
+        ex.upgradePrice,
+      )}/year. ${SITE_ADDONS.renewalNote}`;
     })(),
   },
   {
@@ -510,23 +551,29 @@ export const PLAN_FAQS = [
   },
   {
     q: "Is this a limited-period offer?",
-    a: `Yes. Interior at ${formatPrice(
-      priceFor(getPlan("interior"), "monthly").price,
-    )}/month and Builder at ${formatPrice(
-      priceFor(getPlan("builder"), "monthly").price,
+    a: `Yes. ${getPlan("starter").shortName} at ${formatPrice(
+      priceFor(getPlan("starter"), "monthly").price,
+    )}/month and ${getPlan("growth").shortName} at ${formatPrice(
+      priceFor(getPlan("growth"), "monthly").price,
     )}/month are launch pricing on our standard rates of ${formatPrice(
-      priceFor(getPlan("interior"), "monthly").originalPrice,
+      priceFor(getPlan("starter"), "monthly").originalPrice,
     )} and ${formatPrice(
-      priceFor(getPlan("builder"), "monthly").originalPrice,
+      priceFor(getPlan("growth"), "monthly").originalPrice,
     )} a month. Lock it in while it lasts — your rate stays the same for as long as your subscription is active.`,
   },
   {
     q: "What's the difference between monthly and annual billing?",
-    a: `It's the same plan either way — annual is simply billed once at a lower effective rate. Interior saves ${formatPrice(
-      annualSavings(getPlan("interior")).amount,
-    )} a year and Builder saves ${formatPrice(
-      annualSavings(getPlan("builder")).amount,
+    a: `It's the same plan either way — annual is simply billed once at a lower effective rate. ${
+      getPlan("starter").shortName
+    } saves ${formatPrice(
+      annualSavings(getPlan("starter")).amount,
+    )} a year and ${getPlan("growth").shortName} saves ${formatPrice(
+      annualSavings(getPlan("growth")).amount,
     )} a year compared with paying monthly.`,
+  },
+  {
+    q: "Do the prices include GST?",
+    a: "Yes. Every price shown on this page is inclusive of GST — the tax is shown separately on your invoice, but it is never added on top of the price you see. What you see is what you pay.",
   },
   {
     q: "Do you offer custom plans for larger teams?",

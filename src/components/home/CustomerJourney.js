@@ -1,10 +1,8 @@
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui/Icon";
-import { TrackedButton } from "@/components/ui/TrackedButton";
+import { SignupButton } from "@/components/ui/SignupLink";
 import { JOURNEY } from "@/lib/product";
-import { URLS } from "@/lib/site";
-import { EVENTS } from "@/lib/track";
 import { PRICING } from "@/lib/pricing";
 
 // Onboarding path, register -> upgrade. An ordered list, so the sequence is
@@ -44,16 +42,13 @@ export function CustomerJourney() {
       </RevealGroup>
 
       <Reveal className="mt-12 flex justify-center">
-        <TrackedButton
-          href={URLS.signup}
-          external
-          event={EVENTS.START_TRIAL}
+        <SignupButton
           eventProps={{ location: "journey" }}
           variant="primary"
           size="lg"
         >
           Start {PRICING.trialDays}-Day Trial <Icon name="ArrowRight" size={18} />
-        </TrackedButton>
+        </SignupButton>
       </Reveal>
     </Section>
   );

@@ -3,9 +3,11 @@ import { Logo } from "@/components/ui/Logo";
 import { Icon } from "@/components/ui/Icon";
 import { Container } from "@/components/ui/Container";
 import { TrackedButton } from "@/components/ui/TrackedButton";
+import { SignupAnchor, SignupButton } from "@/components/ui/SignupLink";
 import { FOOTER_NAV, SITE, URLS, CTA_MICROCOPY } from "@/lib/site";
 import { SUPPORT_EMAIL, SUPPORT_MAILTO } from "@/lib/email";
 import { EVENTS } from "@/lib/track";
+import { PRICING } from "@/lib/pricing";
 
 export function Footer() {
   return (
@@ -30,16 +32,14 @@ export function Footer() {
             >
               <Icon name="CalendarCheck" size={18} /> Book a Demo
             </TrackedButton>
-            <TrackedButton
-              href={URLS.signup}
-              external
-              event={EVENTS.START_TRIAL}
+            <SignupButton
               eventProps={{ location: "footer" }}
               variant="outlineLight"
               size="lg"
             >
-              Start 7-Day Trial <Icon name="ArrowRight" size={18} />
-            </TrackedButton>
+              Start {PRICING.trialDays}-Day Trial{" "}
+              <Icon name="ArrowRight" size={18} />
+            </SignupButton>
           </div>
           <p className="mt-4 text-sm text-slate-400">{CTA_MICROCOPY}</p>
         </Container>
@@ -66,7 +66,16 @@ export function Footer() {
               <h3 className="text-sm font-semibold text-ink">{col.title}</h3>
               <ul className="mt-3 space-y-2.5">
                 {col.links.map((link) =>
-                  link.external ? (
+                  link.signup ? (
+                    <li key={link.label}>
+                      <SignupAnchor
+                        eventProps={{ location: "footer_nav" }}
+                        className="text-sm text-slate-body transition-colors hover:text-brand"
+                      >
+                        {link.label}
+                      </SignupAnchor>
+                    </li>
+                  ) : link.external ? (
                     <li key={link.label}>
                       <a
                         href={link.href}

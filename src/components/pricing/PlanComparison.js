@@ -8,6 +8,14 @@ import { COMPARISON, comparisonPlans } from "@/lib/pricing";
 const PLANS = comparisonPlans();
 const COL_COUNT = PLANS.length + 1;
 
+// "Trial, Starter, Growth, and Enterprise" — built from the config so the
+// screen-reader caption can never name a plan that no longer exists.
+const PLAN_NAMES = PLANS.map((p, i) =>
+  i === PLANS.length - 1 && PLANS.length > 1
+    ? `and ${p.shortName}`
+    : p.shortName,
+).join(PLANS.length > 2 ? ", " : " ");
+
 // A cell value is either `true` (included), falsy (not included), or a string.
 function CellValue({ value, label }) {
   if (value === true) {
@@ -43,8 +51,7 @@ export function PlanComparison() {
       <div className="hidden overflow-hidden rounded-2xl border border-line bg-white md:block">
         <table className="w-full table-fixed border-collapse text-left">
           <caption className="sr-only">
-            BuildAlly plan comparison across Trial, Interior, Builder, and
-            Enterprise
+            BuildAlly plan comparison across {PLAN_NAMES}
           </caption>
           <thead>
             <tr className="border-b border-line bg-canvas">
@@ -60,9 +67,9 @@ export function PlanComparison() {
                   }`}
                 >
                   {plan.shortName}
-                  {plan.featured && (
+                  {plan.badge && (
                     <span className="mt-0.5 block text-[11px] font-bold uppercase tracking-wide text-brand">
-                      Most Popular
+                      {plan.badge}
                     </span>
                   )}
                 </th>
@@ -121,9 +128,9 @@ export function PlanComparison() {
             <summary className="flex cursor-pointer items-center justify-between gap-3 px-5 py-4 marker:content-none">
               <span className="font-display text-base font-semibold text-ink">
                 {plan.shortName}
-                {plan.featured && (
+                {plan.badge && (
                   <span className="ml-2 rounded-full bg-brand-50 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-brand">
-                    Popular
+                    {plan.badge}
                   </span>
                 )}
               </span>

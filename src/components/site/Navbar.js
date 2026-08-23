@@ -7,8 +7,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
+import { SignupAnchor } from "@/components/ui/SignupLink";
 import { MAIN_NAV, URLS } from "@/lib/site";
 import { track, EVENTS } from "@/lib/track";
+import { PRICING } from "@/lib/pricing";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -121,18 +123,13 @@ export function Navbar() {
               >
                 Login
               </a>
-              <a
-                href={URLS.signup}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => {
-                  track(EVENTS.START_TRIAL, { location: "nav_mobile" });
-                  closeMenu();
-                }}
+              <SignupAnchor
+                eventProps={{ location: "nav_mobile" }}
+                onClick={closeMenu}
                 className="block rounded-lg px-3 py-3 text-base font-medium text-ink hover:bg-canvas"
               >
-                Start 7-Day Trial
-              </a>
+                Start {PRICING.trialDays}-Day Trial
+              </SignupAnchor>
               <div className="flex flex-col gap-2 pt-2">
                 <Button
                   href={URLS.contactSales}
