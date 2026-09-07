@@ -25,12 +25,17 @@ export const URLS = {
   api: "https://api.buildally.in",
   bookDemo: "/book-demo", // demo request form — primary CTA
   contactSales: "/contact",
-  // Google Play listing. Paste the full store URL here and the badges (hero
-  // top-right + Mobile section) turn into live links automatically — nothing
-  // else to change. While it is null the badge renders as "Coming soon" and is
-  // not clickable, so there is never a dead link on the page.
-  // e.g. "https://play.google.com/store/apps/details?id=in.buildally.app"
-  playStore: null,
+  // Google Play listing — the live Android app. Every store badge on the site
+  // (hero top-right + Mobile section) reads this, so the URL lives here only.
+  // Set it to null and the badge renders dimmed and non-clickable instead of
+  // shipping a dead link.
+  playStore: "https://play.google.com/store/apps/details?id=in.buildally.app",
+  // App Store listing — the iOS app is not published yet. While this is null
+  // the badge renders as "Coming soon on the App Store" and is not clickable.
+  // Paste the listing URL here and it becomes a live "Download on the App
+  // Store" link automatically — nothing else to change.
+  // e.g. "https://apps.apple.com/app/id0000000000"
+  appStore: null,
 };
 
 // Reassurance microcopy shown near the primary (Start Trial) CTA.

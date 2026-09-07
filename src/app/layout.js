@@ -1,6 +1,6 @@
 import { Poppins, Inter } from "next/font/google";
 import "./globals.css";
-import { SITE } from "@/lib/site";
+import { SITE, URLS } from "@/lib/site";
 import { SiteChrome } from "@/components/site/SiteChrome";
 
 const poppins = Poppins({
@@ -111,9 +111,11 @@ function StructuredData() {
       "@type": "SoftwareApplication",
       name: SITE.name,
       applicationCategory: "BusinessApplication",
-      operatingSystem: "Web, iOS, Android (PWA)",
+      operatingSystem: "Web, Android, iOS (PWA)",
       description: SITE.description,
       url: SITE.domain,
+      // The Android app's Google Play listing (omitted while unset).
+      ...(URLS.playStore && { downloadUrl: URLS.playStore }),
       // Demos are scheduled with our team (no public/anonymous demo). Point
       // prospects to the Book a Demo request flow rather than a price.
       potentialAction: {

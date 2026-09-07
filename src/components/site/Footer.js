@@ -4,6 +4,7 @@ import { Icon } from "@/components/ui/Icon";
 import { Container } from "@/components/ui/Container";
 import { TrackedButton } from "@/components/ui/TrackedButton";
 import { SignupAnchor, SignupButton } from "@/components/ui/SignupLink";
+import { StoreBadges } from "@/components/ui/StoreBadges";
 import { FOOTER_NAV, SITE, URLS, CTA_MICROCOPY } from "@/lib/site";
 import { SUPPORT_EMAIL, SUPPORT_MAILTO } from "@/lib/email";
 import { EVENTS } from "@/lib/track";
@@ -59,6 +60,10 @@ export function Footer() {
             >
               <Icon name="Mail" size={15} /> {SUPPORT_EMAIL}
             </a>
+            {/* Store badges — same pair as the hero; they wrap to a stack when
+                the column is narrow (md). */}
+            <h3 className="mt-6 text-sm font-semibold text-ink">Get the app</h3>
+            <StoreBadges captions={false} location="footer" className="mt-3" />
           </div>
 
           {FOOTER_NAV.map((col) => (

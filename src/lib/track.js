@@ -1,7 +1,7 @@
 // Lightweight, provider-agnostic conversion tracking.
 //
-// We track Book Demo / Contact Sales / Start Trial clicks, using the existing
-// PostHog integration "if available". This marketing site has no
+// We track Book Demo / Contact Sales / Start Trial / Google Play clicks, using
+// the existing PostHog integration "if available". This marketing site has no
 // analytics provider yet, so this util fires into PostHog ONLY if it has been
 // loaded on the page (e.g. via a snippet added later). Until then it no-ops —
 // no new analytics provider is introduced.
@@ -14,6 +14,7 @@ export const EVENTS = {
   CONTACT_SALES: "contact_sales_click",
   START_TRIAL: "start_trial_click",
   EXPLORE_PLANS: "explore_plans_click",
+  GET_ANDROID_APP: "google_play_click",
 };
 
 export function track(event, props = {}) {

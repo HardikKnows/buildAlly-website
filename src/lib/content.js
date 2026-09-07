@@ -422,7 +422,7 @@ export const FAQS = [
   },
   {
     q: "Is BuildAlly mobile friendly?",
-    a: "Yes. BuildAlly is a progressive web app your team installs straight from the browser — no app store. It uses the native camera and GPS for attendance and verified photos, and queues work offline so nothing is lost when signal drops on site.",
+    a: "Yes. The BuildAlly Android app is available on Google Play, and the iOS app is coming soon to the App Store. Your team can also install BuildAlly straight from the browser as a progressive web app — no app store needed. It uses the native camera and GPS for attendance and verified photos, and queues work offline so nothing is lost when signal drops on site.",
   },
   {
     q: "Can I cancel anytime?",

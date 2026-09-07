@@ -2,7 +2,7 @@ import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui/Icon";
 import { PhoneShot } from "@/components/ui/Screenshot";
-import { PlayStoreBadge } from "@/components/ui/PlayStoreBadge";
+import { StoreBadges } from "@/components/ui/StoreBadges";
 import { MOBILE_SHOTS } from "@/lib/product";
 
 // Verified against inventory §24 "Mobile Experience" — every claim here is
@@ -48,9 +48,9 @@ export function MobileExperience() {
             ))}
           </ul>
 
-          <div className="mt-8 flex flex-wrap items-center gap-4">
-            <PlayStoreBadge />
-            <p className="text-sm text-slate-body">
+          <div className="mt-8">
+            <StoreBadges location="mobile" />
+            <p className="mt-4 text-sm text-slate-body">
               Or install straight from your browser — no app store needed.
             </p>
           </div>
