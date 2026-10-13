@@ -228,9 +228,11 @@ Design and copy should speak primarily to the **owner/director/decision-maker**,
 > and capacity add-ons moved from fixed packs to **per-site** pricing. Any
 > mention of "Interior", "Builder" or "Site Capacity Packs" below is historical.
 
-- **No free tier.** A workspace starts with the **paid ₹999 / 7-day trial** (fully credited towards the first subscription) or a direct Starter / Growth subscription. Enterprise is Contact Sales.
-- **Capacity, not features, separates the plans** — every plan ships the complete platform.
-- **Additional sites** let a company add active sites without changing its subscription, priced per site per year (₹3,500 on Starter, ₹3,000 on Growth) and renewing with the main subscription.
+- **No free tier.** A workspace starts with the **paid ₹499 / 7-day trial** (3 active sites, 10 team members) or a direct Starter / Growth / Business subscription, billed monthly or annually. Enterprise (more than 25 sites, custom pricing and limits) goes through the Enterprise enquiry form on `/pricing`. The trial is never described as free, and no trial credit is advertised.
+- **Capacity, not features, separates the plans** — every plan ships the complete platform. Key holders are excluded from every plan's team-member limit.
+- **Site add-ons are Growth-only:** ₹375/site/month or ₹3,999/site/year, billed on the Growth subscription's period, up to 8 extra sites (18 in total).
+- **The headline "Plans starting at ₹1,250/month"** is the Starter annual plan's monthly equivalent and must always appear with "Billed annually at ₹14,999." and the ₹1,499/month monthly price.
+- The application's billing catalog (`backend/app/modules/billing/plans.py` in the app repo) must carry the same prices and limits, or checkout will disagree with this site.
 - **Coupons** are applied at checkout and are never published on the site — they belong to influencer, referral, launch, and sales campaigns.
 - **Soft limits:** reaching a site or storage cap never deletes data — it blocks new site creation / uploads until capacity is added.
 

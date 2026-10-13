@@ -3,7 +3,7 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui/Icon";
 import { SignupButton } from "@/components/ui/SignupLink";
 import { JOURNEY } from "@/lib/product";
-import { PRICING } from "@/lib/pricing";
+import { TRIAL_CTA_LABEL } from "@/lib/pricing";
 
 // Onboarding path, register -> upgrade. An ordered list, so the sequence is
 // conveyed to screen readers too, not just by the arrows.
@@ -19,6 +19,7 @@ export function CustomerJourney() {
         <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {JOURNEY.map((s) => (
             <RevealItem
+              as="li"
               key={s.step}
               className="relative min-w-0 rounded-2xl border border-line bg-canvas p-5"
             >
@@ -47,7 +48,7 @@ export function CustomerJourney() {
           variant="primary"
           size="lg"
         >
-          Start {PRICING.trialDays}-Day Trial <Icon name="ArrowRight" size={18} />
+          {TRIAL_CTA_LABEL} <Icon name="ArrowRight" size={18} />
         </SignupButton>
       </Reveal>
     </Section>

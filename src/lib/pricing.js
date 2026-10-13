@@ -1,596 +1,421 @@
 // Single source of truth for BuildAlly public pricing (marketing website).
 //
-// Update prices, limits, storage, and features ONCE here — the pricing page,
-// the billing toggle, the homepage teaser, the comparison table, the site
-// calculator, and the structured data all read from this config. Do not
-// hardcode a rupee amount, a site limit, or a storage figure anywhere else.
+// Update prices, limits and storage ONCE here — the pricing page, the billing
+// selector, the plan cards, the comparison table, the add-on explainer, the plan
+// finder, the homepage teaser, the FAQs and the structured data all read from
+// this config. Do not hardcode a rupee amount, a site limit, a team-member
+// limit or a storage figure anywhere else.
 //
-// Plans:
-//   Trial       ₹999 / 7 days  — fully credited towards any paid subscription
-//   Starter     ₹2,899/mo  ·  ₹29,999/yr   ·  8 sites
-//   Growth      ₹4,499/mo  ·  ₹49,999/yr   ·  15 sites   (recommended)
-//   Enterprise  custom pricing — coming soon
+//   Trial       ₹499 for 7 days · 3 active sites · 10 team members
+//   Starter     ₹1,499/month · ₹14,999/year ·  3 sites ·  10 team members ·  10 GB
+//   Growth      ₹4,999/month · ₹44,999/year · 10 sites ·  40 team members ·  50 GB
+//               (up to 18 sites with paid site add-ons — Growth only)
+//   Business    ₹9,999/month · ₹89,999/year · 25 sites · 100 team members · 200 GB
+//   Enterprise  custom pricing and limits — a conversation with our team
+//
+// Key holders are excluded from every plan's team-member limit.
 //
 // This website is a PRESENTATION LAYER. Everything here is display copy and
-// display arithmetic. Subscription state, Razorpay, proration, tax, coupons and
-// entitlements belong to the BuildAlly application/backend — never to this repo.
+// display arithmetic. Subscription state, Razorpay, tax, coupons, proration
+// and entitlements belong to the BuildAlly application — never to this repo.
 //
-// Each paid plan carries a per-cycle `billing` block. `originalPrice` is the
-// standard rate shown struck through for the limited-period launch offer; the
-// discount badge is computed from it, never hardcoded.
-//
-// Active-site limits are 7 (Trial), 8 (Starter), 15 (Growth). A company that
-// outgrows its plan adds sites individually — see SITE_ADDONS below.
-//
-// Coupons: never publish codes or discount percentages here. Promotional codes
-// belong to influencer, referral, launch, and sales campaigns; the website only
-// says they can be applied at checkout (COUPON_NOTE).
-//
-// Feature philosophy: every plan ships the complete platform — construction
-// teams need attendance, expenses, treasury, and documents from day one. Plans
-// differ by capacity (sites, storage), advanced analytics and automation,
-// support tier, and premium capabilities. Core features are never withheld.
+// Every plan includes the complete platform: plans differ by capacity (active
+// sites, team members, storage), never by withheld features.
+
+export const CURRENCY = { code: "INR", symbol: "₹" };
 
 export const BILLING_CYCLES = [
-  { id: "annual", label: "Annual Billing" },
-  { id: "monthly", label: "Monthly Billing" },
+  { id: "monthly", label: "Monthly" },
+  { id: "annual", label: "Annual" },
 ];
 
 export const DEFAULT_CYCLE = "annual";
 
-export const PRICING = {
-  currency: "INR",
-  currencySymbol: "₹",
-  trialDays: 7,
-  trialCredit: 999,
-  offerLabel: "Limited Period Offer",
-  plans: [
-    {
-      id: "trial",
-      name: "BuildAlly Trial",
-      shortName: "Trial",
-      tagline: "A 7-day professional evaluation on your real projects.",
-      bestFor: ["Teams evaluating BuildAlly on a live site"],
-      // Same price on either cycle — a trial has no billing cadence.
-      billing: {
-        annual: {
-          price: 999,
-          periodLabel: "for 7 days",
-          note: "One-time · Credited to your subscription",
-        },
-        monthly: {
-          price: 999,
-          periodLabel: "for 7 days",
-          note: "One-time · Credited to your subscription",
-        },
-      },
-      sites: "Up to 7",
-      storage: "2 GB",
-      members: "Included",
-      support: "Email support",
-      highlights: [
-        "Full platform access",
-        "AI construction intelligence included",
-        "Up to 7 active sites",
-        "2 GB cloud storage",
-        "Project, site & member management",
-        "Attendance & task management",
-        "Expenses, salary & treasury",
-        "Documents, reports & notifications",
-        "Mobile responsive access",
-        "₹999 credited towards your subscription",
-      ],
-      cta: { label: "Start 7-Day Trial", action: "trial" },
-    },
-    {
-      id: "starter",
-      name: "BuildAlly Starter",
-      shortName: "Starter",
-      tagline: "For smaller construction companies getting organized.",
-      bestFor: ["Interior designers", "Renovation contractors", "Small builders"],
-      billing: {
-        annual: {
-          price: 29999,
-          originalPrice: 39000,
-          periodLabel: "/year",
-          note: "Billed annually · Cancel anytime",
-        },
-        monthly: {
-          price: 2899,
-          originalPrice: 3800,
-          periodLabel: "/month",
-          note: "Billed monthly · Cancel anytime",
-        },
-      },
-      sites: "Up to 8",
-      storage: "25 GB",
-      members: "Unlimited",
-      support: "Priority email",
-      inherits: "Everything in Trial, plus…",
-      highlights: [
-        "AI construction intelligence included",
-        "Up to 8 active sites",
-        "25 GB cloud storage",
-        "Unlimited team members",
-        "Geofencing attendance",
-        "Geotagged site photos",
-        "Estimated salary & payroll",
-        "Expense approval workflow",
-        "Treasury dashboard & advanced financial reports",
-        "Priority email support",
-        "Add more active sites anytime, per site",
-      ],
-      cta: { label: "Get Started", action: "subscribe" },
-    },
-    {
-      id: "growth",
-      name: "BuildAlly Growth",
-      shortName: "Growth",
-      tagline:
-        "For growing construction companies managing multiple active sites.",
-      bestFor: [
-        "Construction companies",
-        "Civil contractors",
-        "Turnkey builders",
-        "Residential & commercial builders",
-      ],
-      billing: {
-        annual: {
-          price: 49999,
-          originalPrice: 65000,
-          periodLabel: "/year",
-          note: "Billed annually · Cancel anytime",
-        },
-        monthly: {
-          price: 4499,
-          originalPrice: 6000,
-          periodLabel: "/month",
-          note: "Billed monthly · Cancel anytime",
-        },
-      },
-      sites: "Up to 15",
-      storage: "50 GB",
-      members: "Unlimited",
-      support: "Faster priority",
-      inherits: "Everything in Starter, plus…",
-      highlights: [
-        "AI construction intelligence included",
-        "Up to 15 active sites",
-        "50 GB cloud storage",
-        "Advanced project analytics",
-        "Company-wide financial dashboard",
-        "Advanced treasury controls",
-        "Multi-level approval workflows",
-        "Detailed reporting & analytics",
-        "Faster priority support",
-        "Early access to new features",
-        "Add more active sites anytime, at a lower per-site rate",
-      ],
-      featured: true,
-      badge: "Most Popular",
-      cta: { label: "Start with Growth", action: "subscribe" },
-    },
-    {
-      id: "enterprise",
-      name: "Enterprise",
-      shortName: "Enterprise",
-      tagline: "For large builders with custom scale, security, and integrations.",
-      bestFor: ["Large builders & multi-company groups"],
-      priceLabel: "Custom Pricing",
-      comingSoon: true,
-      billingNote: "Tailored to your scale and rollout",
-      sites: "Unlimited",
-      storage: "Unlimited",
-      members: "Unlimited",
-      support: "SLA-backed",
-      inherits: "Everything in Growth, plus…",
-      highlights: [
-        "Unlimited active sites",
-        "Unlimited cloud storage",
-        "Dedicated account manager",
-        "Custom onboarding & integrations",
-        "API access",
-        "White labelling",
-        "Advanced security controls",
-        "Custom roles & permissions",
-        "SLA-backed priority support",
-      ],
-      cta: { label: "Contact Sales", action: "contact" },
-    },
-  ],
+// --- Paid trial ---------------------------------------------------------------
+// One payment for a fixed seven-day window. Not free, and not described as a
+// credit or as converting automatically into a subscription — neither is part
+// of the published offer.
+export const TRIAL = {
+  name: "BuildAlly Trial",
+  price: 499,
+  days: 7,
+  sites: 3,
+  members: 10,
 };
 
-// --- Additional sites ---
-// Extra active sites bought on top of a subscription, priced per site per year.
-// A company that outgrows its plan does not have to upgrade: added sites attach
-// to the plan it already has and renew alongside the main subscription.
-//
-// Growth is deliberately cheaper per site than Starter — nobody should feel
-// punished for growing. Neither plan has a site ceiling: past the crossover we
-// point out that Growth is the better deal (see crossoverSites()) rather than
-// blocking, so no plan ever becomes a dead end.
-export const SITE_ADDONS = {
-  perSite: { starter: 3500, growth: 3000 },
-  // Additional sites a plan may add. null = no ceiling, which is every plan
-  // today — kept so a future capped plan has somewhere to say so.
-  maxAdditional: { starter: null, growth: null },
-  // Where we start suggesting a conversation — a prompt, never a block.
-  enterpriseSuggestedFrom: 25,
-  renewalNote:
-    "Additional sites renew together with your main subscription for a seamless billing experience.",
-  // Worked example for "what does adding sites actually cost?", built from the
-  // Starter plan so the arithmetic is always consistent with the plan cards.
-  example: { planId: "starter", additional: 5 },
+// --- Growth site add-ons --------------------------------------------------------
+// Extra active sites bought on top of Growth — and only Growth. The add-on is
+// billed on the same period as the Growth subscription it attaches to.
+export const SITE_ADDON = {
+  planId: "growth",
+  prices: { monthly: 375, annual: 3999 },
+  maxAdditional: 8,
 };
 
-// Grouped feature comparison. `true` renders a checkmark, a falsy value renders
-// an em dash, and a string renders as-is. Values follow COMPARISON.columns.
-//
-// Core construction features (attendance, expenses, treasury, documents) are
-// available on every plan by design — see the feature philosophy note above.
-export const COMPARISON = {
-  columns: ["trial", "starter", "growth", "enterprise"],
-  groups: [
-    {
-      title: "Usage Limits",
-      rows: [
-        { label: "Active Sites", values: ["7", "8", "15", "Unlimited"] },
-        { label: "Storage", values: ["2 GB", "25 GB", "50 GB", "Unlimited"] },
-        {
-          label: "Team Members",
-          values: ["Included", "Unlimited", "Unlimited", "Unlimited"],
-        },
-        {
-          label: "Additional Sites",
-          values: [
-            false,
-            `${formatPrice(SITE_ADDONS.perSite.starter)}/site/year`,
-            `${formatPrice(SITE_ADDONS.perSite.growth)}/site/year`,
-            "Custom",
-          ],
-        },
-      ],
-    },
-    {
-      title: "Project Management",
-      rows: [
-        { label: "Project Dashboard", values: [true, true, true, true] },
-        { label: "Site Progress", values: [true, true, true, true] },
-        { label: "Site Gallery", values: [true, true, true, true] },
-        { label: "Task Management", values: [true, true, true, true] },
-        {
-          label: "Advanced Project Analytics",
-          values: [false, false, true, true],
-        },
-      ],
-    },
-    {
-      title: "Workforce",
-      rows: [
-        { label: "Attendance", values: [true, true, true, true] },
-        { label: "Geofencing", values: [false, true, true, true] },
-        { label: "Geotagging", values: [false, true, true, true] },
-        { label: "Salary Management", values: [true, true, true, true] },
-        { label: "Estimated Salary", values: [false, true, true, true] },
-      ],
-    },
-    {
-      title: "Finance",
-      rows: [
-        { label: "Expenses", values: [true, true, true, true] },
-        { label: "Treasury", values: [true, true, true, true] },
-        {
-          label: "Financial Reports",
-          values: ["Standard", "Advanced", "Company-wide", "Enterprise"],
-        },
-        {
-          label: "Approval Workflow",
-          values: ["Standard", "Standard", "Multi-level", "Multi-level"],
-        },
-      ],
-    },
-    {
-      title: "Documents",
-      rows: [
-        { label: "Document Management", values: [true, true, true, true] },
-        { label: "Agreements", values: [true, true, true, true] },
-        { label: "Drawings", values: [true, true, true, true] },
-        { label: "Reports", values: [true, true, true, true] },
-      ],
-    },
-    {
-      title: "BuildAlly AI",
-      rows: [
-        { label: "AI Assistant", values: [true, true, true, true] },
-        {
-          label: "Construction Intelligence & proactive alerts",
-          values: [true, true, true, true],
-        },
-        {
-          label: "AI Actions & Workflows (with your confirmation)",
-          values: [true, true, true, true],
-        },
-      ],
-    },
-    {
-      title: "Platform",
-      rows: [
-        { label: "Notifications", values: [true, true, true, true] },
-        { label: "Mobile Friendly", values: [true, true, true, true] },
-        { label: "Role-Based Access", values: [true, true, true, true] },
-        {
-          label: "Priority Support",
-          values: [false, "Email", "Faster", "SLA-backed"],
-        },
-        {
-          label: "Early Access Features",
-          values: [false, false, true, true],
-        },
-        { label: "API Access", values: [false, false, false, true] },
-        { label: "White Label", values: [false, false, false, true] },
-      ],
-    },
-  ],
-};
+const GROWTH_INCLUDED_SITES = 10;
 
-// What every plan's cloud storage is used for.
-export const STORAGE_USES = [
-  "Site photos",
-  "Drawings",
-  "Agreements",
-  "Documents",
-  "Reports",
+// --- Plans --------------------------------------------------------------------
+// `prices` are whole rupees per billing period. `sites` is the number of
+// ACTIVE sites included; `members` the team-member limit (key holders are not
+// counted); `storageGb` the included storage. Enterprise has no public price.
+export const PLANS = [
+  {
+    id: "starter",
+    name: "Starter",
+    tagline: "For smaller builders and interior teams running a few sites at a time.",
+    prices: { monthly: 1499, annual: 14999 },
+    sites: 3,
+    members: 10,
+    storageGb: 10,
+    highlights: [
+      "The complete BuildAlly platform",
+      "BuildAlly AI included (fair use)",
+      "Android app and mobile web for site teams",
+    ],
+    cta: "Choose Starter",
+  },
+  {
+    id: "growth",
+    name: "Growth",
+    tagline: "For growing construction companies running several sites at once.",
+    prices: { monthly: 4999, annual: 44999 },
+    sites: GROWTH_INCLUDED_SITES,
+    members: 40,
+    storageGb: 50,
+    recommended: true,
+    highlights: [
+      "The complete BuildAlly platform",
+      "BuildAlly AI included (fair use)",
+      `Add up to ${SITE_ADDON.maxAdditional} more sites as you grow (${
+        GROWTH_INCLUDED_SITES + SITE_ADDON.maxAdditional
+      } max)`,
+    ],
+    cta: "Choose Growth",
+  },
+  {
+    id: "business",
+    name: "Business",
+    tagline: "For established builders managing a large portfolio of active sites.",
+    prices: { monthly: 9999, annual: 89999 },
+    sites: 25,
+    members: 100,
+    storageGb: 200,
+    highlights: [
+      "The complete BuildAlly platform",
+      "BuildAlly AI included (fair use)",
+      "25 active sites included from day one",
+    ],
+    cta: "Choose Business",
+  },
+  {
+    id: "enterprise",
+    name: "Enterprise",
+    tagline: "For companies running more than 25 active sites, or with requirements beyond our standard plans.",
+    custom: true,
+    highlights: [
+      "Custom pricing",
+      "Custom limits for sites, team members and storage",
+      "Plan your rollout directly with the BuildAlly team",
+    ],
+    cta: "Talk to our team",
+  },
 ];
 
-// Checkout flow shown on the pricing page. Optional steps are marked so the
-// illustration reads correctly for someone buying a plan and nothing else.
+// The plans with a public price, in display order.
+export const PAID_PLANS = PLANS.filter((p) => !p.custom);
+
+// Above Business's 25 sites, the conversation is Enterprise.
+export const ENTERPRISE_MIN_SITES =
+  PLANS.find((p) => p.id === "business").sites + 1;
+
+// --- Display arithmetic -------------------------------------------------------
+// Everything below answers "which plan is right for me?" — never "what will I
+// be charged?", which the application settles at checkout.
+
+// Whole rupees with Indian digit grouping: 119988 -> "₹1,19,988".
+export function formatPrice(amount) {
+  return `${CURRENCY.symbol}${Number(amount).toLocaleString("en-IN")}`;
+}
+
+export function getPlan(id) {
+  return PLANS.find((p) => p.id === id) || null;
+}
+
+/** The plan's price for a billing period in whole rupees, or null (Enterprise). */
+export function priceFor(plan, cycle = DEFAULT_CYCLE) {
+  return plan?.prices?.[cycle] ?? null;
+}
+
+/**
+ * What an annual plan works out to per month, rounded to the rupee:
+ * ₹14,999/year -> 1250. A comparison figure only — annual plans are billed
+ * once a year, so this must always be shown next to the annual amount.
+ */
+export function effectiveMonthly(plan) {
+  const annual = priceFor(plan, "annual");
+  return annual ? Math.round(annual / 12) : null;
+}
+
+/**
+ * What annual billing saves against twelve monthly payments.
+ * Starter -> { twelveMonths: 17988, amount: 2989 }. Null when there is no saving,
+ * so a card can never show a saving that isn't real.
+ */
+export function annualSavings(plan) {
+  const monthly = priceFor(plan, "monthly");
+  const annual = priceFor(plan, "annual");
+  if (!monthly || !annual) return null;
+  const twelveMonths = monthly * 12;
+  const amount = twelveMonths - annual;
+  return amount > 0 ? { twelveMonths, amount } : null;
+}
+
+// The cheapest plan, for the "Plans starting at …" headline. The per-month
+// figure is the ANNUAL plan's monthly equivalent, so it is always published
+// together with the annual amount and the month-to-month price.
+const ENTRY_PLAN = PAID_PLANS.reduce((a, b) =>
+  priceFor(b, "annual") < priceFor(a, "annual") ? b : a,
+);
+
+export const STARTING_PRICE = {
+  planId: ENTRY_PLAN.id,
+  planName: ENTRY_PLAN.name,
+  monthlyEquivalent: effectiveMonthly(ENTRY_PLAN),
+  annual: priceFor(ENTRY_PLAN, "annual"),
+  monthly: priceFor(ENTRY_PLAN, "monthly"),
+};
+
+// Growth's site range: 10 included, 18 at most with every add-on.
+export const GROWTH_SITES = {
+  included: getPlan(SITE_ADDON.planId).sites,
+  max: getPlan(SITE_ADDON.planId).sites + SITE_ADDON.maxAdditional,
+};
+
+/**
+ * Growth plus `additional` add-on sites for one billing period.
+ * -> { cycle, additional, sites, base, rate, addonCost, total }
+ * Null when the combination isn't sellable (negative, fractional, or above
+ * the add-on ceiling), so an invalid quote can never be rendered.
+ */
+export function addonQuote(additional, cycle = DEFAULT_CYCLE) {
+  const extra = Number(additional);
+  if (!Number.isInteger(extra) || extra < 0) return null;
+  if (extra > SITE_ADDON.maxAdditional) return null;
+  const base = priceFor(getPlan(SITE_ADDON.planId), cycle);
+  const rate = SITE_ADDON.prices[cycle];
+  if (!base || !rate) return null;
+  return {
+    cycle,
+    additional: extra,
+    sites: GROWTH_SITES.included + extra,
+    base,
+    rate,
+    addonCost: extra * rate,
+    total: base + extra * rate,
+  };
+}
+
+/**
+ * The plan that covers a number of active sites, cheapest first:
+ *   1–3 Starter · 4–10 Growth · 11–18 Growth + add-ons · 19–25 Business ·
+ *   26+ Enterprise.
+ * -> { planId, sites, additional, quotes: { monthly, annual } }
+ *    or { planId: "enterprise", sites } above Business, or null for bad input.
+ */
+export function planForSites(siteCount) {
+  const sites = Math.floor(Number(siteCount));
+  if (!Number.isFinite(sites) || sites < 1) return null;
+
+  for (const plan of PAID_PLANS) {
+    if (sites <= plan.sites) {
+      return {
+        planId: plan.id,
+        sites,
+        additional: 0,
+        quotes: { monthly: plan.prices.monthly, annual: plan.prices.annual },
+      };
+    }
+    if (plan.id === SITE_ADDON.planId && sites <= GROWTH_SITES.max) {
+      const additional = sites - plan.sites;
+      return {
+        planId: plan.id,
+        sites,
+        additional,
+        quotes: {
+          monthly: addonQuote(additional, "monthly").total,
+          annual: addonQuote(additional, "annual").total,
+        },
+      };
+    }
+  }
+  return { planId: "enterprise", sites };
+}
+
+// --- Shared copy ----------------------------------------------------------------
+// Sentences that carry a number, so the figure is stated in one place.
+
+export const TRIAL_CTA_LABEL = `Start ${TRIAL.days}-Day Trial · ${formatPrice(
+  TRIAL.price,
+)}`;
+
+export const TRIAL_SUMMARY = `${formatPrice(TRIAL.price)} for ${
+  TRIAL.days
+} days · ${TRIAL.sites} active sites · ${TRIAL.members} team members`;
+
+export const STARTING_PRICE_QUALIFIER = `Billed annually at ${formatPrice(
+  STARTING_PRICE.annual,
+)}.`;
+
+export const KEY_HOLDER_NOTE = {
+  short: "Key holders not counted",
+  headline: "Key holders are excluded from your plan's team-member limit.",
+  body: "Your plan's team-member limit applies to eligible team accounts. Key holders are excluded from this limit.",
+  detail:
+    "Key Holder is BuildAlly's client role — the access you give a project's client so they can follow their own project. Being an owner, director, admin or manager doesn't make someone a key holder.",
+};
+
+// AI is part of every subscription — never a separate add-on or price.
+export const AI_INCLUDED_NOTE =
+  "BuildAlly AI included with every plan, subject to fair-use limits.";
+
+// The application's listed prices are GST-inclusive: tax is carved out of the
+// listed amount on the invoice, never added on top.
+export const TAX_NOTE = "Prices in INR, inclusive of GST.";
+
+// Codes and discount percentages are deliberately not published.
+export const COUPON_NOTE =
+  "Have a promotional code? Apply it securely at checkout.";
+
+// How a plan CTA actually works today: the app takes the plan choice after the
+// account exists, so no plan or payment is implied by the click itself.
+export const CHECKOUT_NOTE =
+  "Plan buttons take you to create your BuildAlly account. You choose your plan and billing period, and pay securely, inside the app.";
+
+// "Starter, Growth or Business".
+export function joinOr(items) {
+  return items.length > 1
+    ? `${items.slice(0, -1).join(", ")} or ${items[items.length - 1]}`
+    : items[0] || "";
+}
+
+// --- Checkout path ----------------------------------------------------------------
+// Mirrors the application: register -> verify email -> choose trial or plan
+// at activation -> pay. Nothing is active until the app confirms the payment.
 export const CHECKOUT_STEPS = [
   {
+    icon: "UserPlus",
+    title: "Create your account",
+    body: "Register your company at app.buildally.in and verify your email.",
+  },
+  {
     icon: "LayoutGrid",
-    title: "Choose your plan",
-    body: "Pick Starter or Growth, billed monthly or annually.",
-  },
-  {
-    icon: "Tag",
-    title: "Apply a promotional code",
-    optional: true,
-    body: "Have a code from a campaign or our team? Enter it securely at checkout.",
-  },
-  {
-    icon: "Layers",
-    title: "Add site capacity",
-    optional: true,
-    body: "Need more active sites than your plan includes? Add them in the same checkout.",
+    title: "Choose the trial or a plan",
+    body: `Start the ${formatPrice(TRIAL.price)} trial, or pick ${joinOr(
+      PAID_PLANS.map((p) => p.name),
+    )}, billed monthly or annually.`,
   },
   {
     icon: "ShieldCheck",
     title: "Pay securely",
-    body: "Encrypted payment through our payment gateway. No hidden charges.",
+    body: `Pay through our secure payment gateway. ${COUPON_NOTE}`,
   },
   {
     icon: "Rocket",
-    title: "Workspace activated",
-    body: "Your capacity is live immediately — invite your team and start adding sites.",
+    title: "Start working",
+    body: "Your trial or plan starts once the payment is confirmed in the app.",
   },
 ];
 
-// Public coupon messaging. Codes and discount percentages are deliberately not
-// published: they belong to influencer, referral, launch, and sales campaigns.
-export const COUPON_NOTE =
-  "Have a promotional code? Apply it securely during checkout.";
+// --- Comparison table -------------------------------------------------------------
+// Values follow COMPARISON.columns. `true` renders a checkmark, a falsy value an
+// em dash, and a string renders as-is.
 
-// AI is part of the subscription — never a separate add-on or price. The
-// fair-use mention stays quiet and secondary by design.
-export const AI_INCLUDED_NOTE =
-  "AI-powered construction intelligence included with every plan. Subject to fair-use limits.";
+const COLUMN_IDS = ["starter", "growth", "business", "enterprise"];
+const COLUMN_PLANS = COLUMN_IDS.map(getPlan);
 
-// Prices are GST-inclusive across the platform: the tax is carved out of the
-// listed amount at invoice time, never added on top. Say so plainly.
-export const TAX_NOTE =
-  "Prices in INR, inclusive of GST. Upgrade at any time without losing data — your sites, documents, and history carry over.";
-
-// --- Display arithmetic -----------------------------------------------------
-// Everything below is presentation maths for the pricing page. It answers
-// "which plan is right for me?" — never "what will I be charged?", which is the
-// application's job.
-
-// Format a whole-rupee amount with Indian digit grouping, e.g. 49999 -> "₹49,999".
-export function formatPrice(amount) {
-  return `${PRICING.currencySymbol}${Number(amount).toLocaleString("en-IN")}`;
+function perPlan(fn, fallback = "Custom") {
+  return COLUMN_PLANS.map((plan) => (plan.custom ? fallback : fn(plan)));
 }
 
-export function getPlan(id) {
-  return PRICING.plans.find((p) => p.id === id);
-}
-
-// Plans in the order they appear in COMPARISON.columns.
-export function comparisonPlans() {
-  return COMPARISON.columns.map((id) => getPlan(id));
-}
-
-// Every comparison row, flattened — used by the mobile per-plan view.
-export function comparisonRows() {
-  return COMPARISON.groups.flatMap((g) =>
-    g.rows.map((row) => ({ ...row, group: g.title })),
-  );
-}
-
-/**
- * The billing block for a plan on a given cycle, e.g.
- * priceFor(starter, "annual") -> { price: 29999, originalPrice: 39000, ... }
- * Returns null for plans without published pricing (Enterprise).
- */
-export function priceFor(plan, cycle = DEFAULT_CYCLE) {
-  if (!plan?.billing) return null;
-  return plan.billing[cycle] || plan.billing[DEFAULT_CYCLE] || null;
-}
-
-// Launch-offer discount off the standard rate for a cycle, e.g. 23 (%).
-export function discountPercent(plan, cycle = DEFAULT_CYCLE) {
-  const b = priceFor(plan, cycle);
-  if (!b?.originalPrice || !b?.price) return null;
-  const off = Math.round((1 - b.price / b.originalPrice) * 100);
-  return off > 0 ? off : null;
-}
-
-// What paying annually saves against 12 monthly payments.
-// -> { amount: 4789, percent: 14, monthsFree: 1.7 } — null if not applicable.
-export function annualSavings(plan) {
-  const monthly = priceFor(plan, "monthly");
-  const annual = priceFor(plan, "annual");
-  if (!monthly?.price || !annual?.price) return null;
-  // A trial costs the same either way; there is nothing to save.
-  if (monthly.price === annual.price) return null;
-  const twelveMonths = monthly.price * 12;
-  const amount = twelveMonths - annual.price;
-  if (amount <= 0) return null;
-  return {
-    amount,
-    percent: Math.round((amount / twelveMonths) * 100),
-    monthsFree: Math.round((amount / monthly.price) * 10) / 10,
-  };
-}
-
-// A plan's included active-site limit as a number ("Up to 15" -> 15). Null for
-// Enterprise, whose capacity is unlimited.
-export function planSiteLimit(plan) {
-  const match = /\d+/.exec(plan?.sites || "");
-  return match ? Number(match[0]) : null;
-}
-
-// Per-year price of one additional site on a plan. Null where sites can't be
-// bought individually (Trial, Enterprise).
-export function addonRate(planId) {
-  const rate = SITE_ADDONS.perSite[planId];
-  return typeof rate === "number" ? rate : null;
-}
-
-/**
- * How far a plan stretches:
- * -> { base: 8, max: 15 }  ·  max === null means uncapped (Growth).
- */
-export function planCapacity(planId) {
-  const base = planSiteLimit(getPlan(planId));
-  if (base == null) return null;
-  const extra = SITE_ADDONS.maxAdditional[planId];
-  return { base, max: typeof extra === "number" ? base + extra : null };
-}
-
-/**
- * What a plan costs per year for a given number of active sites.
- * -> { planId, sites, base, additional, rate, addonCost, total }
- * Returns null when the plan cannot serve that many sites, so a caller can
- * never render an invalid combination.
- */
-export function planTotalFor(planId, siteCount) {
-  const billing = priceFor(getPlan(planId), "annual");
-  const capacity = planCapacity(planId);
-  const rate = addonRate(planId);
-  if (!billing?.price || !capacity || rate == null) return null;
-
-  const sites = Math.floor(Number(siteCount));
-  if (!Number.isFinite(sites) || sites < 1) return null;
-  if (capacity.max != null && sites > capacity.max) return null;
-
-  const additional = Math.max(0, sites - capacity.base);
-  const addonCost = additional * rate;
-  return {
-    planId,
-    sites,
-    base: billing.price,
-    additional,
-    rate,
-    addonCost,
-    total: billing.price + addonCost,
-  };
-}
-
-// The paid plans that can be sized by site count, cheapest base first.
-const SIZEABLE_PLANS = ["starter", "growth"];
-
-/**
- * The best-value plan for a site count, with the runner-up for comparison.
- * -> { ...planTotalFor(best), alternative, saving, suggestEnterprise }
- * `saving` is the honest difference against the alternative — never a
- * percentage off an invented list price.
- */
-export function recommendPlan(siteCount) {
-  const quotes = SIZEABLE_PLANS.map((id) => planTotalFor(id, siteCount)).filter(
-    Boolean,
-  );
-  if (!quotes.length) return null;
-
-  quotes.sort((a, b) => a.total - b.total);
-  const [best, alternative = null] = quotes;
-  return {
-    ...best,
-    alternative,
-    saving: alternative ? alternative.total - best.total : 0,
-    suggestEnterprise:
-      Math.floor(Number(siteCount)) >= SITE_ADDONS.enterpriseSuggestedFrom,
-  };
-}
-
-/**
- * The first site count at which Growth costs the same or less than Starter.
- * Computed, so it stays correct if any rate changes. -> 14
- */
-export function crossoverSites() {
-  const capacity = planCapacity("starter");
-  if (!capacity) return null;
-  // Neither plan is capped, so bound the search: the crossover lands a handful
-  // of sites past the included count, and the loop must terminate regardless.
-  const limit = capacity.max ?? capacity.base + 100;
-  for (let n = capacity.base + 1; n <= limit; n += 1) {
-    const starter = planTotalFor("starter", n);
-    const growth = planTotalFor("growth", n);
-    if (starter && growth && growth.total <= starter.total) return n;
-  }
-  return null;
-}
-
-/**
- * The worked "what do extra sites cost?" example, computed rather than written
- * out, so the arithmetic can never drift from the plan cards.
- * -> { plan, additional, quote, upgrade, upgradeSites, upgradePrice }
- */
-export function addonExample() {
-  const { planId, additional } = SITE_ADDONS.example;
-  const plan = getPlan(planId);
-  const base = planSiteLimit(plan);
-  const upgrade = getPlan("growth");
-  return {
-    plan,
-    base,
-    additional,
-    quote: planTotalFor(planId, base + additional),
-    upgrade,
-    upgradeSites: planSiteLimit(upgrade),
-    upgradePrice: priceFor(upgrade, "annual")?.price ?? null,
-  };
-}
-
-// Per-month equivalent of an annual plan (₹29,999/yr -> ₹2,500/mo). Null otherwise.
-export function monthlyEquivalent(plan) {
-  const annual = priceFor(plan, "annual");
-  const monthly = priceFor(plan, "monthly");
-  if (!annual?.price || !monthly?.price || annual.price === monthly.price) return null;
-  return Math.round(annual.price / 12);
-}
-
-// Reassurance under the plan cards, so nobody hesitates over outgrowing a plan.
-// Add-on pricing is stated openly here by design — see §16: no pricing surprises.
-export const ADDON_TEASER = `Need more sites? Add them anytime — ${formatPrice(
-  SITE_ADDONS.perSite.starter,
-)}/site/year on Starter, ${formatPrice(
-  SITE_ADDONS.perSite.growth,
-)}/site/year on Growth.`;
-
-// The "which one is right for me?" nudge shown near the plan cards. States the
-// fact and lets the reader decide — no urgency, no invented savings.
-export const GROWTH_CALLOUT = {
-  title: "Managing multiple sites?",
-  body: `Growth includes ${planSiteLimit(getPlan("growth"))} sites for ${formatPrice(
-    priceFor(getPlan("growth"), "annual").price,
-  )}/year, making it the better fit for growing construction businesses.`,
+export const COMPARISON = {
+  columns: COLUMN_IDS,
+  groups: [
+    {
+      title: "Pricing",
+      rows: [
+        {
+          label: "Monthly billing",
+          values: perPlan((p) => `${formatPrice(p.prices.monthly)}/month`),
+        },
+        {
+          label: "Annual billing",
+          values: perPlan((p) => `${formatPrice(p.prices.annual)}/year`),
+        },
+        {
+          label: "Annual, monthly equivalent",
+          values: perPlan((p) => `${formatPrice(effectiveMonthly(p))}/month`),
+        },
+      ],
+    },
+    {
+      title: "Capacity",
+      rows: [
+        {
+          label: "Active sites included",
+          values: perPlan((p) => String(p.sites)),
+        },
+        {
+          label: "Site add-ons",
+          values: perPlan((p) =>
+            p.id === SITE_ADDON.planId
+              ? `Up to ${SITE_ADDON.maxAdditional} more · ${formatPrice(
+                  SITE_ADDON.prices.monthly,
+                )}/site/month or ${formatPrice(SITE_ADDON.prices.annual)}/site/year`
+              : false,
+          ),
+        },
+        {
+          label: "Maximum active sites",
+          values: perPlan((p) =>
+            String(p.id === SITE_ADDON.planId ? GROWTH_SITES.max : p.sites),
+          ),
+        },
+        {
+          label: "Team members",
+          values: perPlan((p) => String(p.members)),
+        },
+        {
+          label: "Key holders",
+          values: COLUMN_PLANS.map(() => "Not counted"),
+        },
+        {
+          label: "Storage",
+          values: perPlan((p) => `${p.storageGb} GB`),
+        },
+      ],
+    },
+    {
+      title: "Included on every plan",
+      rows: [
+        { label: "Complete BuildAlly platform", values: COLUMN_PLANS.map(() => true) },
+        { label: "BuildAlly AI (fair use)", values: COLUMN_PLANS.map(() => true) },
+      ],
+    },
+  ],
 };
+
+export function comparisonPlans() {
+  return COLUMN_PLANS;
+}
+
+// What every plan includes — the platform is never split across tiers.
+export const INCLUDED_ON_EVERY_PLAN = [
+  "Sites, Site Hub and construction schedules",
+  "GPS attendance and geofencing",
+  "Expenses, payments, treasury and payroll",
+  "Documents, drawings, agreements and quotations",
+  "Approvals and notifications",
+  "Client portal for key holders",
+  "BuildAlly AI, subject to fair use",
+  "Android app and mobile web",
+];

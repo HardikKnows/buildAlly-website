@@ -2,30 +2,55 @@ import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
-import { SiteAddOnStrip } from "@/components/pricing/SiteAddOns";
-import { SITE_ADDONS, COUPON_NOTE } from "@/lib/pricing";
+import { TrackedLink } from "@/components/ui/TrackedLink";
+import { EVENTS } from "@/lib/track";
+import {
+  PLANS,
+  SITE_ADDON,
+  GROWTH_SITES,
+  ENTERPRISE_MIN_SITES,
+  formatPrice,
+  getPlan,
+} from "@/lib/pricing";
 
-// Capacity reassurance, right after the pricing teaser: nobody should hesitate
-// over a plan because they might outgrow it. The packs themselves are published
-// in full on the Pricing page — this is the short version.
+// Capacity reassurance, right after the pricing teaser: how far each plan
+// stretches and what the next step is, so nobody hesitates over outgrowing a
+// plan. Site add-ons are a Growth feature only, and are presented that way.
+
+const GROWTH = getPlan(SITE_ADDON.planId);
 
 const POINTS = [
   {
     icon: "Layers",
-    title: "Add capacity, keep your plan",
-    body: "Add sites one at a time whenever you need them — your subscription, features, and plan price stay exactly as they are.",
+    title: `Add sites on ${GROWTH.name}`,
+    body: `${GROWTH.name} includes ${GROWTH_SITES.included} active sites. Add up to ${
+      SITE_ADDON.maxAdditional
+    } more at ${formatPrice(SITE_ADDON.prices.monthly)}/site/month or ${formatPrice(
+      SITE_ADDON.prices.annual,
+    )}/site/year, billed on the same period as your plan.`,
   },
   {
-    icon: "RefreshCw",
-    title: "One renewal date",
-    body: SITE_ADDONS.renewalNote,
+    icon: "TrendingUp",
+    title: "Move up when you need to",
+    body: "Upgrade to a bigger plan at any time — your sites, documents and history carry over untouched.",
   },
   {
-    icon: "ShieldCheck",
-    title: "Nothing is disrupted",
-    body: "Extra capacity applies immediately. No migration, no downtime, no re-onboarding your team.",
+    icon: "CircleCheck",
+    title: "Completed sites free their slot",
+    body: "Plan limits count active sites only, so finishing a project makes room for the next one.",
   },
 ];
+
+// Starter → Growth → Business → Enterprise, by active sites.
+const LADDER = PLANS.map((plan) => ({
+  id: plan.id,
+  name: plan.name,
+  sites: plan.custom
+    ? `More than ${ENTERPRISE_MIN_SITES - 1} active sites`
+    : plan.id === SITE_ADDON.planId
+      ? `${plan.sites} active sites, up to ${GROWTH_SITES.max} with add-ons`
+      : `Up to ${plan.sites} active sites`,
+}));
 
 export function ScaleAsYouGrow() {
   return (
@@ -39,9 +64,8 @@ export function ScaleAsYouGrow() {
             Your projects grow. So does your workspace.
           </h2>
           <p className="mt-4 text-pretty text-lg leading-relaxed text-slate-body">
-            Start with the plan that fits today, then expand your active site
-            capacity whenever you need it — without changing your subscription
-            or disrupting your workflow.
+            Start with the plan that fits today and move up as you take on more
+            sites — from a few projects to a full portfolio.
           </p>
 
           <ul className="mt-8 space-y-5">
@@ -70,17 +94,36 @@ export function ScaleAsYouGrow() {
         </Reveal>
 
         <Reveal delay={0.1} className="rounded-2xl border border-line bg-canvas p-6 sm:p-8">
-          <p className="text-sm font-semibold text-ink">
-            Additional sites, per year
-          </p>
-          <p className="mt-1.5 text-sm leading-relaxed text-slate-body">
-            Added on top of any subscription — and priced lower on Growth, so
-            scaling up costs less the bigger you get.
-          </p>
-          <SiteAddOnStrip className="mt-6" />
-          <p className="mt-6 flex items-start gap-2.5 border-t border-line pt-5 text-sm leading-relaxed text-slate-body">
-            <Icon name="Ticket" size={17} className="mt-0.5 shrink-0 text-brand" />
-            {COUPON_NOTE}
+          <p className="text-sm font-semibold text-ink">Active sites by plan</p>
+          <ol className="mt-5 space-y-3">
+            {LADDER.map((step, i) => (
+              <li
+                key={step.id}
+                className="flex items-center gap-3.5 rounded-xl border border-line bg-white px-4 py-3.5"
+              >
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-50 font-display text-sm font-bold text-brand">
+                  {i + 1}
+                </span>
+                <div className="min-w-0">
+                  <p className="font-display text-base font-semibold text-ink">
+                    {step.name}
+                  </p>
+                  <p className="text-sm text-slate-body">{step.sites}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+          <p className="mt-6 border-t border-line pt-5 text-sm leading-relaxed text-slate-body">
+            Need more than {ENTERPRISE_MIN_SITES - 1} sites?{" "}
+            <TrackedLink
+              href="/pricing#enterprise"
+              event={EVENTS.ENTERPRISE_CTA}
+              eventProps={{ location: "home_scale" }}
+              className="font-semibold text-brand underline-offset-2 hover:underline"
+            >
+              Talk to our team
+            </TrackedLink>
+            .
           </p>
         </Reveal>
       </div>

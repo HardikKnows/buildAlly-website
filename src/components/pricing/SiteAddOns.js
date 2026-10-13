@@ -1,141 +1,140 @@
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui/Icon";
+import { TrackedLink } from "@/components/ui/TrackedLink";
+import { EVENTS } from "@/lib/track";
 import {
-  SITE_ADDONS,
-  formatPrice,
-  addonExample,
+  SITE_ADDON,
+  GROWTH_SITES,
+  ENTERPRISE_MIN_SITES,
+  addonQuote,
   getPlan,
-  planSiteLimit,
-  addonRate,
-  planCapacity,
+  formatPrice,
+  priceFor,
 } from "@/lib/pricing";
 
-// Additional sites — priced per site, per year, and shown openly. A customer
-// should be able to work out what growing costs before they buy, not after.
-// Every figure comes from lib/pricing, including the worked example, so the
-// arithmetic can never drift from the plan cards above.
+// Growth site add-ons — what they cost, how far they go, and who can buy
+// them. Every figure comes from lib/pricing, including the worked example, so
+// the arithmetic can never drift from the plan cards.
 
-const EXAMPLE = addonExample();
+const GROWTH = getPlan(SITE_ADDON.planId);
+const BUSINESS = getPlan("business");
 
-const RATE_CARDS = ["starter", "growth"].map((id) => {
-  const plan = getPlan(id);
-  return {
-    id,
-    plan,
-    rate: addonRate(id),
-    included: planSiteLimit(plan),
-    capacity: planCapacity(id),
-  };
-});
+const RATES = [
+  {
+    cycle: "monthly",
+    title: "On monthly Growth",
+    price: formatPrice(SITE_ADDON.prices.monthly),
+    unit: "per site, per month",
+  },
+  {
+    cycle: "annual",
+    title: "On annual Growth",
+    price: formatPrice(SITE_ADDON.prices.annual),
+    unit: "per site, per year",
+  },
+];
 
-function RateCard({ plan, rate, included, capacity }) {
-  return (
-    <div className="rounded-2xl border border-line bg-white p-6 text-center shadow-sm">
-      <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand">
-        <Icon name="Layers" size={20} />
-      </span>
-      <p className="mt-4 text-sm font-semibold text-slate-body">
-        {plan.shortName}
-      </p>
-      <p className="mt-1 font-display text-2xl font-extrabold tracking-tight text-ink">
-        {formatPrice(rate)}
-        <span className="text-sm font-medium text-slate-body">/site/year</span>
-      </p>
-      <p className="mt-3 border-t border-line pt-3 text-sm leading-relaxed text-slate-body">
-        Includes {included} sites
-        {capacity.max
-          ? ` · up to ${capacity.max} in total`
-          : " · add as many as you need"}
-      </p>
-      {/* capacity.max is null on every plan today; the branch stays so a
-          future capped plan states its ceiling instead of over-promising. */}
-    </div>
-  );
-}
+const RULES = [
+  {
+    icon: "Building2",
+    text: `${GROWTH_SITES.included} active sites are included with ${GROWTH.name}.`,
+  },
+  {
+    icon: "Plus",
+    text: `Add up to ${SITE_ADDON.maxAdditional} more, one site at a time — ${GROWTH_SITES.max} active sites in total, including the ${GROWTH_SITES.included} included sites.`,
+  },
+  {
+    icon: "Repeat",
+    text: `Add-ons are billed on the same period as your ${GROWTH.name} subscription: monthly add-ons on a monthly plan, annual add-ons on an annual plan.`,
+  },
+  {
+    icon: "Ban",
+    text: `Available on ${GROWTH.name} only. Starter and ${BUSINESS.name} don't offer site add-ons — move up a plan instead.`,
+  },
+];
+
+// The largest Growth workspace, worked out for both billing periods.
+const FULL = ["monthly", "annual"].map((cycle) => ({
+  cycle,
+  quote: addonQuote(SITE_ADDON.maxAdditional, cycle),
+  suffix: cycle === "monthly" ? "/month" : "/year",
+}));
 
 export function SiteAddOns() {
   return (
-    <>
-      <RevealGroup className="mx-auto mt-12 grid max-w-3xl gap-4 sm:grid-cols-2">
-        {RATE_CARDS.map((card) => (
-          <RevealItem key={card.id}>
-            <RateCard {...card} />
+    <div className="mx-auto mt-12 max-w-4xl">
+      <RevealGroup className="grid gap-4 sm:grid-cols-2">
+        {RATES.map((rate) => (
+          <RevealItem
+            key={rate.cycle}
+            className="rounded-2xl border border-line bg-white p-6 text-center shadow-sm"
+          >
+            <p className="text-sm font-semibold text-slate-body">{rate.title}</p>
+            <p className="mt-1.5 font-display text-3xl font-extrabold tracking-tight text-ink">
+              {rate.price}
+            </p>
+            <p className="mt-1 text-sm text-slate-body">{rate.unit}</p>
           </RevealItem>
         ))}
       </RevealGroup>
 
-      <Reveal className="mx-auto mt-6 flex max-w-3xl items-start gap-2.5 rounded-2xl border border-line bg-canvas p-5 text-sm leading-relaxed text-slate-body">
-        <Icon name="RefreshCw" size={17} className="mt-0.5 shrink-0 text-brand" />
-        {SITE_ADDONS.renewalNote}
+      <Reveal className="mt-6 rounded-2xl border border-line bg-white p-6 sm:p-8">
+        <ul className="space-y-4">
+          {RULES.map((rule) => (
+            <li
+              key={rule.text}
+              className="flex items-start gap-3 text-[15px] leading-relaxed text-ink-600"
+            >
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand">
+                <Icon name={rule.icon} size={17} />
+              </span>
+              <span className="pt-1">{rule.text}</span>
+            </li>
+          ))}
+        </ul>
       </Reveal>
 
-      {/* The economics, spelled out — see §3. No surprises at checkout. */}
-      <Reveal className="mx-auto mt-8 max-w-3xl rounded-2xl border border-brand/20 bg-brand-50/50 p-6 sm:p-8">
+      {/* The economics at the ceiling, spelled out for both periods. */}
+      <Reveal className="mt-6 rounded-2xl border border-brand/20 bg-brand-50/50 p-6 sm:p-8">
         <p className="text-sm font-semibold text-ink">
-          What adding sites actually costs:
+          Example: {GROWTH.name} with all {GROWTH_SITES.max} active sites
         </p>
-
-        <dl className="mt-5 space-y-2.5 text-sm">
-          <div className="flex items-baseline justify-between gap-4">
-            <dt className="text-ink-600">
-              {EXAMPLE.plan.shortName} · {EXAMPLE.base} sites
-            </dt>
-            <dd className="font-semibold text-ink">
-              {formatPrice(EXAMPLE.quote.base)}
-            </dd>
-          </div>
-          <div className="flex items-baseline justify-between gap-4">
-            <dt className="text-ink-600">
-              + {EXAMPLE.additional} additional sites ×{" "}
-              {formatPrice(EXAMPLE.quote.rate)}
-            </dt>
-            <dd className="font-semibold text-ink">
-              {formatPrice(EXAMPLE.quote.addonCost)}
-            </dd>
-          </div>
-          <div className="flex items-baseline justify-between gap-4 border-t border-brand/20 pt-3">
-            <dt className="font-semibold text-ink">
-              Total · {EXAMPLE.quote.sites} sites
-            </dt>
-            <dd className="font-display text-lg font-extrabold tracking-tight text-brand">
-              {formatPrice(EXAMPLE.quote.total)}
-              <span className="text-sm font-medium text-slate-body">/year</span>
-            </dd>
-          </div>
+        <dl className="mt-4 grid gap-4 sm:grid-cols-2">
+          {FULL.map(({ cycle, quote, suffix }) => (
+            <div key={cycle} className="rounded-xl bg-white p-4">
+              <dt className="text-xs font-semibold uppercase tracking-wide text-slate-body">
+                {cycle === "monthly" ? "Monthly billing" : "Annual billing"}
+              </dt>
+              <dd className="mt-2 text-sm leading-relaxed text-ink-600">
+                {formatPrice(quote.base)} + {quote.additional} ×{" "}
+                {formatPrice(quote.rate)}
+                <span className="mt-1 block font-display text-xl font-extrabold tracking-tight text-ink">
+                  {formatPrice(quote.total)}
+                  <span className="text-sm font-medium text-slate-body">
+                    {suffix}
+                  </span>
+                </span>
+              </dd>
+            </div>
+          ))}
         </dl>
-
         <p className="mt-5 border-t border-brand/20 pt-5 text-sm leading-relaxed text-ink-600">
-          For comparison, {EXAMPLE.upgrade.shortName} gives you{" "}
-          <strong className="font-semibold text-ink">
-            {EXAMPLE.upgradeSites} sites for {formatPrice(EXAMPLE.upgradePrice)}
-            /year
-          </strong>
-          . Whichever fits better is the one to pick — your subscription, features
-          and renewal date stay exactly as they are either way.
+          Need more than {GROWTH_SITES.max} sites? {BUSINESS.name} includes{" "}
+          {BUSINESS.sites} active sites for{" "}
+          {formatPrice(priceFor(BUSINESS, "monthly"))}/month or{" "}
+          {formatPrice(priceFor(BUSINESS, "annual"))}/year. Running{" "}
+          {ENTERPRISE_MIN_SITES} or more?{" "}
+          <TrackedLink
+            href="#enterprise"
+            event={EVENTS.ENTERPRISE_CTA}
+            eventProps={{ location: "pricing_addons" }}
+            className="font-semibold text-brand underline-offset-2 hover:underline"
+          >
+            Talk to us about Enterprise
+          </TrackedLink>
+          .
         </p>
       </Reveal>
-    </>
-  );
-}
-
-// Compact version for the homepage "Scale as You Grow" highlight.
-export function SiteAddOnStrip({ className = "" }) {
-  return (
-    <div className={`grid gap-3 sm:grid-cols-2 ${className}`}>
-      {RATE_CARDS.map(({ id, plan, rate }) => (
-        <div
-          key={id}
-          className="rounded-xl border border-line bg-white px-4 py-3.5 text-center"
-        >
-          <p className="text-sm font-semibold text-ink">{plan.shortName}</p>
-          <p className="mt-1 font-display text-lg font-extrabold tracking-tight text-brand">
-            {formatPrice(rate)}
-            <span className="text-xs font-medium text-slate-body">
-              /site/year
-            </span>
-          </p>
-        </div>
-      ))}
     </div>
   );
 }

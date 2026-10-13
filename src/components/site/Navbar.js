@@ -10,7 +10,7 @@ import { Icon } from "@/components/ui/Icon";
 import { SignupAnchor } from "@/components/ui/SignupLink";
 import { MAIN_NAV, URLS } from "@/lib/site";
 import { track, EVENTS } from "@/lib/track";
-import { PRICING } from "@/lib/pricing";
+import { TRIAL_CTA_LABEL } from "@/lib/pricing";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -128,7 +128,7 @@ export function Navbar() {
                 onClick={closeMenu}
                 className="block rounded-lg px-3 py-3 text-base font-medium text-ink hover:bg-canvas"
               >
-                Start {PRICING.trialDays}-Day Trial
+                {TRIAL_CTA_LABEL}
               </SignupAnchor>
               <div className="flex flex-col gap-2 pt-2">
                 <Button

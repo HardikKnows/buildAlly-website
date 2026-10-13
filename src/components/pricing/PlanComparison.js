@@ -8,12 +8,10 @@ import { COMPARISON, comparisonPlans } from "@/lib/pricing";
 const PLANS = comparisonPlans();
 const COL_COUNT = PLANS.length + 1;
 
-// "Trial, Starter, Growth, and Enterprise" — built from the config so the
+// "Starter, Growth, Business, and Enterprise" — built from the config so the
 // screen-reader caption can never name a plan that no longer exists.
 const PLAN_NAMES = PLANS.map((p, i) =>
-  i === PLANS.length - 1 && PLANS.length > 1
-    ? `and ${p.shortName}`
-    : p.shortName,
+  i === PLANS.length - 1 && PLANS.length > 1 ? `and ${p.name}` : p.name,
 ).join(PLANS.length > 2 ? ", " : " ");
 
 // A cell value is either `true` (included), falsy (not included), or a string.
@@ -63,13 +61,13 @@ export function PlanComparison() {
                   key={plan.id}
                   scope="col"
                   className={`px-3 py-4 text-center text-sm font-semibold ${
-                    plan.featured ? "bg-brand-50 text-brand-700" : "text-ink"
+                    plan.recommended ? "bg-brand-50 text-brand-700" : "text-ink"
                   }`}
                 >
-                  {plan.shortName}
-                  {plan.badge && (
+                  {plan.name}
+                  {plan.recommended && (
                     <span className="mt-0.5 block text-[11px] font-bold uppercase tracking-wide text-brand">
-                      {plan.badge}
+                      Recommended
                     </span>
                   )}
                 </th>
@@ -99,12 +97,12 @@ export function PlanComparison() {
                     <td
                       key={PLANS[i].id}
                       className={`px-3 py-3.5 text-center ${
-                        PLANS[i].featured ? "bg-brand-50/40" : ""
+                        PLANS[i].recommended ? "bg-brand-50/40" : ""
                       }`}
                     >
                       <CellValue
                         value={value}
-                        label={`${row.label} on ${PLANS[i].shortName}`}
+                        label={`${row.label} on ${PLANS[i].name}`}
                       />
                     </td>
                   ))}
@@ -120,17 +118,17 @@ export function PlanComparison() {
         {PLANS.map((plan, planIndex) => (
           <details
             key={plan.id}
-            open={plan.featured}
+            open={plan.recommended}
             className={`group overflow-hidden rounded-2xl border bg-white ${
-              plan.featured ? "border-brand ring-1 ring-brand/15" : "border-line"
+              plan.recommended ? "border-brand ring-1 ring-brand/15" : "border-line"
             }`}
           >
             <summary className="flex cursor-pointer items-center justify-between gap-3 px-5 py-4 marker:content-none">
               <span className="font-display text-base font-semibold text-ink">
-                {plan.shortName}
-                {plan.badge && (
+                {plan.name}
+                {plan.recommended && (
                   <span className="ml-2 rounded-full bg-brand-50 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-brand">
-                    {plan.badge}
+                    Recommended
                   </span>
                 )}
               </span>
@@ -149,11 +147,11 @@ export function PlanComparison() {
                       key={row.label}
                       className="flex items-center justify-between gap-4 border-t border-line px-5 py-3"
                     >
-                      <dt className="text-sm text-slate-body">{row.label}</dt>
-                      <dd className="shrink-0 text-right">
+                      <dt className="shrink-0 text-sm text-slate-body">{row.label}</dt>
+                      <dd className="text-right">
                         <CellValue
                           value={row.values[planIndex]}
-                          label={`${row.label} on ${plan.shortName}`}
+                          label={`${row.label} on ${plan.name}`}
                         />
                       </dd>
                     </div>

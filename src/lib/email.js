@@ -17,11 +17,17 @@ export const SUPPORT_EMAIL =
 // Ready-to-use mailto for links and buttons.
 export const SUPPORT_MAILTO = `mailto:${SUPPORT_EMAIL}`;
 
-/** Build a mailto with a prefilled subject, so one inbox can still triage intent. */
-export function supportMailto(subject) {
-  return subject
-    ? `${SUPPORT_MAILTO}?subject=${encodeURIComponent(subject)}`
-    : SUPPORT_MAILTO;
+/**
+ * Build a mailto with a prefilled subject (and optionally a body), so one inbox
+ * can still triage intent — and a visitor whose form submission failed can send
+ * the same details by email without retyping them.
+ */
+export function supportMailto(subject, body) {
+  const params = [
+    subject && `subject=${encodeURIComponent(subject)}`,
+    body && `body=${encodeURIComponent(body)}`,
+  ].filter(Boolean);
+  return params.length ? `${SUPPORT_MAILTO}?${params.join("&")}` : SUPPORT_MAILTO;
 }
 
 // Sender display name per email type. The address is always SUPPORT_EMAIL.

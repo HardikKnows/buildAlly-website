@@ -2,16 +2,16 @@
 // Benefit-led: every feature is paired with the outcome it delivers.
 
 import {
-  PRICING,
-  SITE_ADDONS,
+  TRIAL,
+  PAID_PLANS,
+  SITE_ADDON,
+  GROWTH_SITES,
+  ENTERPRISE_MIN_SITES,
+  KEY_HOLDER_NOTE,
   formatPrice,
-  annualSavings,
   getPlan,
   priceFor,
-  addonExample,
-  planSiteLimit,
-  crossoverSites,
-  addonRate,
+  joinOr,
 } from "./pricing";
 
 // --- Problem cards (Homepage §3 "Sound familiar?") ---
@@ -286,10 +286,10 @@ export const PILLARS = [
     eyebrow: "Onboarding & Access",
     headline: "Start with a demo, scale when you're ready",
     summary:
-      "Email verification, invite-based onboarding, a 7-day trial, pilot accounts, and read-only suspension — set up to grow with you.",
+      `Email verification, invite-based onboarding, a ${TRIAL.days}-day paid trial, pilot accounts, and read-only suspension — set up to grow with you.`,
     features: [
       "Email verification and invite-based onboarding",
-      "7-day trial and pilot accounts",
+      `${TRIAL.days}-day paid trial and pilot accounts`,
       "Read-only suspension keeps your data safe if a subscription lapses",
     ],
   },
@@ -386,7 +386,9 @@ export const FAQS = [
   },
   {
     q: "Can I see BuildAlly before purchasing?",
-    a: "Yes. Book a personalized demo and our team will walk you through BuildAlly with your workflows in mind. When you're ready, a 7-day trial lets you evaluate it with your own team on real sites.",
+    a: `Yes. Book a personalized demo and our team will walk you through BuildAlly with your workflows in mind. When you're ready, a ${TRIAL.days}-day paid trial (${formatPrice(
+      TRIAL.price,
+    )}) lets you evaluate it with your own team on real sites.`,
   },
   {
     q: "Can I manage multiple construction sites?",
@@ -444,140 +446,94 @@ export const FAQS = [
 
 // --- Plan, trial & storage FAQ (Pricing page + FAQ page) ---
 // Every figure is derived from lib/pricing so the answers can never drift from
-// the plan cards.
+// the plan cards. The first seven are the core pricing questions, in order.
+const STARTER = getPlan("starter");
+const GROWTH = getPlan("growth");
+const BUSINESS = getPlan("business");
+const PLAN_LIST = `${PAID_PLANS.slice(0, -1)
+  .map((p) => p.name)
+  .join(", ")} and ${PAID_PLANS[PAID_PLANS.length - 1].name}`;
+
 export const PLAN_FAQS = [
   {
-    q: "Is AI included?",
-    a: "Yes. BuildAlly AI is included with your BuildAlly subscription, subject to fair-use limits designed to keep the service reliable for all customers. There is no separate AI plan or add-on.",
+    q: "Is the trial free?",
+    a: `No. The BuildAlly trial costs ${formatPrice(TRIAL.price)} and lasts ${
+      TRIAL.days
+    } days. It includes ${TRIAL.sites} active sites and ${
+      TRIAL.members
+    } team members, so you can evaluate BuildAlly with your own team on real projects.`,
   },
   {
-    q: "Why is the trial paid?",
-    a: `The ${formatPrice(
-      PRICING.trialCredit,
-    )} is not an extra charge — it is fully adjusted against your subscription if you continue with BuildAlly. A paid trial keeps evaluations serious while letting you run BuildAlly on real projects for ${
-      PRICING.trialDays
-    } days.`,
+    q: "How many sites are included?",
+    a: `${STARTER.name} includes ${STARTER.sites} active sites. ${GROWTH.name} includes ${
+      GROWTH_SITES.included
+    }, and can be expanded to ${GROWTH_SITES.max} with paid site add-ons. ${
+      BUSINESS.name
+    } includes ${BUSINESS.sites}. Enterprise limits are custom, agreed with our team. A completed site doesn't count towards your limit.`,
   },
   {
-    q: "What happens after my trial ends?",
-    a: "Your workspace becomes read-only. Everything you added stays exactly where it is — nothing is deleted. Choose a plan whenever you're ready and you pick up right where you left off.",
+    q: "Do key holders count toward the team-member limit?",
+    a: `No. ${KEY_HOLDER_NOTE.headline} ${KEY_HOLDER_NOTE.body} ${KEY_HOLDER_NOTE.detail}`,
   },
   {
-    q: `Will my ${formatPrice(PRICING.trialCredit)} be adjusted?`,
-    a: `Yes. The full ${formatPrice(
-      PRICING.trialCredit,
-    )} is deducted from your first subscription payment, on either a monthly or an annual plan.`,
+    q: `Can I add more sites to ${STARTER.name}?`,
+    a: `No. Site add-ons are available only on ${GROWTH.name}. If you need more than ${STARTER.name}'s ${STARTER.sites} active sites, move up to ${GROWTH.name} (${GROWTH_SITES.included} sites, expandable to ${GROWTH_SITES.max}) or ${BUSINESS.name} (${BUSINESS.sites} sites).`,
   },
   {
-    q: "Can I upgrade during my trial?",
-    a: `Yes, you can upgrade at any point during the ${
-      PRICING.trialDays
-    } days. The ${formatPrice(
-      PRICING.trialCredit,
-    )} is automatically adjusted against your first payment.`,
+    q: `What if I need more than ${ENTERPRISE_MIN_SITES - 1} sites?`,
+    a: "Contact the BuildAlly team for Enterprise pricing. Enterprise pricing and limits are agreed with you — send us an enquiry from the pricing page with roughly how many active sites you run, and we'll get back to you.",
   },
   {
-    q: "Can I increase my storage?",
-    a: `Yes — moving up a plan raises your quota (${PRICING.plans
-      .filter((p) => p.storage && p.id !== "enterprise")
-      .map((p) => `${p.storage} on ${p.shortName}`)
-      .join(", ")}). If you reach the limit, uploads pause until you upgrade or remove unused files. Nothing already in your workspace is deleted, and images are optimised on upload so the quota goes further than you'd expect.`,
+    q: "Can I pay monthly or annually?",
+    a: `Yes. Monthly and annual billing are available for ${PLAN_LIST}. Annual plans are billed once a year — ${PAID_PLANS.map(
+      (p) => `${p.name} ${formatPrice(priceFor(p, "annual"))}`,
+    ).join(", ")} — which costs less than twelve monthly payments.`,
   },
   {
-    q: "Can I add more sites?",
-    a: `Yes. ${getPlan("starter").shortName} includes ${planSiteLimit(
-      getPlan("starter"),
-    )} active sites, and additional sites can be added for ${formatPrice(
-      addonRate("starter"),
-    )} per site per year. On ${getPlan("growth").shortName} the rate is lower — ${formatPrice(
-      addonRate("growth"),
-    )} per site per year — so growing costs less the bigger you get.`,
+    q: "What happens after the trial?",
+    a: `When your ${TRIAL.days} days end, choose the paid plan that fits your company — ${joinOr(
+      PAID_PLANS.map((p) => p.name),
+    )}, billed monthly or annually. Until you subscribe, your workspace is read-only: nothing you added during the trial is deleted.`,
   },
   {
-    q: "What happens if I need many more sites?",
-    a: (() => {
-      const growth = getPlan("growth");
-      return `${growth.shortName} includes ${planSiteLimit(
-        growth,
-      )} active sites for ${formatPrice(
-        priceFor(growth, "annual").price,
-      )}/year and may be the better fit. Neither plan has a site ceiling, so you are never blocked from growing — but from ${crossoverSites()} sites onward ${
-        growth.shortName
-      } already works out cheaper than adding sites to ${
-        getPlan("starter").shortName
-      }. If you're running ${
-        SITE_ADDONS.enterpriseSuggestedFrom
-      }+ sites, talk to us about Enterprise for dedicated onboarding and support.`;
-    })(),
-  },
-  {
-    q: "Can I upgrade later?",
-    a: "Yes. Move up a plan at any time without losing any data — your sites, documents, and history carry over untouched. An upgrade takes effect immediately and is charged pro-rata for the time left in your cycle. If capacity is all you need, additional sites can be added without changing your plan at all.",
-  },
-  {
-    q: "Can I downgrade?",
-    a: "Yes. A downgrade is scheduled for the end of the period you have already paid for, so nothing is charged and nothing is reduced on the day you request it — your current limits stay in place until your renewal date. You can cancel a scheduled downgrade any time before it takes effect.",
-  },
-  {
-    q: "What happens to my existing sites if I downgrade?",
-    a: "Nothing is deleted. Your site limit is a soft limit: if you end up above it, every existing site, document and record stays exactly where it is and stays accessible. Only the creation of new active sites is paused until you are back within your limit — and because completing a site frees its slot, capacity comes back as projects finish.",
+    q: `How do ${GROWTH.name} site add-ons work?`,
+    a: `${GROWTH.name} includes ${GROWTH_SITES.included} active sites. You can add up to ${
+      SITE_ADDON.maxAdditional
+    } more — ${formatPrice(
+      SITE_ADDON.prices.monthly,
+    )} per site per month on a monthly plan, or ${formatPrice(
+      SITE_ADDON.prices.annual,
+    )} per site per year on an annual plan — for ${
+      GROWTH_SITES.max
+    } active sites in total. Add-ons are billed on the same period as your ${
+      GROWTH.name
+    } subscription, and aren't available on other plans.`,
   },
   {
     q: "What happens when I reach my site limit?",
-    a: "You can either add more sites to your current plan or move up a plan. No data is lost either way — every existing site, document, and record stays exactly where it is. Only new site creation is blocked until additional capacity is available, and it resumes the moment you add it.",
+    a: `Nothing is deleted — every existing site, document and record stays exactly where it is. Only new active sites are paused until there's room: complete a finished site to free its slot, add site add-ons on ${GROWTH.name}, or move up a plan.`,
   },
   {
-    q: "How much does adding sites actually cost?",
-    a: (() => {
-      const ex = addonExample();
-      return `A worked example: ${ex.plan.shortName} at ${formatPrice(
-        ex.quote.base,
-      )}/year includes ${ex.base} sites. Adding ${
-        ex.additional
-      } more at ${formatPrice(ex.quote.rate)} each costs ${formatPrice(
-        ex.quote.addonCost,
-      )}, so ${ex.quote.sites} sites comes to ${formatPrice(
-        ex.quote.total,
-      )}/year. For comparison, ${ex.upgrade.shortName} gives you ${
-        ex.upgradeSites
-      } sites for ${formatPrice(
-        ex.upgradePrice,
-      )}/year. ${SITE_ADDONS.renewalNote}`;
-    })(),
-  },
-  {
-    q: "Do you support promotional codes?",
-    a: "Yes. If you have a promotional code from our team or one of our campaign partners, apply it securely during checkout on the payment step — the discount is reflected before you pay.",
-  },
-  {
-    q: "Is this a limited-period offer?",
-    a: `Yes. ${getPlan("starter").shortName} at ${formatPrice(
-      priceFor(getPlan("starter"), "monthly").price,
-    )}/month and ${getPlan("growth").shortName} at ${formatPrice(
-      priceFor(getPlan("growth"), "monthly").price,
-    )}/month are launch pricing on our standard rates of ${formatPrice(
-      priceFor(getPlan("starter"), "monthly").originalPrice,
-    )} and ${formatPrice(
-      priceFor(getPlan("growth"), "monthly").originalPrice,
-    )} a month. Lock it in while it lasts — your rate stays the same for as long as your subscription is active.`,
-  },
-  {
-    q: "What's the difference between monthly and annual billing?",
-    a: `It's the same plan either way — annual is simply billed once at a lower effective rate. ${
-      getPlan("starter").shortName
-    } saves ${formatPrice(
-      annualSavings(getPlan("starter")).amount,
-    )} a year and ${getPlan("growth").shortName} saves ${formatPrice(
-      annualSavings(getPlan("growth")).amount,
-    )} a year compared with paying monthly.`,
+    q: "How much storage do I get?",
+    a: `${PAID_PLANS.map((p) => `${p.name} includes ${p.storageGb} GB`).join(
+      ", ",
+    )}. Images are optimised on upload, so storage goes further than you'd expect. If you reach your limit, new uploads pause until you move up a plan or remove files you no longer need — nothing already uploaded is deleted.`,
   },
   {
     q: "Do the prices include GST?",
-    a: "Yes. Every price shown on this page is inclusive of GST — the tax is shown separately on your invoice, but it is never added on top of the price you see. What you see is what you pay.",
+    a: "Yes. Every price on our pricing page is inclusive of GST — the tax is shown separately on your invoice, but it is never added on top of the price you see.",
   },
   {
-    q: "Do you offer custom plans for larger teams?",
-    a: "Enterprise is coming soon — unlimited sites and storage, a dedicated account manager, custom integrations, and onboarding assistance. Talk to sales and we'll shape a plan around your rollout.",
+    q: "Is AI included?",
+    a: "Yes. BuildAlly AI is included with every plan, subject to fair-use limits designed to keep the service reliable for all customers. There is no separate AI plan or add-on.",
+  },
+  {
+    q: "Can I change plans later?",
+    a: "Yes. You can move up a plan at any time without losing any data — your sites, documents and history carry over untouched.",
+  },
+  {
+    q: "Do you support promotional codes?",
+    a: "Yes. If you have a promotional code from our team or one of our campaign partners, apply it securely at checkout — the discount is reflected before you pay.",
   },
 ];
 

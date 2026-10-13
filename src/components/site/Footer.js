@@ -8,7 +8,7 @@ import { StoreBadges } from "@/components/ui/StoreBadges";
 import { FOOTER_NAV, SITE, URLS, CTA_MICROCOPY } from "@/lib/site";
 import { SUPPORT_EMAIL, SUPPORT_MAILTO } from "@/lib/email";
 import { EVENTS } from "@/lib/track";
-import { PRICING } from "@/lib/pricing";
+import { TRIAL_CTA_LABEL } from "@/lib/pricing";
 
 export function Footer() {
   return (
@@ -38,8 +38,7 @@ export function Footer() {
               variant="outlineLight"
               size="lg"
             >
-              Start {PRICING.trialDays}-Day Trial{" "}
-              <Icon name="ArrowRight" size={18} />
+              {TRIAL_CTA_LABEL} <Icon name="ArrowRight" size={18} />
             </SignupButton>
           </div>
           <p className="mt-4 text-sm text-slate-400">{CTA_MICROCOPY}</p>

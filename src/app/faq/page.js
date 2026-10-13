@@ -4,13 +4,13 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Accordion } from "@/components/ui/Accordion";
 import { CTAGroup } from "@/components/ui/CTAGroup";
 import { FAQS, PLAN_FAQS, OBJECTIONS } from "@/lib/content";
-import { PRICING, formatPrice } from "@/lib/pricing";
+import { TRIAL, formatPrice } from "@/lib/pricing";
 
 export const metadata = {
   title: "FAQ — Common Questions About BuildAlly",
-  description: `Answers to common questions about BuildAlly: booking a personalized demo, how the ${formatPrice(
-    PRICING.trialCredit,
-  )} ${PRICING.trialDays}-day trial is credited to your subscription, plan limits and storage, adding sites, inviting your team, data security, and support for smaller contractors.`,
+  description: `Answers to common questions about BuildAlly: booking a personalized demo, the ${formatPrice(
+    TRIAL.price,
+  )} ${TRIAL.days}-day paid trial, plan limits and storage, Growth site add-ons, key holders and team members, inviting your team, data security, and support for smaller contractors.`,
   alternates: { canonical: "/faq" },
 };
 

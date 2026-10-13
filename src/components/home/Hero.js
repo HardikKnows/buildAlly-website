@@ -1,13 +1,22 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { Screenshot } from "@/components/ui/Screenshot";
 import { Icon } from "@/components/ui/Icon";
 import { StoreBadges } from "@/components/ui/StoreBadges";
 import { TrackedButton } from "@/components/ui/TrackedButton";
+import { SignupAnchor } from "@/components/ui/SignupLink";
 import { URLS } from "@/lib/site";
 import { EVENTS } from "@/lib/track";
-import { PRICING, formatPrice } from "@/lib/pricing";
+import {
+  TRIAL,
+  PAID_PLANS,
+  STARTING_PRICE,
+  STARTING_PRICE_QUALIFIER,
+  ENTERPRISE_MIN_SITES,
+  formatPrice,
+} from "@/lib/pricing";
 
 const HERO_SHOT = {
   src: "/product/dashboard-overview.png",
@@ -18,7 +27,7 @@ const HERO_SHOT = {
 
 const HERO_ASSURANCES = [
   "AI-powered construction intelligence included",
-  "Expand with site add-ons",
+  `Plans for ${PAID_PLANS[0].sites} to ${ENTERPRISE_MIN_SITES - 1}+ active sites`,
   "No hidden charges",
 ];
 
@@ -84,10 +93,30 @@ export function Hero() {
                 Explore BuildAlly
               </TrackedButton>
             </div>
-            <p className="mt-4 text-sm text-slate-body">
-              Prefer hands-on? Start a {PRICING.trialDays}-day trial for{" "}
-              {formatPrice(PRICING.trialCredit)} — fully credited towards your
-              subscription.
+            {/* Starting price, always with its annual-billing qualifier and
+                the month-to-month price beside it. */}
+            <p className="mt-5 text-sm text-slate-body">
+              <Link
+                href="/pricing"
+                className="font-semibold text-ink underline-offset-2 hover:text-brand hover:underline"
+              >
+                Plans starting at {formatPrice(STARTING_PRICE.monthlyEquivalent)}
+                /month
+              </Link>
+              <span className="hidden sm:inline"> · </span>
+              <span className="block sm:inline">
+                <span className="whitespace-nowrap">{STARTING_PRICE_QUALIFIER}</span>{" "}
+                Or {formatPrice(STARTING_PRICE.monthly)}/month billed monthly.
+              </span>
+            </p>
+            <p className="mt-1.5 text-sm text-slate-body">
+              Prefer hands-on?{" "}
+              <SignupAnchor
+                eventProps={{ location: "hero" }}
+                className="font-semibold text-brand underline-offset-2 hover:underline"
+              >
+                Start a {TRIAL.days}-day paid trial for {formatPrice(TRIAL.price)}
+              </SignupAnchor>
             </p>
             {/* Flexibility reassurance — short enough not to crowd the CTAs. */}
             <ul className="mt-3.5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-ink-600">

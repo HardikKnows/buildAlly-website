@@ -1,7 +1,7 @@
 // Central site configuration — URLs, CTAs, navigation, contact.
 // Keep all external destinations here so CTAs stay consistent site-wide.
 
-import { PRICING, formatPrice } from "./pricing";
+import { TRIAL_CTA_LABEL, TRIAL_SUMMARY } from "./pricing";
 
 export const SITE = {
   name: "BuildAlly",
@@ -20,7 +20,9 @@ export const SITE = {
 // params survive the hop — see @/lib/attribution.
 export const URLS = {
   app: "https://app.buildally.in",
-  signup: "https://app.buildally.in/register-company", // self-serve 7-day paid trial
+  // Self-serve signup. The app takes the trial-or-plan choice (and payment) at
+  // /activate after email verification; it reads no plan or billing params.
+  signup: "https://app.buildally.in/register-company",
   login: "https://app.buildally.in",
   api: "https://api.buildally.in",
   bookDemo: "/book-demo", // demo request form — primary CTA
@@ -39,10 +41,8 @@ export const URLS = {
 };
 
 // Reassurance microcopy shown near the primary (Start Trial) CTA.
-// Derived from @/lib/pricing so the trial price is never restated by hand.
-export const CTA_MICROCOPY = `${formatPrice(PRICING.trialCredit)} for ${
-  PRICING.trialDays
-} days on your real sites · Fully credited towards your subscription.`;
+// Derived from @/lib/pricing so the trial terms are never restated by hand.
+export const CTA_MICROCOPY = `Paid trial: ${TRIAL_SUMMARY}.`;
 
 // Contact email lives in @/lib/email — one official address for the whole
 // product. Import SUPPORT_EMAIL / supportMailto from there, not from here.
@@ -89,7 +89,7 @@ export const FOOTER_NAV = [
     links: [
       { label: "Contact Support", href: "/contact" },
       {
-        label: `Start ${PRICING.trialDays}-Day Trial`,
+        label: TRIAL_CTA_LABEL,
         href: URLS.signup,
         external: true,
         signup: true, // routed through SignupAnchor so attribution survives

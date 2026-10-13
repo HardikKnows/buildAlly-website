@@ -1,242 +1,294 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { TrackedButton } from "@/components/ui/TrackedButton";
 import { SignupButton } from "@/components/ui/SignupLink";
 import {
-  PRICING,
+  PLANS,
+  PAID_PLANS,
   BILLING_CYCLES,
   DEFAULT_CYCLE,
+  SITE_ADDON,
+  GROWTH_SITES,
+  KEY_HOLDER_NOTE,
   formatPrice,
   priceFor,
-  discountPercent,
+  effectiveMonthly,
   annualSavings,
-  monthlyEquivalent,
 } from "@/lib/pricing";
-import { URLS } from "@/lib/site";
-import { EVENTS } from "@/lib/track";
+import { track, EVENTS } from "@/lib/track";
 
-// The pricing block: one billing toggle driving four plan cards. Annual is
-// selected on load (it's the better value). Switching is pure client state —
-// there is only ever one set of cards in the DOM, never a duplicated section.
+// The pricing block: one billing selector driving four plan cards. Annual is
+// selected on load. Whichever period is selected, every card states both the
+// monthly and the annual price, so the billing period is never ambiguous and
+// an annual monthly-equivalent is never shown without the amount actually
+// billed.
 
-// Whether a plan's CTA goes to sales or into signup, so the pricing config
-// stays free of routing concerns. Signup CTAs render as <SignupButton> so the
-// visitor's referral / campaign attribution survives the hop to the app.
-function isContactCta(action) {
-  return action === "contact";
-}
+// Only claim annual is cheaper if it is, for every plan.
+const ANNUAL_ALWAYS_CHEAPER = PAID_PLANS.every((p) => annualSavings(p));
 
-function BillingToggle({ cycle, onChange }) {
+const CYCLE_NOTES = {
+  annual:
+    "Annual plans are billed once a year, upfront. Monthly equivalents are shown for comparison only.",
+  monthly: ANNUAL_ALWAYS_CHEAPER
+    ? "Monthly plans are billed every month. Annual billing costs less over a year on every plan."
+    : "Monthly plans are billed every month.",
+};
+
+export function BillingToggle({ cycle, onChange }) {
+  const name = useId();
+
   return (
-    <div className="flex justify-center">
-      <div
-        role="radiogroup"
-        aria-label="Billing cycle"
-        className="inline-flex items-center gap-1 rounded-full border border-line bg-white p-1 shadow-sm"
-      >
+    <fieldset className="flex flex-col items-center">
+      <legend className="sr-only">Billing period</legend>
+      <div className="inline-flex items-center gap-1 rounded-full border border-line bg-white p-1 shadow-sm">
         {BILLING_CYCLES.map((c) => {
           const active = c.id === cycle;
           return (
-            <button
-              key={c.id}
-              type="button"
-              role="radio"
-              aria-checked={active}
-              onClick={() => onChange(c.id)}
-              className={`rounded-full px-4 py-2.5 text-sm font-semibold transition-colors sm:px-5 ${
-                active
-                  ? "bg-gradient-brand text-white shadow-sm"
-                  : "text-ink-600 hover:text-ink"
-              }`}
-            >
-              {c.label}
-            </button>
+            <label key={c.id} className="cursor-pointer">
+              <input
+                type="radio"
+                name={name}
+                value={c.id}
+                checked={active}
+                onChange={() => onChange(c.id)}
+                className="peer sr-only"
+              />
+              <span
+                className={`block rounded-full px-5 py-2.5 text-sm font-semibold transition-colors peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand sm:px-6 ${
+                  active
+                    ? "bg-gradient-brand text-white shadow-sm"
+                    : "text-ink-600 hover:text-ink"
+                }`}
+              >
+                {c.label} billing
+              </span>
+            </label>
           );
         })}
       </div>
+      <p
+        aria-live="polite"
+        className="mt-3 max-w-md text-center text-sm leading-relaxed text-slate-body"
+      >
+        {CYCLE_NOTES[cycle]}
+      </p>
+    </fieldset>
+  );
+}
+
+function PlanPrice({ plan, cycle }) {
+  if (plan.custom) {
+    return (
+      <div>
+        <p className="flex flex-wrap items-baseline gap-x-1.5">
+          <span className="font-display text-4xl font-extrabold tracking-tight text-ink">
+            Custom
+          </span>
+          <span className="text-sm font-medium text-slate-body">pricing</span>
+        </p>
+        <p className="mt-1.5 text-sm text-ink-600">
+          Pricing and limits agreed with our team.
+        </p>
+      </div>
+    );
+  }
+
+  const monthly = priceFor(plan, "monthly");
+  const annual = priceFor(plan, "annual");
+  const perMonth = effectiveMonthly(plan);
+  const savings = annualSavings(plan);
+
+  if (cycle === "annual") {
+    return (
+      <div>
+        <p className="flex flex-wrap items-baseline gap-x-1.5">
+          <span className="font-display text-4xl font-extrabold tracking-tight text-ink">
+            {formatPrice(annual)}
+          </span>
+          <span className="text-sm font-medium text-slate-body">/year</span>
+        </p>
+        <p className="mt-1.5 text-sm text-ink-600">
+          Works out to {formatPrice(perMonth)}/month, billed annually
+        </p>
+        {savings && (
+          <p className="mt-2.5">
+            <span className="inline-flex items-center gap-1 rounded-full bg-success/10 px-2.5 py-0.5 text-xs font-bold text-success">
+              <Icon name="PiggyBank" size={13} /> Save {formatPrice(savings.amount)}{" "}
+              vs. monthly billing
+            </span>
+          </p>
+        )}
+        <p className="mt-2 text-xs text-slate-body">
+          Or {formatPrice(monthly)}/month with monthly billing
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <p className="flex flex-wrap items-baseline gap-x-1.5">
+        <span className="font-display text-4xl font-extrabold tracking-tight text-ink">
+          {formatPrice(monthly)}
+        </span>
+        <span className="text-sm font-medium text-slate-body">/month</span>
+      </p>
+      <p className="mt-1.5 text-sm text-ink-600">Billed monthly</p>
+      <p className="mt-2 text-xs text-slate-body">
+        Or {formatPrice(annual)}/year with annual billing (
+        {formatPrice(perMonth)}/month equivalent)
+      </p>
     </div>
   );
 }
 
-function PlanCard({ plan, cycle, location }) {
-  const billing = priceFor(plan, cycle);
-  const offPercent = discountPercent(plan, cycle);
-  const savings = annualSavings(plan);
-  const perMonth = cycle === "annual" ? monthlyEquivalent(plan) : null;
-  const contact = isContactCta(plan.cta.action);
-  const note = billing?.note || plan.billingNote;
+// Sites, team members and storage — always visible on every card, with the
+// key-holder exclusion right where the team-member limit is stated.
+function Capacity({ plan }) {
+  const addon = plan.id === SITE_ADDON.planId;
+  const rows = [
+    {
+      label: "Active sites",
+      value: plan.custom ? "Custom" : addon ? `${plan.sites} included` : plan.sites,
+      note: addon ? `Up to ${GROWTH_SITES.max} with add-ons` : null,
+    },
+    {
+      label: "Team members",
+      value: plan.custom ? "Custom" : plan.members,
+      note: (
+        <a
+          href="#key-holders"
+          className="underline-offset-2 hover:underline"
+        >
+          {KEY_HOLDER_NOTE.short}
+        </a>
+      ),
+    },
+    {
+      label: "Storage",
+      value: plan.custom ? "Custom" : `${plan.storageGb} GB`,
+    },
+  ];
 
   return (
-    <div
+    <dl className="mt-6 divide-y divide-line rounded-xl bg-canvas px-4 text-sm">
+      {rows.map((row) => (
+        <div key={row.label} className="py-3">
+          <div className="flex items-baseline justify-between gap-3">
+            <dt className="whitespace-nowrap text-slate-body">{row.label}</dt>
+            <dd className="text-right font-semibold text-ink">{row.value}</dd>
+          </div>
+          {row.note && (
+            <dd className="mt-0.5 text-right text-xs font-medium text-brand">
+              {row.note}
+            </dd>
+          )}
+        </div>
+      ))}
+    </dl>
+  );
+}
+
+function PlanCard({ plan, cycle, location, enterpriseHref }) {
+  const headingId = `plan-${plan.id}`;
+
+  return (
+    <article
+      aria-labelledby={headingId}
       className={`relative flex h-full flex-col rounded-2xl border bg-white p-6 sm:p-7 ${
-        plan.featured
-          ? "border-brand shadow-xl shadow-brand/10 ring-1 ring-brand/20 lg:py-10"
+        plan.recommended
+          ? "border-brand shadow-xl shadow-brand/10 ring-1 ring-brand/20 xl:py-10"
           : "border-line shadow-sm"
       }`}
     >
-      {plan.badge && (
+      {plan.recommended && (
         <span className="absolute -top-3 left-6 inline-flex items-center gap-1.5 rounded-full bg-gradient-brand px-3 py-1 text-xs font-semibold text-white shadow-sm">
-          <Icon name="Star" size={13} /> {plan.badge}
+          <Icon name="Star" size={13} /> Recommended
         </span>
       )}
 
-      <div className="flex items-start justify-between gap-3">
-        <h3 className="font-display text-lg font-bold text-ink">{plan.name}</h3>
-        {plan.comingSoon && (
-          <span className="shrink-0 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-ink-600">
-            Coming Soon
-          </span>
-        )}
-        {offPercent && (
-          <span className="shrink-0 rounded-full bg-success/10 px-2.5 py-1 text-xs font-bold text-success">
-            {offPercent}% OFF
-          </span>
-        )}
-      </div>
-
+      <h3 id={headingId} className="font-display text-xl font-bold text-ink">
+        {plan.name}
+      </h3>
       <p className="mt-1.5 text-sm leading-relaxed text-slate-body">
         {plan.tagline}
       </p>
 
-      {plan.bestFor && (
-        <p className="mt-3 text-xs leading-relaxed text-slate-body">
-          <span className="font-semibold text-ink-600">Best for:</span>{" "}
-          {plan.bestFor.join(" · ")}
-        </p>
-      )}
-
-      {/* Price — updates instantly with the toggle */}
       <div className="mt-6">
-        {billing ? (
-          <div className="flex items-end gap-1.5">
-            <span className="font-display text-4xl font-extrabold tracking-tight text-ink">
-              {formatPrice(billing.price)}
-            </span>
-            <span className="pb-1.5 text-sm text-slate-body">
-              {billing.periodLabel}
-            </span>
-          </div>
-        ) : (
-          <span className="font-display text-3xl font-extrabold tracking-tight text-ink">
-            {plan.priceLabel}
-          </span>
-        )}
-
-        {/* Standard rate, struck through, + the launch-offer label. */}
-        {billing?.originalPrice && (
-          <div className="mt-2 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm">
-            <span className="text-slate-400 line-through">
-              {formatPrice(billing.originalPrice)}
-            </span>
-            <span className="inline-flex items-center gap-1 font-semibold text-brand">
-              <Icon name="Tag" size={13} /> {PRICING.offerLabel}
-            </span>
-          </div>
-        )}
-
-        {cycle === "annual" && savings && (
-          <p className="mt-2.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
-            <span className="inline-flex items-center gap-1 rounded-full bg-success/10 px-2.5 py-0.5 text-xs font-bold text-success">
-              <Icon name="PiggyBank" size={13} /> Save{" "}
-              {formatPrice(savings.amount)}/year
-            </span>
-            {perMonth && (
-              <span className="text-slate-body">
-                ≈ {formatPrice(perMonth)}/month
-              </span>
-            )}
-          </p>
-        )}
+        <PlanPrice plan={plan} cycle={cycle} />
       </div>
 
-      {/* Capacity at a glance — always visible on every card */}
-      <dl className="mt-6 grid grid-cols-2 gap-3 rounded-xl bg-canvas p-3.5">
-        <div>
-          <dt className="text-[11px] font-semibold uppercase tracking-wide text-slate-body">
-            Active sites
-          </dt>
-          <dd className="mt-0.5 text-sm font-bold text-ink">{plan.sites}</dd>
-        </div>
-        <div>
-          <dt className="text-[11px] font-semibold uppercase tracking-wide text-slate-body">
-            Storage
-          </dt>
-          <dd className="mt-0.5 text-sm font-bold text-ink">{plan.storage}</dd>
-        </div>
-      </dl>
+      <Capacity plan={plan} />
 
-      {/* Feature hierarchy — each plan builds on the one before it */}
-      {plan.inherits && (
-        <p className="mt-6 flex items-center gap-2 text-sm font-semibold text-ink">
-          <Icon name="CircleCheckBig" size={16} className="shrink-0 text-brand" />
-          {plan.inherits}
-        </p>
-      )}
-      <ul className={`space-y-2.5 ${plan.inherits ? "mt-4" : "mt-6 border-t border-line pt-6"}`}>
-        {plan.highlights.map((f) => (
+      <ul className="mt-6 space-y-2.5">
+        {plan.highlights.map((item) => (
           <li
-            key={f}
+            key={item}
             className="flex items-start gap-2.5 text-sm leading-relaxed text-ink-600"
           >
             <Icon name="Check" size={16} className="mt-0.5 shrink-0 text-brand" />
-            {f}
+            {item}
           </li>
         ))}
       </ul>
 
-      <a
-        href="#compare"
-        className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand hover:text-brand-deep"
-      >
-        Compare plans <Icon name="ArrowDown" size={14} />
-      </a>
-
-      {/* CTA */}
       <div className="mt-auto pt-7">
-        {contact ? (
+        {plan.custom ? (
           <TrackedButton
-            href={URLS.contactSales}
-            event={EVENTS.CONTACT_SALES}
-            eventProps={{ location, plan: plan.id, cycle }}
-            variant={plan.featured ? "primary" : "secondary"}
+            href={enterpriseHref}
+            event={EVENTS.ENTERPRISE_CTA}
+            eventProps={{ location, plan: plan.id }}
+            variant="secondary"
             size="lg"
             className="w-full"
           >
-            {plan.cta.label}
+            {plan.cta} <Icon name="ArrowRight" size={18} />
           </TrackedButton>
         ) : (
           <SignupButton
-            // The app chooses the plan at /activate after email verification,
-            // so plan intent rides the analytics event, not a query param.
+            // The app takes the plan choice at /activate after sign-up, so
+            // plan intent rides the analytics event, not a query param.
+            event={EVENTS.PLAN_CTA}
             eventProps={{ location, plan: plan.id, cycle }}
-            variant={plan.featured ? "primary" : "secondary"}
+            variant={plan.recommended ? "primary" : "secondary"}
             size="lg"
             className="w-full"
           >
-            {plan.cta.label}
+            {plan.cta}
           </SignupButton>
         )}
-        {note && (
-          <p className="mt-3 text-center text-xs text-slate-body">{note}</p>
-        )}
       </div>
-    </div>
+    </article>
   );
 }
 
-export function PricingPlans({ location = "pricing", className = "" }) {
+export function PricingPlans({
+  location = "pricing_page",
+  enterpriseHref = "#enterprise",
+  className = "",
+}) {
   const [cycle, setCycle] = useState(DEFAULT_CYCLE);
+
+  const changeCycle = (next) => {
+    setCycle(next);
+    track(EVENTS.BILLING_CYCLE_CHANGE, { location, cycle: next });
+  };
 
   return (
     <div className={className}>
-      <BillingToggle cycle={cycle} onChange={setCycle} />
+      <BillingToggle cycle={cycle} onChange={changeCycle} />
 
-      <div className="mt-10 grid items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {PRICING.plans.map((plan) => (
-          <div key={plan.id} className={plan.featured ? "lg:-my-4" : ""}>
-            <PlanCard plan={plan} cycle={cycle} location={location} />
+      <div className="mt-10 grid items-stretch gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        {PLANS.map((plan) => (
+          <div key={plan.id} className={plan.recommended ? "xl:-my-4" : ""}>
+            <PlanCard
+              plan={plan}
+              cycle={cycle}
+              location={location}
+              enterpriseHref={enterpriseHref}
+            />
           </div>
         ))}
       </div>

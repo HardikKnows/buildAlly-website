@@ -1,13 +1,11 @@
 import Link from "next/link";
 import { Icon } from "@/components/ui/Icon";
-import { PRICING, formatPrice } from "@/lib/pricing";
+import { TRIAL, formatPrice } from "@/lib/pricing";
 
-// Small promotional banner for the paid trial. Reads the price and duration
-// from the pricing config so it can never drift from the plan cards.
+// Small banner for the paid trial. Reads the price, duration and limits from
+// the pricing config so it can never drift from the pricing page.
 
-export function TrialBanner({ href = "/pricing", className = "" }) {
-  const trialPrice = formatPrice(PRICING.trialCredit);
-
+export function TrialBanner({ href = "/pricing#trial", className = "" }) {
   return (
     <Link
       href={href}
@@ -18,10 +16,10 @@ export function TrialBanner({ href = "/pricing", className = "" }) {
       </span>
       <span className="text-sm leading-snug text-ink-600">
         <span className="font-semibold text-ink">
-          Start your {PRICING.trialDays}-day BuildAlly Trial for just{" "}
-          {trialPrice}
+          {TRIAL.days}-day paid trial: {formatPrice(TRIAL.price)}
         </span>{" "}
-        — fully credited towards your subscription.
+        — {TRIAL.sites} active sites and {TRIAL.members} team members on your
+        real projects.
       </span>
       <Icon
         name="ArrowRight"

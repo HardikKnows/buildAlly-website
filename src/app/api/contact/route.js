@@ -1,8 +1,12 @@
 import { Resend } from "resend";
 import { emailFrom, inboxAddress } from "@/lib/email";
 
-// Production contact/demo form handler.
+// Production contact / demo / Enterprise enquiry form handler.
 // Sends submissions via Resend to the official BuildAlly inbox.
+//
+// Variants: "contact" (default), "demo", and "enterprise" — the pricing page's
+// Enterprise enquiry, which carries the requested active-site count so the
+// team can prioritise larger leads.
 //
 // Required env vars:
 //   RESEND_API_KEY — your Resend API key
@@ -15,13 +19,24 @@ export const runtime = "nodejs"; // Resend SDK needs the Node runtime on Vercel.
 // Loose but real validation. Server is the source of truth.
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^[+]?[\d\s().-]{7,20}$/;
+const MAX_SITES = 100000;
 
-function validate(body) {
+const VARIANTS = new Set(["contact", "demo", "enterprise"]);
+
+function validate(body, variant) {
   const errors = {};
+  const enterprise = variant === "enterprise";
   const name = (body.name || "").trim();
   const email = (body.email || "").trim();
   const phone = (body.phone || "").trim();
   const message = (body.message || "").trim();
+  const company = (body.company || "").toString().trim();
+  // A count arrives as a number or a digit string — nothing else coerces.
+  const sites =
+    typeof body.sites === "number" ||
+    (typeof body.sites === "string" && /^\d+$/.test(body.sites.trim()))
+      ? Number(body.sites)
+      : NaN;
 
   if (name.length < 2) errors.name = "Please enter your full name.";
   else if (name.length > 120) errors.name = "Name is too long.";
@@ -30,13 +45,28 @@ function validate(body) {
   else if (!EMAIL_RE.test(email)) errors.email = "Please enter a valid email address.";
   else if (email.length > 200) errors.email = "Email is too long.";
 
-  if (!phone) errors.phone = "Phone number is required.";
-  else if (!PHONE_RE.test(phone)) errors.phone = "Please enter a valid phone number.";
+  // Phone is optional on an Enterprise enquiry, required everywhere else.
+  if (!phone) {
+    if (!enterprise) errors.phone = "Phone number is required.";
+  } else if (!PHONE_RE.test(phone)) {
+    errors.phone = "Please enter a valid phone number.";
+  }
 
-  if (message.length < 5) errors.message = "Please add a short message.";
-  else if (message.length > 5000) errors.message = "Message is too long.";
+  // The message is optional on an Enterprise enquiry — the site count is the
+  // signal that matters there.
+  if (message.length > 5000) errors.message = "Message is too long.";
+  else if (!enterprise && message.length < 5) errors.message = "Please add a short message.";
 
-  return { errors, clean: { name, email, phone, message } };
+  if (enterprise) {
+    if (!company) errors.company = "Please enter your company name.";
+    else if (company.length > 200) errors.company = "Company name is too long.";
+
+    if (!Number.isInteger(sites) || sites < 1 || sites > MAX_SITES) {
+      errors.sites = "Please enter a whole number of sites.";
+    }
+  }
+
+  return { errors, clean: { name, email, phone, message, sites } };
 }
 
 function esc(str = "") {
@@ -59,14 +89,15 @@ export async function POST(request) {
     return Response.json({ ok: true }, { status: 200 });
   }
 
-  const { errors, clean } = validate(body);
+  // Every variant reaches the single official inbox; the variant only shapes
+  // validation and the subject line so the team can triage.
+  const variant = VARIANTS.has(body.variant) ? body.variant : "contact";
+
+  const { errors, clean } = validate(body, variant);
   if (Object.keys(errors).length > 0) {
     return Response.json({ ok: false, errors }, { status: 400 });
   }
 
-  // Demo requests and contact messages both reach the single official inbox;
-  // the variant only shapes the subject line so the team can triage.
-  const variant = body.variant === "demo" ? "demo" : "contact";
   const to = inboxAddress();
 
   // Config guard — fail clearly if env is missing rather than 500-ing opaquely.
@@ -86,24 +117,35 @@ export async function POST(request) {
   const teamSize = (body.teamSize || "").toString().trim().slice(0, 120);
   const intendedInbox = (body.intendedInbox || "").toString().trim().slice(0, 200);
 
-  const subject =
-    variant === "demo"
-      ? `Demo request — ${clean.name}${company ? ` (${company})` : ""}`
-      : `Contact — ${clean.name}${company ? ` (${company})` : ""}`;
+  const who = `${clean.name}${company ? ` (${company})` : ""}`;
+  // The site count leads an Enterprise subject so the inbox sorts by size.
+  const subject = {
+    demo: `Demo request — ${who}`,
+    enterprise: `Enterprise enquiry — ${clean.sites} active sites — ${who}`,
+    contact: `Contact — ${who}`,
+  }[variant];
+
+  const heading = {
+    demo: "demo request",
+    enterprise: "Enterprise enquiry",
+    contact: "contact message",
+  }[variant];
 
   const rows = [
     ["Name", clean.name],
     ["Company", company],
     ["Email", clean.email],
     ["Phone", clean.phone],
+    variant === "enterprise" ? ["Active sites", String(clean.sites)] : null,
     variant === "demo" ? ["Team size", teamSize] : null,
     ["Message", clean.message],
+    variant === "enterprise" ? ["Source", "Pricing page — Enterprise enquiry"] : null,
     intendedInbox ? ["Intended inbox", intendedInbox] : null,
   ].filter(Boolean);
 
   const html = `
     <div style="font-family:system-ui,Segoe UI,Arial,sans-serif;color:#0f172a;max-width:560px">
-      <h2 style="margin:0 0 4px">New ${variant === "demo" ? "demo request" : "contact message"}</h2>
+      <h2 style="margin:0 0 4px">New ${heading}</h2>
       <p style="margin:0 0 16px;color:#64748b">via buildally.in</p>
       <table style="border-collapse:collapse;width:100%">
         ${rows

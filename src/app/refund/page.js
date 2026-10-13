@@ -1,6 +1,6 @@
 import { LegalPage } from "@/components/site/LegalPage";
 import { SUPPORT_EMAIL } from "@/lib/email";
-import { PRICING, formatPrice } from "@/lib/pricing";
+import { TRIAL, formatPrice } from "@/lib/pricing";
 
 export const metadata = {
   title: "Refund Policy",
@@ -20,12 +20,10 @@ const SECTIONS = [
   {
     heading: "Paid Trial & Demo",
     body: [
-      `Customers are encouraged to evaluate the platform through a personalized demo and the ${PRICING.trialDays}-day trial before purchasing.`,
-      `The ${formatPrice(
-        PRICING.trialCredit,
-      )} trial fee is a one-time charge for a ${
-        PRICING.trialDays
-      }-day evaluation and is credited in full towards the first payment on any monthly or annual subscription.`,
+      `Customers are encouraged to evaluate the platform through a personalized demo and the ${TRIAL.days}-day paid trial before purchasing.`,
+      `The ${formatPrice(TRIAL.price)} trial fee is a charge for a ${
+        TRIAL.days
+      }-day evaluation of the platform.`,
     ],
   },
   {
@@ -82,7 +80,7 @@ export default function RefundPolicyPage() {
   return (
     <LegalPage
       title="Refund Policy"
-      updated="13 July 2026"
+      updated="13 October 2026"
       intro="This Refund Policy explains how subscription billing, cancellations, and refund requests are handled for BuildAlly services."
       sections={SECTIONS}
     />

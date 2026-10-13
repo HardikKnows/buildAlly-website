@@ -4,69 +4,123 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { Accordion } from "@/components/ui/Accordion";
 import { Icon } from "@/components/ui/Icon";
 import { TrackedButton } from "@/components/ui/TrackedButton";
+import { TrackView } from "@/components/ui/TrackView";
+import { SignupButton } from "@/components/ui/SignupLink";
 import { PricingPlans } from "@/components/pricing/PricingPlans";
 import { PlanComparison } from "@/components/pricing/PlanComparison";
-import { TrialBanner } from "@/components/pricing/TrialBanner";
 import { SiteAddOns } from "@/components/pricing/SiteAddOns";
 import { CheckoutFlow } from "@/components/pricing/CheckoutFlow";
+import { PricingCalculator } from "@/components/pricing/PricingCalculator";
+import { EnterpriseForm } from "@/components/pricing/EnterpriseForm";
 import { SITE, URLS } from "@/lib/site";
 import { EVENTS } from "@/lib/track";
 import { PLAN_FAQS } from "@/lib/content";
-import { PricingCalculator } from "@/components/pricing/PricingCalculator";
-import { SignupButton } from "@/components/ui/SignupLink";
+import { SUPPORT_EMAIL, supportMailto } from "@/lib/email";
 import {
-  PRICING,
-  SITE_ADDONS,
-  STORAGE_USES,
-  ADDON_TEASER,
-  COUPON_NOTE,
+  CURRENCY,
+  TRIAL,
+  PAID_PLANS,
+  GROWTH_SITES,
+  ENTERPRISE_MIN_SITES,
+  STARTING_PRICE,
+  STARTING_PRICE_QUALIFIER,
+  KEY_HOLDER_NOTE,
   AI_INCLUDED_NOTE,
   TAX_NOTE,
-  GROWTH_CALLOUT,
-  getPlan,
+  CHECKOUT_NOTE,
+  TRIAL_CTA_LABEL,
+  INCLUDED_ON_EVERY_PLAN,
   formatPrice,
+  getPlan,
   priceFor,
+  joinOr,
 } from "@/lib/pricing";
 
-// Derive all pricing copy from the centralized config — no duplicated numbers.
-const trial = getPlan("trial");
-const starter = getPlan("starter");
-const growth = getPlan("growth");
+// Every figure on this page comes from @/lib/pricing — no duplicated numbers.
 
-export const metadata = {
-  title: "Pricing — BuildAlly Construction Management Software Plans",
-  description: `BuildAlly pricing for builders and interior teams: a ${formatPrice(
-    priceFor(trial, "monthly").price,
-  )} ${PRICING.trialDays}-day trial credited towards your subscription, Starter from ${formatPrice(
-    priceFor(starter, "monthly").price,
-  )}/month (${starter.sites.toLowerCase()} sites), and Growth from ${formatPrice(
-    priceFor(growth, "monthly").price,
-  )}/month (${growth.sites.toLowerCase()} sites, limited-period launch pricing, billed monthly or annually). Additional sites from ${formatPrice(
-    SITE_ADDONS.perSite.growth,
-  )}/site/year. AI-powered construction intelligence included. Site management, schedules, attendance, expenses, treasury, documents, and reports in one construction management platform built for Indian builders.`,
-  alternates: { canonical: "/pricing" },
+const STARTING_FROM = `${formatPrice(STARTING_PRICE.monthlyEquivalent)}/month`;
+const ENTERPRISE = getPlan("enterprise");
+const MAX_STANDARD_SITES = ENTERPRISE_MIN_SITES - 1;
+
+const TITLE = "Pricing — Construction Management Software Plans";
+const SOCIAL_TITLE = `BuildAlly Pricing — Plans from ${STARTING_FROM}, billed annually`;
+const DESCRIPTION = `BuildAlly plans start at ${STARTING_FROM}, billed annually at ${formatPrice(
+  STARTING_PRICE.annual,
+)} (${formatPrice(STARTING_PRICE.monthly)}/month billed monthly). Compare ${PAID_PLANS.map(
+  (p) => p.name,
+).join(", ")} for up to ${MAX_STANDARD_SITES} active sites, talk to us about Enterprise beyond that, or start a ${
+  TRIAL.days
+}-day paid trial for ${formatPrice(TRIAL.price)}.`;
+const SOCIAL_IMAGE = {
+  url: "/opengraph-image",
+  width: 1200,
+  height: 630,
+  alt: "BuildAlly — Construction Management Software for Modern Builders",
 };
 
-// Product + Offer structured data so search engines can surface the plans.
-// Annual is the default cycle, so that's what we publish.
+export const metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: "/pricing" },
+  // A page-level openGraph replaces the layout's entirely, so it is restated
+  // in full here rather than only overriding the title and description.
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: `${SITE.domain}/pricing`,
+    siteName: SITE.name,
+    title: SOCIAL_TITLE,
+    description: DESCRIPTION,
+    images: [SOCIAL_IMAGE],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SOCIAL_TITLE,
+    description: DESCRIPTION,
+    images: [SOCIAL_IMAGE.url],
+  },
+};
+
+// Product + Offer structured data: the trial plus every plan on both billing
+// periods, each with its billing duration so a monthly and an annual price can
+// never be read as the same thing.
 function PricingStructuredData() {
+  const offers = [
+    {
+      "@type": "Offer",
+      name: `${TRIAL.name} — ${TRIAL.days}-day paid trial`,
+      price: TRIAL.price,
+      priceCurrency: CURRENCY.code,
+      url: `${SITE.domain}/pricing#trial`,
+      availability: "https://schema.org/InStock",
+    },
+    ...PAID_PLANS.flatMap((plan) =>
+      ["monthly", "annual"].map((cycle) => ({
+        "@type": "Offer",
+        name: `BuildAlly ${plan.name} — ${cycle} billing`,
+        price: priceFor(plan, cycle),
+        priceCurrency: CURRENCY.code,
+        url: `${SITE.domain}/pricing`,
+        availability: "https://schema.org/InStock",
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: priceFor(plan, cycle),
+          priceCurrency: CURRENCY.code,
+          billingDuration: cycle === "monthly" ? "P1M" : "P1Y",
+          unitText: cycle === "monthly" ? "MONTH" : "YEAR",
+          valueAddedTaxIncluded: true,
+        },
+      })),
+    ),
+  ];
+
   const data = {
     "@context": "https://schema.org",
     "@type": "Product",
     name: `${SITE.name} — Construction Management Software`,
     description: SITE.description,
     brand: { "@type": "Brand", name: SITE.name },
-    offers: PRICING.plans
-      .map((plan) => ({ plan, billing: priceFor(plan, "annual") }))
-      .filter(({ billing }) => billing?.price)
-      .map(({ plan, billing }) => ({
-        "@type": "Offer",
-        name: plan.name,
-        price: billing.price,
-        priceCurrency: PRICING.currency,
-        url: `${SITE.domain}/pricing`,
-        availability: "https://schema.org/InStock",
-      })),
+    offers,
   };
   return (
     <script
@@ -76,275 +130,297 @@ function PricingStructuredData() {
   );
 }
 
+const TRIAL_FACTS = [
+  { icon: "IndianRupee", value: formatPrice(TRIAL.price), label: "Trial price" },
+  { icon: "CalendarDays", value: `${TRIAL.days} days`, label: "Trial length" },
+  { icon: "Building2", value: TRIAL.sites, label: "Active sites" },
+  {
+    icon: "Users",
+    value: TRIAL.members,
+    label: "Team members",
+    note: KEY_HOLDER_NOTE.short,
+  },
+];
+
 export default function PricingPage() {
   return (
     <>
       <PricingStructuredData />
+      <TrackView
+        event={EVENTS.PRICING_VIEW}
+        eventProps={{ location: "pricing_page" }}
+      />
 
+      {/* A. Hero */}
       <PageHero
         eyebrow="Pricing"
-        title="Plans that scale with your sites"
-        lead={`Launch pricing, for a limited period. Start with a ${PRICING.trialDays}-day paid evaluation on your real projects, then pick the plan that matches how much you're building — your trial fee comes straight off your first subscription.`}
+        title="Keep every site, and every rupee, under control"
+        lead="BuildAlly brings your sites, teams, expenses and documents into one platform — with plans sized for growing construction companies."
       >
-        <div className="flex flex-col items-center gap-6">
-          <TrialBanner href="#plans" />
-          <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <div className="flex flex-col items-center gap-7">
+          {/* The starting price never appears without its qualifier. */}
+          <div className="w-full max-w-xl rounded-2xl border border-brand/20 bg-white/85 px-6 py-5 shadow-sm backdrop-blur">
+            <p className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+              Plans starting at <span className="text-brand">{STARTING_FROM}</span>
+            </p>
+            <p className="mt-2 text-[15px] leading-relaxed text-ink-600">
+              <strong className="font-semibold text-ink">
+                {STARTING_PRICE_QUALIFIER}
+              </strong>{" "}
+              Prefer monthly billing? {STARTING_PRICE.planName} is{" "}
+              {formatPrice(STARTING_PRICE.monthly)}/month.
+            </p>
+          </div>
+
+          <div className="flex w-full flex-col items-stretch justify-center gap-3 sm:w-auto sm:flex-row sm:items-center">
             <SignupButton
               eventProps={{ location: "pricing_hero" }}
               variant="primary"
               size="lg"
             >
-              Start {PRICING.trialDays}-Day Trial{" "}
-              <Icon name="ArrowRight" size={18} />
+              {TRIAL_CTA_LABEL} <Icon name="ArrowRight" size={18} />
             </SignupButton>
             <TrackedButton
-              href={URLS.bookDemo}
-              event={EVENTS.BOOK_DEMO}
+              href="#plans"
+              event={EVENTS.EXPLORE_PLANS}
               eventProps={{ location: "pricing_hero" }}
               variant="secondary"
               size="lg"
             >
-              <Icon name="CalendarCheck" size={18} /> Book a Demo
+              Compare plans <Icon name="ArrowDown" size={18} />
             </TrackedButton>
           </div>
+
+          <p className="text-sm text-slate-body">
+            The trial is paid: {formatPrice(TRIAL.price)} for {TRIAL.days} days,
+            with {TRIAL.sites} active sites and {TRIAL.members} team members.{" "}
+            <span className="whitespace-nowrap">
+              Already a customer?{" "}
+              <a
+                href={URLS.login}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-brand underline-offset-2 hover:underline"
+              >
+                Log in
+              </a>
+            </span>
+          </p>
         </div>
       </PageHero>
 
-      {/* Plan cards */}
+      {/* B + C. Billing selector and plan cards */}
       <Section tone="canvas" id="plans" containerSize="wide">
-        <PricingPlans location="pricing_page" />
-        <Reveal className="mx-auto mt-10 flex max-w-3xl flex-col items-center gap-3">
-          <p className="inline-flex items-center gap-2 rounded-full border border-brand/25 bg-brand-50/70 px-4 py-2 text-center text-sm font-semibold text-brand">
-            <Icon name="Sparkles" size={16} className="shrink-0" />
-            {AI_INCLUDED_NOTE}
-          </p>
-          <a
-            href="#add-ons"
-            className="inline-flex items-center gap-2 rounded-full border border-brand/25 bg-brand-50/70 px-4 py-2 text-sm font-semibold text-brand transition-colors hover:border-brand/45 hover:bg-brand-50"
-          >
-            <Icon name="Layers" size={16} />
-            {ADDON_TEASER}
-          </a>
-          <p className="inline-flex items-center gap-2 text-sm text-slate-body">
-            <Icon name="Ticket" size={16} className="shrink-0 text-brand" />
-            {COUPON_NOTE}
-          </p>
-          <p className="max-w-2xl text-center text-sm text-slate-body">
-            {TAX_NOTE}
-          </p>
-        </Reveal>
+        <SectionHeading
+          eyebrow="Plans"
+          title="Choose by how many sites you run"
+          lead="Every plan includes the complete BuildAlly platform. Plans differ by active sites, team members and storage."
+        />
+        <PricingPlans location="pricing_page" className="mt-12" />
 
-        {/* Which plan fits — stated as fact, no urgency. */}
-        <Reveal className="mx-auto mt-10 max-w-3xl rounded-2xl border border-brand/20 bg-brand-50/50 p-6 sm:p-7">
-          <p className="flex items-start gap-3 text-[15px] leading-relaxed text-ink">
-            <Icon
-              name="Layers"
-              size={19}
-              className="mt-0.5 shrink-0 text-brand"
-            />
-            <span>
-              <strong className="font-semibold">{GROWTH_CALLOUT.title}</strong>{" "}
-              {GROWTH_CALLOUT.body}
-            </span>
-          </p>
+        <p className="mx-auto mt-10 max-w-2xl text-center text-sm leading-relaxed text-slate-body">
+          {CHECKOUT_NOTE}
+        </p>
+
+        {/* Key holders — explicit, beside the plans that state the limits. */}
+        <div id="key-holders" className="mx-auto mt-8 max-w-3xl scroll-mt-24">
+          <Reveal className="rounded-2xl border border-brand/25 bg-white p-6 shadow-sm sm:p-7">
+            <div className="flex items-start gap-4">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand">
+                <Icon name="KeyRound" size={21} />
+              </span>
+              <div className="min-w-0">
+                <h3 className="font-display text-lg font-bold text-ink">
+                  {KEY_HOLDER_NOTE.headline}
+                </h3>
+                <p className="mt-1.5 text-[15px] leading-relaxed text-ink-600">
+                  {KEY_HOLDER_NOTE.body}
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-slate-body">
+                  {KEY_HOLDER_NOTE.detail}
+                </p>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+
+        <Reveal className="mx-auto mt-8 flex max-w-3xl flex-col items-center gap-2 text-center text-sm text-slate-body">
+          <span className="inline-flex items-center gap-1.5">
+            <Icon name="Sparkles" size={15} className="shrink-0 text-brand" />
+            {AI_INCLUDED_NOTE}
+          </span>
+          <span>
+            {TAX_NOTE} Already a customer?{" "}
+            <a
+              href={URLS.login}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-brand underline-offset-2 hover:underline"
+            >
+              Log in to manage your plan
+            </a>
+            .
+          </span>
         </Reveal>
       </Section>
 
-      {/* Additional sites — grow without changing plans */}
+      {/* D. Growth site add-ons */}
       <Section tone="white" id="add-ons">
         <SectionHeading
-          eyebrow="Site add-ons"
-          title="Need more sites?"
-          lead={`Running out of active sites? Add them individually — ${formatPrice(
-            SITE_ADDONS.perSite.starter,
-          )} per site per year on Starter, ${formatPrice(
-            SITE_ADDONS.perSite.growth,
-          )} on Growth — without changing your subscription plan.`}
+          eyebrow="Growth site add-ons"
+          title={`Need more than ${GROWTH_SITES.included} sites on Growth?`}
+          lead={`Add active sites to Growth one at a time — up to ${GROWTH_SITES.max} in total — without moving to a bigger plan.`}
         />
         <SiteAddOns />
       </Section>
 
-      {/* Work out the cost for your own site count */}
-      <Section tone="canvas" id="calculator">
+      {/* Which plan covers a given number of sites */}
+      <Section tone="canvas" id="find-your-plan">
         <SectionHeading
-          eyebrow="Cost calculator"
-          title="What would BuildAlly cost you?"
-          lead="Set the number of sites you run and compare both plans side by side, including any additional sites you'd need."
+          eyebrow="Find your plan"
+          title="Which plan fits your sites?"
+          lead="Enter how many active sites you run to see the plan that covers them, with monthly and annual prices."
         />
         <PricingCalculator />
       </Section>
 
-      {/* How checkout works */}
-      <Section tone="white" containerSize="wide">
+      {/* E. Paid trial */}
+      <Section tone="white" id="trial" containerSize="wide">
         <SectionHeading
-          eyebrow="Billing"
-          title="How checkout works"
-          lead="Five steps from picking a plan to an active workspace — two of them optional, none of them a surprise."
+          eyebrow="Paid trial"
+          title={`Try BuildAlly on your real sites for ${TRIAL.days} days`}
+          lead={`The trial costs ${formatPrice(
+            TRIAL.price,
+          )} — it isn't free — and gives your team the complete platform on live projects.`}
         />
-        <CheckoutFlow />
-      </Section>
 
-      {/* Why the trial is paid */}
-      <Section tone="canvas" containerSize="narrow">
-        <SectionHeading
-          eyebrow="The paid trial"
-          title="Why is the trial paid?"
-          lead={`The ${formatPrice(
-            PRICING.trialCredit,
-          )} is not an extra charge. It is fully adjusted against your subscription if you continue with BuildAlly.`}
-        />
-        <RevealGroup className="mt-12 grid gap-5 sm:grid-cols-3">
-          {[
-            {
-              icon: "IndianRupee",
-              title: "Fully credited",
-              body: `Every rupee of the ${formatPrice(
-                PRICING.trialCredit,
-              )} comes off your first monthly or annual payment.`,
-            },
-            {
-              icon: "HardHat",
-              title: "Real projects",
-              body: `Run up to ${trial.sites.toLowerCase()} live sites with the complete platform for ${
-                PRICING.trialDays
-              } days — not a sandbox.`,
-            },
-            {
-              icon: "ShieldCheck",
-              title: "Nothing is lost",
-              body: "If you don't continue, your workspace turns read-only. No data is deleted.",
-            },
-          ].map((item) => (
+        <RevealGroup className="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-4 lg:grid-cols-4">
+          {TRIAL_FACTS.map((fact) => (
             <RevealItem
-              key={item.title}
-              className="rounded-2xl border border-line bg-canvas p-6"
+              key={fact.label}
+              className="rounded-2xl border border-line bg-canvas p-5 text-center"
             >
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-50 text-brand">
-                <Icon name={item.icon} size={20} />
+              <span className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-brand-50 text-brand">
+                <Icon name={fact.icon} size={20} />
               </span>
-              <h3 className="mt-4 font-display text-base font-semibold text-ink">
-                {item.title}
-              </h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-slate-body">
-                {item.body}
+              <p className="mt-3 font-display text-2xl font-extrabold tracking-tight text-ink">
+                {fact.value}
               </p>
+              <p className="mt-0.5 text-sm text-slate-body">{fact.label}</p>
+              {fact.note && (
+                <p className="mt-1 text-xs font-medium text-brand">{fact.note}</p>
+              )}
             </RevealItem>
           ))}
         </RevealGroup>
 
-        <Reveal className="mt-10">
-          <blockquote className="rounded-2xl border-l-4 border-brand bg-brand-50/60 p-6">
-            <p className="text-pretty text-[17px] font-medium leading-relaxed text-ink">
-              Start your BuildAlly journey with a {PRICING.trialDays}-day
-              professional evaluation. Your {formatPrice(PRICING.trialCredit)} is
-              fully credited toward any monthly or annual subscription.
-            </p>
-          </blockquote>
+        <Reveal className="mx-auto mt-8 max-w-3xl rounded-2xl border-l-4 border-brand bg-brand-50/60 p-6">
+          <h3 className="font-display text-base font-semibold text-ink">
+            After your trial
+          </h3>
+          <p className="mt-1.5 text-[15px] leading-relaxed text-ink-600">
+            When the {TRIAL.days} days end, choose the plan that fits —{" "}
+            {joinOr(PAID_PLANS.map((p) => p.name))}, billed monthly or
+            annually. Until you subscribe, your workspace is read-only: nothing
+            you added is deleted. You can also skip the trial and subscribe to a
+            plan straight away.
+          </p>
         </Reveal>
+
+        <Reveal className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <SignupButton
+            eventProps={{ location: "pricing_trial" }}
+            variant="primary"
+            size="lg"
+          >
+            {TRIAL_CTA_LABEL} <Icon name="ArrowRight" size={18} />
+          </SignupButton>
+        </Reveal>
+
+        <h3 className="mt-16 text-center font-display text-xl font-bold text-ink">
+          How signing up works
+        </h3>
+        <CheckoutFlow className="mt-8" />
       </Section>
 
-      {/* Comparison table — the "Compare plans" links on each card land here. */}
-      <Section tone="white" id="compare" containerSize="wide">
+      {/* Comparison table — capacity side by side. */}
+      <Section tone="canvas" id="compare" containerSize="wide">
         <SectionHeading
           eyebrow="Compare plans"
           title="Every plan, side by side"
-          lead="The complete platform ships with every plan — AI construction intelligence, attendance, expenses, treasury, and documents from day one. Plans differ by capacity, advanced analytics, automation, and support."
+          lead="Plans differ by capacity — active sites, team members and storage. The platform itself is the same on every plan."
         />
         <PlanComparison />
-      </Section>
 
-      {/* Storage */}
-      <Section tone="canvas">
-        <SectionHeading
-          eyebrow="Storage"
-          title="Smart cloud storage"
-          lead="Every plan includes secure cloud storage, managed automatically. Images are optimized before upload to save space while keeping the quality you need on site."
-        />
-
-        <RevealGroup className="mx-auto mt-12 grid max-w-4xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {PRICING.plans.map((plan) => (
-            <RevealItem
-              key={plan.id}
-              className={`rounded-2xl border p-6 text-center ${
-                plan.featured
-                  ? "border-brand bg-brand-50/50"
-                  : "border-line bg-canvas"
-              }`}
-            >
-              <p className="text-sm font-semibold text-slate-body">
-                {plan.shortName}
-              </p>
-              <p className="mt-1.5 font-display text-2xl font-extrabold tracking-tight text-ink">
-                {plan.storage}
-              </p>
-            </RevealItem>
-          ))}
-        </RevealGroup>
-
-        <Reveal className="mx-auto mt-10 max-w-3xl rounded-2xl border border-line bg-canvas p-6 sm:p-8">
-          <p className="text-sm font-semibold text-ink">
-            Your storage covers everything a site generates:
-          </p>
-          <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-3">
-            {STORAGE_USES.map((use) => (
+        <Reveal className="mx-auto mt-10 max-w-4xl rounded-2xl border border-line bg-white p-6 sm:p-8">
+          <h3 className="font-display text-base font-semibold text-ink">
+            Included on every plan
+          </h3>
+          <ul className="mt-4 grid gap-x-6 gap-y-3 sm:grid-cols-2">
+            {INCLUDED_ON_EVERY_PLAN.map((item) => (
               <li
-                key={use}
-                className="flex items-center gap-2 text-[15px] text-ink-600"
+                key={item}
+                className="flex items-start gap-2.5 text-[15px] text-ink-600"
               >
                 <Icon
                   name="CircleCheck"
                   size={18}
-                  className="shrink-0 text-brand"
+                  className="mt-0.5 shrink-0 text-brand"
                 />
-                {use}
+                {item}
               </li>
             ))}
           </ul>
-          <p className="mt-5 text-sm leading-relaxed text-slate-body">
-            If you reach your limit, uploads pause until you upgrade your plan or
-            remove unused files — nothing already in your workspace is deleted.
-          </p>
         </Reveal>
       </Section>
 
-      {/* Pricing FAQ */}
-      <Section tone="white" containerSize="narrow">
+      {/* F. Enterprise */}
+      <Section tone="white" id="enterprise">
+        <div className="grid items-start gap-10 lg:grid-cols-5 lg:gap-14">
+          <Reveal className="lg:col-span-2">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-brand">
+              {ENTERPRISE.name}
+            </p>
+            <h2 className="text-balance text-3xl font-bold leading-tight text-ink sm:text-4xl">
+              Need more than {MAX_STANDARD_SITES} sites? Talk to our team.
+            </h2>
+            <p className="mt-4 text-pretty text-lg leading-relaxed text-slate-body">
+              {ENTERPRISE.tagline}
+            </p>
+            <ul className="mt-6 space-y-3">
+              {ENTERPRISE.highlights.map((item) => (
+                <li
+                  key={item}
+                  className="flex items-start gap-2.5 text-[15px] text-ink-600"
+                >
+                  <Icon name="Check" size={17} className="mt-0.5 shrink-0 text-brand" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-8 rounded-2xl border border-line bg-canvas p-5 text-sm leading-relaxed text-slate-body">
+              Prefer email? Write to{" "}
+              <a
+                href={supportMailto("Enterprise enquiry")}
+                className="font-semibold text-brand underline-offset-2 hover:underline"
+              >
+                {SUPPORT_EMAIL}
+              </a>{" "}
+              with roughly how many active sites you run.
+            </p>
+          </Reveal>
+
+          <Reveal y={24} delay={0.1} className="lg:col-span-3">
+            <EnterpriseForm location="pricing_enterprise" />
+          </Reveal>
+        </div>
+      </Section>
+
+      {/* FAQ */}
+      <Section tone="canvas" id="faq" containerSize="narrow">
         <SectionHeading eyebrow="Pricing questions" title="Common questions" />
         <Reveal className="mt-10">
           <Accordion items={PLAN_FAQS} />
-        </Reveal>
-      </Section>
-
-      {/* Closing CTA */}
-      <Section tone="canvas" containerSize="narrow">
-        <Reveal className="rounded-2xl border border-line bg-ink p-8 text-center text-white blueprint-grid-dark sm:p-10">
-          <h2 className="font-display text-2xl font-bold text-white sm:text-3xl">
-            Not sure which plan fits?
-          </h2>
-          <p className="mx-auto mt-3 max-w-md text-slate-300">
-            Book a demo and we&apos;ll map BuildAlly to how you run your sites —
-            then start your {PRICING.trialDays}-day trial when it feels right.
-          </p>
-          <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <TrackedButton
-              href={URLS.bookDemo}
-              event={EVENTS.BOOK_DEMO}
-              eventProps={{ location: "pricing_band" }}
-              variant="white"
-              size="lg"
-            >
-              <Icon name="CalendarCheck" size={18} /> Book a Demo
-            </TrackedButton>
-            <TrackedButton
-              href={URLS.contactSales}
-              event={EVENTS.CONTACT_SALES}
-              eventProps={{ location: "pricing_band" }}
-              variant="outlineLight"
-              size="lg"
-            >
-              Contact Sales <Icon name="ArrowRight" size={18} />
-            </TrackedButton>
-          </div>
         </Reveal>
       </Section>
     </>

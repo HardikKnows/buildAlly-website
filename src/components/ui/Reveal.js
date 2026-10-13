@@ -45,9 +45,11 @@ export function RevealGroup({ children, className = "", stagger = 0.08 }) {
   );
 }
 
-export function RevealItem({ children, className = "", y = 18 }) {
+// `as="li"` lets an item sit directly inside a <ul>/<ol> as a real list item.
+export function RevealItem({ children, className = "", y = 18, as = "div" }) {
+  const MotionTag = motion[as] ?? motion.div;
   return (
-    <motion.div
+    <MotionTag
       className={className}
       variants={{
         hidden: { opacity: 0, y },
@@ -59,6 +61,6 @@ export function RevealItem({ children, className = "", y = 18 }) {
       }}
     >
       {children}
-    </motion.div>
+    </MotionTag>
   );
 }
