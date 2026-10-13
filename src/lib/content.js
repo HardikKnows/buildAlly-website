@@ -15,29 +15,30 @@ import {
 } from "./pricing";
 
 // --- Problem cards (Homepage §3 "Sound familiar?") ---
+// icon = lucide-react icon name (see @/components/ui/Icon)
 export const PROBLEMS = [
   {
-    face: "overwhelmed",
+    icon: "MessagesSquare",
     title: "15 WhatsApp groups, still no clarity",
     body: "Site updates scroll away. Nothing is searchable, and no one is accountable.",
   },
   {
-    face: "confused",
+    icon: "Sheet",
     title: "Expenses live in three spreadsheets",
     body: "Numbers never match, are never current, and one wrong cell hides an overrun.",
   },
   {
-    face: "frustrated",
+    icon: "ClipboardCheck",
     title: "Approvals happen on calls and paper",
     body: "Decisions get stuck on someone's phone. Nothing is traceable.",
   },
   {
-    face: "worried",
+    icon: "ChartNoAxesCombined",
     title: "You hear about overruns too late",
     body: "By the time a cost blowout or missed payment reaches you, it has already happened.",
   },
   {
-    face: "stressed",
+    icon: "Files",
     title: "Drawings are scattered across devices",
     body: "Nobody knows which drawing is the latest — until the wrong one gets built.",
   },

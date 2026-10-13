@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui/Icon";
@@ -19,28 +18,30 @@ export function Problem() {
         {PROBLEMS.map((p) => (
           <RevealItem
             key={p.title}
-            className="group rounded-2xl border border-line bg-white p-6 transition-colors hover:border-destructive/30"
+            className="group rounded-2xl border border-line bg-white p-6 transition-[border-color,box-shadow] duration-200 hover:border-brand/30 hover:shadow-sm"
           >
-            {/* 3D emoji (Fluent, MIT) rendered from a local PNG so every OS
-                shows the identical face. Decorative — the title carries the
-                meaning — hence the empty alt. */}
-            <span className="flex h-20 w-20 items-center justify-center rounded-2xl bg-destructive/10">
-              <Image
-                src={`/emoji/${p.face}.png`}
-                alt=""
-                width={56}
-                height={56}
-                className="drop-shadow-[0_3px_6px_rgba(15,23,42,0.16)] transition-transform duration-200 ease-out group-hover:-translate-y-0.5 group-hover:scale-[1.08]"
+            {/* One line icon per pain point, in the brand's blue on a soft
+                blue tile — the same family as every other icon on the site.
+                Decorative (Icon sets aria-hidden): the title carries the
+                meaning. The hover lift is skipped for reduced motion. */}
+            <span className="flex size-22 items-center justify-center rounded-2xl bg-linear-to-br from-brand-50 to-brand-100/70 text-brand-600 ring-1 ring-inset ring-brand-200/60">
+              <Icon
+                name={p.icon}
+                size={42}
+                strokeWidth={1.75}
+                className="transition-transform duration-200 ease-out motion-safe:group-hover:-translate-y-0.5"
               />
             </span>
-            <h3 className="mt-4 font-display text-lg font-semibold text-ink">
+            <h3 className="mt-5 font-display text-lg font-semibold text-ink">
               {p.title}
             </h3>
             <p className="mt-2 text-[15px] leading-relaxed text-slate-body">{p.body}</p>
           </RevealItem>
         ))}
         <RevealItem className="flex flex-col justify-center rounded-2xl bg-gradient-brand p-6 text-white">
-          <h3 className="font-display text-xl font-bold leading-snug">
+          {/* text-white on the heading itself: the base layer colours every
+              h3 ink, which would otherwise override the card's white. */}
+          <h3 className="font-display text-xl font-bold leading-snug text-white">
             There&apos;s a better way to run construction.
           </h3>
           <TrackedButton
